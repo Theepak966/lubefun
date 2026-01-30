@@ -1,0 +1,15 @@
+.admin-house-edge .input_field {
+    width: unset !important;
+}
+
+.admin-support-request-actions.closed .admin-support-request-action:not([data-action="closed"]){
+    display: none;
+}
+
+.admin-support-request-actions.opened .admin-support-request-action:not([data-action="opened"]){
+    display: none;
+}
+
+.admin-support-request-actions.claimed .admin-support-request-action:not([data-action="claimed"]){
+    display: none;
+}

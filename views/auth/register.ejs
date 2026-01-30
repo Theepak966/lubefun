@@ -1,0 +1,79 @@
+<div class="w-full text-center font-bold text-xl">Create Account</div>
+
+<div class="flex flex-col gap-4">
+    <form class="form_auth" autocomplete="register" method="POST" action="/auth/register?returnUrl=<%= response.returnUrl %>">
+        <div class="flex flex-col items-center gap-2">
+            <%- include('../components/inputField.ejs', {
+                type: 'text',
+                placeholder: 'Name',
+                attributes: [
+                    { name: 'name', value: 'name' },
+                    { name: 'autocomplete', value: 'name' }
+                ],
+                errors: [ 'required', 'name' ]
+            }); %>
+
+            <%- include('../components/inputField.ejs', {
+                type: 'text',
+                placeholder: 'Email',
+                attributes: [
+                    { name: 'name', value: 'email' },
+                    { name: 'autocomplete', value: 'email' }
+                ],
+                errors: [ 'required', 'email' ]
+            }); %>
+
+            <%- include('../components/inputField.ejs', {
+                type: 'password',
+                placeholder: 'Password',
+                attributes: [
+                    { name: 'name', value: 'password' },
+                    { name: 'autocomplete', value: 'password' }
+                ],
+                errors: [ 'required', 'password' ],
+                features: [
+                    '<button type="button" tabindex="-1" class="button field_element_password" data-type="show"><i class="fa fa-eye" aria-hidden="true"></i></button>',
+                    '<button type="button" tabindex="-1" class="button field_element_password" data-type="hide"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>'
+                ]
+            }); %>
+
+            <%- include('../components/inputField.ejs', {
+                type: 'password',
+                placeholder: 'Confirm Password',
+                attributes: [
+                    { name: 'name', value: 'confirm_password' }
+                ],
+                errors: [ 'required', 'password' ],
+                features: [
+                    '<button type="button" tabindex="-1" class="button field_element_password" data-type="show"><i class="fa fa-eye" aria-hidden="true"></i></button>',
+                    '<button type="button" tabindex="-1" class="button field_element_password" data-type="hide"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>'
+                ]
+            }); %>
+
+            <button type="submit" class="button button-primary shadow-2 mt-2">Create Account</button>
+        </div>
+    </form>
+
+    <div class="title-text w-full flex items-center justify-center">or sign up with</div>
+
+    <div class="flex responsive flex-row gap-2">
+        <a class="w-full" href="/auth/steam?link=false&returnUrl=<%= response.returnUrl %>">
+            <div class="social-login steam rounded-2 flex justify-center items-center w-full"></div>
+        </a>
+
+        <a class="w-full" href="/auth/google?link=false&returnUrl=<%= response.returnUrl %>">
+            <div class="social-login google rounded-2 flex justify-center items-center w-full"></div>
+        </a>
+
+        <a class="w-full" href="/auth/discord?link=false&returnUrl=<%= response.returnUrl %>">
+            <div class="social-login discord rounded-2 flex justify-center items-center w-full"></div>
+        </a>
+
+        <div class="social-login facebook rounded-2 flex justify-center items-center w-full disabled"></div>
+    </div>
+
+    <div class="flex flex-row gap-1 justify-center items-center w-full">
+        <span class="text-muted-foreground text-base">Already have an account?</span>
+        <a href="/login?returnUrl=<%= response.returnUrl %>"><div class="text-base">Sign In</div></a>
+    </div>
+</div>

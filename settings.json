@@ -1,0 +1,220 @@
+{
+    "allowed": {
+        "admin": []
+    },
+    "server": {
+        "binds": {
+            "steam": false,
+            "google": false,
+            "discord": false,
+            "facebook": false
+        }
+    },
+    "games": {
+        "status": true,
+        "games": {
+            "original": {
+                "crash": {
+                    "enable": true,
+                    "house_edge": {
+                        "value": 5,
+                        "fixed": false
+                    },
+                    "name": "Crash",
+                    "description": "Reach the shy"
+                },
+                "coinflip": {
+                    "enable": true,
+                    "house_edge": {
+                        "value": 5,
+                        "fixed": false
+                    },
+                    "name": "Coinflip",
+                    "description": "Fate on a toss"
+                },
+                "minesweeper": {
+                    "enable": true,
+                    "house_edge": {
+                        "value": 1,
+                        "fixed": false
+                    },
+                    "name": "Minesweeper",
+                    "description": "Hit or miss"
+                },
+                "tower": {
+                    "enable": true,
+                    "house_edge": {
+                        "value": 4,
+                        "fixed": false
+                    },
+                    "name": "Tower",
+                    "description": "Climb the top"
+                }
+            },
+            "classic": {
+                "casino": {
+                    "enable": true,
+                    "name": "Casino",
+                    "description": "Play Slots & Live Games"
+                }
+            }
+        },
+        "bots": {
+            "enable": {
+                "coinflip": true
+            }
+        },
+        "casino": {
+            "real": true
+        }
+    },
+    "payments": {
+        "status": true,
+        "manually": {
+            "amount": 0.01,
+            "enable": {
+                "crypto": true
+            }
+        },
+        "methods": {
+            "crypto": {
+                "btc": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Bitcoin",
+                    "name": "Bitcoin"
+                },
+                "eth": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Ethereum",
+                    "name": "Ethereum"
+                },
+                "ltc": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Litecoin",
+                    "name": "Litecoin"
+                },
+                "bch": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Bitcoin Cash",
+                    "name": "Bitcoin Cash"
+                },
+                "usdttrc20": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Tron",
+                    "name": "Tether USD (Tron)"
+                },
+                "usdterc20": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Ethereum",
+                    "name": "Tether USD (Ethereum)"
+                },
+                "usdtbsc": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Binance Smart Chain",
+                    "name": "Tether USD (BSC)"
+                },
+                "usdtsol": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Solana",
+                    "name": "Tether USD (Solana)"
+                },
+                "usdtmatic": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Polygon",
+                    "name": "Tether USD (Polygon)"
+                },
+                "usdc": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Ethereum",
+                    "name": "USD Coin (Ethereum)"
+                },
+                "ton": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Ton",
+                    "name": "Ton"
+                },
+                "trx": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Tron",
+                    "name": "Tron"
+                },
+                "doge": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Dogecoin",
+                    "name": "Dogecoin"
+                },
+                "xrp": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Ripple",
+                    "name": "Ripple"
+                },
+                "bnbbsc": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Binance Smart Chain",
+                    "name": "Binance Coin (BSC)"
+                },
+                "sol": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Solana",
+                    "name": "Solana"
+                },
+                "shibbsc": {
+                    "enable": {
+                        "deposit": true,
+                        "withdraw": true
+                    },
+                    "network": "Binance Smart Chain",
+                    "name": "Shiba Inu (BSC)"
+                }
+            }
+        }
+    }
+}

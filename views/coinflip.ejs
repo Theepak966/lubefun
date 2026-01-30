@@ -1,0 +1,48 @@
+<div class="coinflip-page">
+	<!-- Create Flip Panel -->
+	<div class="coinflip-create-panel">
+		<div class="coinflip-create-left">
+			<%- include('./components/betAmount.ejs', { game: 'coinflip', amount: '0.01', actions: [ 'half', 'double', 'max' ], features: [] }); %>
+		</div>
+
+		<div class="coinflip-create-right flex flex-row items-center gap-3">
+			<div class="coinflip-side-selector flex flex-row items-center gap-2">
+				<div class="coinflip-coin-select coinflip-select active" data-position="0">
+					<img src="/img/coinflip/coin0.png">
+				</div>
+				<div class="coinflip-coin-select coinflip-select" data-position="1">
+					<img src="/img/coinflip/coin1.png">
+				</div>
+			</div>
+
+			<button class="button button-primary coinflip-create-btn" id="coinflip_create">Create Flip</button>
+		</div>
+	</div>
+
+	<!-- Active Flips Section -->
+	<div class="coinflip-flips-section">
+		<div class="coinflip-section-title">
+			<h2>Active Flips</h2>
+			<div class="coinflip-simulated-subtitle hidden" id="coinflip_simulated_subtitle">
+				<span class="coinflip-simulated-badge">Simulated activity</span>
+			</div>
+		</div>
+		
+		<!-- Flips List Container (always rendered) -->
+		<div class="coinflip-list" id="coinflip_betlist">
+			<!-- Skeleton loaders (will be replaced by actual flips or empty state) -->
+			<% for(var i = 0; i < 5; i++){ %>
+				<%- include('./components/coinflipSlotSkeleton.ejs'); %>
+			<% } %>
+		</div>
+		
+		<!-- Empty State (hidden by default, shown when no flips) -->
+		<div class="coinflip-empty-state hidden" id="coinflip_empty_state">
+			<div class="flex flex-col items-center justify-center gap-2 py-8">
+				<i class="fa fa-coins" style="font-size: 48px; color: #9aa4b2; opacity: 0.5;"></i>
+				<div style="font-size: 18px; font-weight: 600; color: #ffffff;">No active flips</div>
+				<div style="font-size: 14px; color: #9aa4b2;">Be the first to create a flip!</div>
+			</div>
+		</div>
+	</div>
+</div>

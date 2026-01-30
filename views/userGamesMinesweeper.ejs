@@ -1,0 +1,139 @@
+<div class="flex flex-col gap-2">
+	<div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-4 bg-card bg-opacity-50 rounded-2 border-2 border-card pt-8 pb-4 px-4">
+                <div class="flex flex-col gap-4 items-center">
+                    <div class="flex flex-col gap-2 items-center">
+                        <div class="avatar-field tier-<%= response.user.user.level.tier %>">
+                            <img class="avatar icon-huge rounded-full" src="<%= response.user.user.avatar %>">
+                        </div>
+
+                        <div class="flex justify-center gap-2 font-bold text-xl">
+                            <div class="capitalize chat-link-<%= response.user.user.rank %>"><%= response.user.user.rank %></div>
+
+                            <div class="truncate"><%= response.user.user.name %></div>
+                        </div>
+
+                        <div class="level-bar flex items-center gap-1">
+                            <div class="font-bold">Lvl. <%= Math.min(response.user.user.level.level + 1, 100) - 1 %></div>
+
+                            <div class="progress-container rounded-1">
+                                <% var style = 'style="width: ' + response.user.user.level.progress + '%;"'; %>
+
+                                <div class="progress-bar transition duration-200 ease-linear rounded-1" <%- style %>></div>
+                                <div class="progress-content flex flex-row justify-center items-center gap-1 font-bold">
+                                    <span><%= response.user.user.level.have %></span>
+                                    <span>/</span>
+                                    <span><%= response.user.user.level.next %></span>
+                                </div>
+                            </div>
+
+                            <div class="font-bold"><%= Math.min(response.user.user.level.level + 1, 100) %></div>
+                        </div>
+                    </div>
+
+                    <% if(account.permissions.view_user){ %>
+                        <a href="/admin/users/<%= response.user.user.userid %>" target="_blank"><button class="button button-primary shadow-2">Manage</button></a>
+                    <% } %>
+                </div>
+
+                <div class="flex responsive flex-row gap-2 items-center justify-between">
+                    <div class="text-muted-foreground">Member since <%= response.user.user.created %></div>
+                    <div><span class="text-muted-foreground">User ID:</span> <%= response.user.user.userid %></div>
+                </div>
+            </div>
+
+            <div class="flex responsive flex-row gap-2">
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Deposited</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.user.stats.deposited %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Withdrawn</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.user.stats.withdrawn %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Wagered</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.user.stats.wagered %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Profit</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.user.stats.profit %></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="account-tabs top flex flex-wrap flex-row gap-2 border-b-2 border-card">
+            <a href="/user/<%= response.user.user.userid %>/deposits"><button class="button">Balance History</button></a>
+            <a href="/user/<%= response.user.user.userid %>/games"><button class="button active">Games History</button></a>
+            <a href="/user/<%= response.user.user.userid %>/transactions"><button class="button">Transactions History</button></a>
+        </div>
+
+        <div class="flex responsive flex-row gap-4">
+            <div class="account-tabs flex flex-wrap flex-col gap-2 pr-4 border-r-2 border-card">
+                <% settings.games.original.forEach(function(item){ %>
+                    <a href="/user/<%= response.user.user.userid %>/games/<%= item.game %>"><button class="button <% if(response.user.games.game == item.game){ %>active<% } %>"><%= item.name %></button></a>
+                <% }); %>
+
+                <% settings.games.classic.forEach(function(item){ %>
+                    <a href="/user/<%= response.user.user.userid %>/games/<%= item.game %>"><button class="button <% if(response.user.games.game == item.game){ %>active<% } %>"><%= item.name %></button></a>
+                <% }); %>
+            </div>
+
+            <div class="table-container w-full">
+                <div class="table-header">
+                    <div class="table-row">
+                        <div class="table-column text-left">Id</div>
+                        <div class="table-column text-left">Bombs</div>
+                        <div class="table-column text-left">Amount</div>
+                        <div class="table-column text-left">Profit</div>
+                        <div class="table-column text-left">Date</div>
+                    </div>
+                </div>
+
+                <div class="table-body" id="user_minesweeper_history">
+                    <% if(response.user.games.list.length > 0){ %>
+                        <% response.user.games.list.forEach(function(item){ %>
+                            <div class="table-row <%= { win: 'text-success', loss: 'text-danger' }[item.status] %>">
+                                <div class="table-column text-left">#<%= item.id %></div>
+                                <div class="table-column text-left"><%= item.bombs %></div>
+                                <div class="table-column text-left"><%= item.amount %></div>
+                                <div class="table-column text-left"><%= item.profit %></div>
+                                <div class="table-column text-left"><%= item.date %></div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <%- include('./components/emptyTable.ejs', {
+                            title: 'No data found'
+                        }); %>
+                    <% } %>
+                </div>
+
+                <div class="table-footer">
+                    <div class="flex items-center justify-center bg-secondary p-2">
+                        <%- include('./components/pageNavigator.ejs', {
+                            id: 'pagination_user_minesweeper_history',
+                            page: response.user.games.page,
+                            pages: response.user.games.pages
+                        }); %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

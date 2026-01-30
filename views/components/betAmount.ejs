@@ -1,0 +1,37 @@
+<div class="input_field transition duration-500" data-border="#de4c41">
+    <div class="field_container">
+        <div class="field_content">
+            <input type="text" class="betamount field_element_input" id="betamount_<%= game %>" data-game="<%= game %>" data-amount="<%= game %>" value="<%= amount %>">
+
+            <div class="field_label transition duration-500">
+                <div class="flex flex-row items-center justify-center gap-1">
+                    <div class="coin main"></div>
+                    <span>Bet Amount</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field_extra">
+            <% if(actions.includes('clear')) { %><button class="button betshort_action" data-game="<%= game %>" data-action="clear">Clear</button><% } %>
+            <% if(actions.includes('0.01')) { %><button class="button betshort_action" data-game="<%= game %>" data-action="0.01">+0.01</button><% } %>
+            <% if(actions.includes('0.10')) { %><button class="button betshort_action" data-game="<%= game %>" data-action="0.10">+0.10</button><% } %>
+            <% if(actions.includes('1.00')) { %><button class="button betshort_action" data-game="<%= game %>" data-action="1.00">+1.00</button><% } %>
+            <% if(actions.includes('10.00')) { %><button class="button betshort_action" data-game="<%= game %>" data-action="10.00">+10.00</button><% } %>
+            <% if(actions.includes('100.00')) { %><button class="button betshort_action" data-game="<%= game %>" data-action="100.00">+100.00</button><% } %>
+            <% if(actions.includes('half')) { %><button class="button betshort_action" data-game="<%= game %>" data-action="half">1/2</button><% } %>
+            <% if(actions.includes('double')) { %><button class="button betshort_action" data-game="<%= game %>" data-action="double">x2</button><% } %>
+            <% if(actions.includes('max')) { %><button class="button betshort_action" data-game="<%= game %>" data-action="max">Max</button><% } %>
+
+            <% features.forEach(function(item){ %>
+                <%- item %>
+            <% }); %>
+        </div>
+    </div>
+
+    <div class="field_bottom">
+        <div class="field_error" data-error="required">This field is required</div>
+        <div class="field_error" data-error="number">This field must be a number</div>
+        <div class="field_error" data-error="greater">You must enter a greater value</div>
+        <div class="field_error" data-error="lesser">You must enter a lesser value</div>
+    </div>
+</div>

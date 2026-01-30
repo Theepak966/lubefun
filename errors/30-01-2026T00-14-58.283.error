@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: SELECT crash_rolls.id, crash_rolls.point, crash_seeds.public_seed, crash_rolls.nonce FROM `crash_rolls` INNER JOIN `crash_seeds` ON crash_rolls.seedid = crash_seeds.id WHERE crash_rolls.ended = 0 ORDER BY crash_rolls.id DESC LIMIT 1

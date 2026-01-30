@@ -1,0 +1,8 @@
+<div class="avatar-field rounded-full <%= classes.join(' ') %> <%= [ 'tier-steel', 'tier-bronze', 'tier-silver', 'tier-gold', 'tier-diamond' ][Math.floor(user.level / 25)] %> relative">
+    <img class="avatar icon-<%= size %> rounded-full" src="<%= user.avatar %>">
+    <div class="level sup-<%= size %>-left flex justify-center items-center border-2 border-secondary rounded-full"><%= user.level %></div>
+
+    <% features.forEach(function(item){ %>
+        <%- item %>
+    <% }); %>
+</div>

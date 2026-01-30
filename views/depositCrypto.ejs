@@ -1,0 +1,109 @@
+<div class="flex flex-col items-center gap-4">
+	<div class="flex justify-start w-full">
+		<a href="/deposit"><button class="button button-accent shadow-2 flex flex-row gap-2 items-center justify-center">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            <span>Back to Options</span>
+        </button></a>
+	</div>
+
+	<div class="crypto-panel flex flex-col gap-2 w-8 responsive" id="crypto_deposit_panel">
+		<div class="flex flex-col gap-1">
+			<div class="text-xl font-bold">Deposit with <%= response.deposit.name %></div>
+
+			<div class="text-xs text-muted-foreground">You will receive coins automatically after sending <%= app.paths[2].toUpperCase() %> to the address displayed below.</div>
+		</div>
+
+        <div class="submit flex flex-col gap-2">
+            <div class="flex flex-col gap-2 bg-card bg-opacity-50 text-left rounded-2 border-2 border-secondary p-4">
+                <div class="flex flex-col gap-2">
+                    <div class="text-base font-bold"><%= response.deposit.name %> deposit amount</div>
+
+                    <%- include('./components/inputField.ejs', {
+                        type: 'text',
+                        placeholder: 'Amount ' + response.deposit.name,
+                        currency: app.paths[2],
+                        id: 'crypto_deposit_value',
+                        attributes: [
+                            { name: 'data-conversion', value: 'to' },
+                            { name: 'data-currency', value: app.paths[2] }
+                        ],
+                        errors: [ 'number' ]
+                    }); %>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <div class="text-base font-bold">You receive (network fee excluded)</div>
+
+                    <div class="flex flex-row items-center gap-2">
+                        <%- include('./components/inputField.ejs', {
+                            type: 'text',
+                            placeholder: 'Amount Coins',
+                            currency: 'main',
+                            value: '10.00',
+                            attributes: [
+                                { name: 'data-conversion', value: 'from' },
+                                { name: 'data-currency', value: app.paths[2] }
+                            ],
+                            errors: [ 'number', 'greater' ]
+                        }); %>
+
+                        <button type="button" class="button button-primary shadow-2 large" id="crypto_deposit" data-currency="<%= app.paths[2] %>">Deposit</button>
+                    </div>
+
+                    <div class="text-xs text-muted-foreground">The exchange rate shown above is an estimate. The final rate is determined by the time of the transaction.</div>
+                </div>
+            </div>
+
+            <div class="bg-card bg-opacity-50 text-left rounded-2 border-2 border-secondary p-4">
+                <div class="text-base font-bold">Only deposit over the <%= response.deposit.network %> Network!</div>
+            </div>
+        </div>
+
+        <div class="payment flex flex-col gap-2">
+            <div class="bg-card bg-opacity-50 text-left rounded-2 border-2 border-secondary p-4">
+                <div class="flex flex-row gap-2 responsive">
+                    <div class="crypto-deposit-qrcode <%= app.paths[2] %>" id="crypto_deposit_qrcode"></div>
+
+                    <div class="flex flex-col gap-2">
+                        <div class="text-base font-bold">Send <span class="text-primary"><span id="crypto_deposit_payment_value">0.00</span> <%= app.paths[2].toUpperCase() %></span> (+fee) via <span class="text-primary"><%= response.deposit.network %></span> network to wallet address:</div>
+
+                        <div class="flex flex-row items-center gap-2">
+                            <%- include('./components/inputField.ejs', {
+                                type: 'text',
+                                placeholder: 'Wallet address',
+                                id: 'crypto_deposit_payment_address'
+                            }); %>
+
+                            <button type="button" class="button button-primary shadow-2 large" data-copy="input" data-input="#crypto_deposit_payment_address">Copy</button>
+                        </div>
+
+                        <div class="text-xs text-warning">Before sending, please check the token <%= response.deposit.name %>, network <%= response.deposit.network %> and address carefully, it is not possible to recover funds sent to the wrong address.</div>
+                        <div class="text-xs text-danger">Important! Check regularly your deposits history from your account page. If your payment is in "Partially Paid" status, please send on same address the difference (+fee), otherwise the payment will not be completed and you will lose the funds sent.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-card bg-opacity-50 flex flex-row justify-between rounded-2 border-2 border-secondary p-4">
+                <div class="flex flex-col items-start gap-1">
+                    <div class="text-muted-foreground font-bold">You receive (network fee excluded):</div>
+
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-xl" id="crypto_deposit_payment_amount">0.00</span>
+                    </div>
+                </div>
+
+                <button type="button" class="button button-primary shadow-2 large" id="crypto_deposit_back">Back</button>
+            </div>
+
+            <div class="bg-card bg-opacity-50 text-left rounded-2 border-2 border-secondary p-4">
+                <div class="text-base font-bold">This address is for one-time use only. Do not send multiple deposits to the same address.</div>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-center gap-1 w-full">
+            <div class="text-xs text-muted-foreground">Your payment will be processed through <%= app.abbreviation %>.</div>
+            <div class="text-xs text-muted-foreground">By purchasing coins on <%= app.abbreviation %>, I attest that I agree to the <a class="underline text-primary" href="/tos" target="_blank">Terms of Service</a> in full.</div>
+        </div>
+	</div>
+</div>

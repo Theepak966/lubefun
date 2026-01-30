@@ -1,0 +1,49 @@
+<div class="flex flex-col gap-6">
+    <div class="flex flex-row justify-between items-center gap-2">
+        <div class="flex flex-col gap-1">
+            <div class="text-xl font-bold">Submit support request</div>
+
+            <div class="text-xs text-muted-foreground">Submit a request for help or report an issue to our support team. Provide details about your issue so our team can assist you as quickly as possible.</div>
+        </div>
+
+        <a href="/support/requests"><button class="button button-danger shadow-2">My requests</button></a>
+    </div>
+
+    <div class="flex flex-col gap-2 items-start">
+        <div class="flex responsive flex-row gap-2 w-full">
+            <%- include('./components/inputField.ejs', {
+                type: 'text',
+                placeholder: 'Subject',
+                id: 'support_subject',
+                errors: [ 'required', 'minimum_6_characters' ]
+            }); %>
+
+            <%- include('./components/dropdownField.ejs', {
+                type: 'bottom',
+                placeholder: 'Department',
+                id: 'support_department',
+                items: [
+                    { name: 'General / Others', value: 0 },
+                    { name: 'Bug report', value: 1 },
+                    { name: 'Trade offer issue', value: 2 },
+                    { name: 'Improvements / Ideas', value: 3 },
+                    { name: 'Marketing / Partnership', value: 4 },
+                    { name: 'Ranking up', value: 5 }
+                ]
+            }); %>
+        </div>
+
+        <%- include('./components/textareaField.ejs', {
+            name: 'Message',
+            id: 'support_message',
+            classes: [],
+            attributes: [],
+            value: null,
+            readonly: false,
+            errors: [ 'required', 'minimum_10_characters' ],
+            features: []
+        }); %>
+
+        <button class="button button-primary shadow-2 large" id="support_create">Submit request</button>
+    </div>
+</div>

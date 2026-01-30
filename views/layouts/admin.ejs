@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--  META  -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title><%= name %> | <%= app.name %></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1">
+        <meta name="keywords" content="<%= app.keywords.join(',') %>">
+        <meta name="description" content="<%= app.description %>">
+        <meta name="author" content="<%= app.author %>">
+        <meta name="theme-color" content="<%= app.themecolor %>">
+
+        <meta property="og:url" content="<%= app.url %>">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="<%= app.name %>">
+        <meta property="og:title" content="<%= app.name %>">
+        <meta property="og:description" content="<%= app.description %>">
+        <meta property="og:image" content="<%= app.url %>/img/logo.png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/img/favicon-96x96.png" sizes="96x96">
+
+        <!--  CSS  -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,500,400italic,500italic,700,700italic" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
+        <link href="/css/globals.css" rel="stylesheet">
+        <link href="/css/bouncer.css" rel="stylesheet">
+
+        <!--  JAVASCRIPT  -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinysort/2.3.6/tinysort.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+
+        <%- '<script>var app = ' + JSON.stringify({ page: page, url: app.url, name: app.name, paths: app.paths, port: app.port, secure: app.secure, recaptcha: app.recaptcha }, null, 4) + ';</script>' %>
+
+        <script type="text/javascript" src="/js/components.js"></script>
+        <script type="text/javascript" src="/js/app.js"></script>
+	</head>
+
+	<body>
+        <%- include('../partials/modals.ejs') %>
+
+		<div class="flex flex-col size-full">
+            <div class="header">
+                <a href="/" class="logo flex justify-center items-center">
+                    <img src="/img/logo.png">
+                </a>
+
+                <div class="navigation flex flex-row items-center justify-between">
+                    <div class="flex flex-row items-center justify-center gap-4 h-full">
+                        <a class="h-full" href="/">
+                            <button type="button" class="button button-card shadow-2 p-2 h-full flex flex-row gap-2 items-center justify-center">
+                                <img src="/img/home.png">
+                            </button>
+                        </a>
+
+                        <div class="flex flex-row gap-2">
+                            <% breadcrumb.forEach(function(item, index){ %>
+                                <% if(index < breadcrumb.length - 1){ %>
+                                    <a class="underline" href="/admin/<%= breadcrumb.slice(0, index + 1).map(a => a.page).join('/') %>">
+                                        <div class="font-bold text-base"><%= item.name %></div>
+                                    </a>
+
+                                    <div class="text-muted-foreground text-base"><i class="fa fa-angle-right" aria-hidden="true"></i></div>
+                                <% } else { %>
+                                    <div class="font-bold text-base"><%= item.name %></div>
+                                <% } %>
+                            <% }); %>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row justify-center gap-2 h-full">
+                        <% if(user) { %>
+                            <div class="user bg-card shadow-2 rounded-1 h-full flex flex-row items-center justify-center gap-2 relative pointer">
+                                <img class="avatar" src="<%= user.avatar %>">
+
+                                <div class="name flex flex-col justify-center gap-1">
+                                    <div class="flex flex-row items-center gap-1">
+                                        <div class="text-primary" id="level_count">0</div>
+                                        <div class="truncate"><%= user.name %></div>
+                                    </div>
+
+                                    <div class="progress-container">
+                                        <div class="progress-bar transition duration-200 ease-linear" id="level_bar" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+
+                                <i class="fa fa-caret-down" aria-hidden="true"></i>
+
+                                <div class="select transition duration-200 hidden">
+                                    <div class="list bg-secondary flex flex-col border-b-2 border-x-2 border-card">
+                                        <% if(user) { %>
+                                            <% if(settings.allowed.admin.includes(user.userid)) { %><a class="h-full" href="/admin" target="_blank"><div class="item flex flex-row items-center gap-2 text-success"><i class="fa fa-ban" aria-hidden="true"></i><div>Admin Panel</div></div></a><% } %>
+                                        <% } %>
+
+                                        <a class="h-full" href="/account"><div class="item flex flex-row items-center gap-2"><i class="fa fa-user" aria-hidden="true"></i><div>Account</div></div></a>
+                                        <a class="h-full" href="/affiliates"><div class="item flex flex-row items-center gap-2"><i class="fa fa-share-alt" aria-hidden="true"></i><div>Affiliates</div></div></a>
+                                        <a class="h-full" href="/account/games"><div class="item flex flex-row items-center gap-2"><i class="fa fa-history" aria-hidden="true"></i><div>Games History</div></div></a>
+                                        <a class="h-full" href="/account/deposits"><div class="item flex flex-row items-center gap-2"><i class="fa fa-exchange" aria-hidden="true"></i><div>Balance History</div></div></a>
+                                        <a class="h-full" href="/account/settings"><div class="item flex flex-row items-center gap-2"><i class="fa fa-cog" aria-hidden="true"></i><div>Settings</div></div></a>
+                                        <a class="h-full" href="/account/security"><div class="item flex flex-row items-center gap-2"><i class="fa fa-shield" aria-hidden="true"></i><div>Security</div></div></a>
+
+                                        <div class="item flex flex-row items-center gap-2 text-danger" data-modal="show" data-id="#modal_auth_logout"><i class="fa fa-sign-out" aria-hidden="true"></i><div>Logout</div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <a class="h-full" href="/login?returnUrl=/<%= app.paths.join('/') %>">
+                                <button type="button" class="button button-card shadow-2 h-full flex justify-center items-center">Sign In</button>
+                            </a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header mobile flex flex-row justify-between gap-2">
+                <div class="flex flex-row items-center justify-center gap-2 h-full">
+                    <a href="/" class="logo flex justify-start items-center">
+                        <img src="/img/logo_mini.png">
+                    </a>
+
+                    <div class="flex flex-row gap-1">
+                        <% breadcrumb.forEach(function(item, index){ %>
+                            <% if(index < breadcrumb.length - 1){ %>
+                                <a class="underline" href="/admin/<%= breadcrumb.slice(0, index + 1).map(a => a.page).join('/') %>">
+                                    <div class="font-bold text-sm"><%= item.name %></div>
+                                </a>
+
+                                <div class="text-muted-foreground text-sm"><i class="fa fa-angle-right" aria-hidden="true"></i></div>
+                            <% } else { %>
+                                <div class="font-bold text-sm"><%= item.name %></div>
+                            <% } %>
+                        <% }); %>
+                    </div>
+                </div>
+
+                <div class="navigation flex flex-row items-center justify-end gap-2 h-full">
+                    <button class="button pullout_view" data-pullout="admin"><i class="fa fa-bars" aria-hidden="true"></i></button>
+                </div>
+            </div>
+
+            <div class="wrapper-page flex flex-row admin-active" id="page">
+                <div class="slider left flex flex-row items-center justify-end p-2 pullout_view" data-pullout="admin">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </div>
+
+                <div class="pullout left flex flex-col" data-pullout="admin">
+                    <div class="wrapper-page flex flex-col size-full">
+                        <div class="flex flex-col gap-2 p-2">
+                            <a href="/admin/dashboard"><div class="item text-base flex flex-row items-center gap-1 rounded-2 py-2 px-4 <% if(app.paths[1] == 'dashboard') { %>active<% } %>"><i class="fa fa-th-large" aria-hidden="true"></i><span>Dashboard</span></div></a>
+                            <a href="/admin/settings"><div class="item text-base flex flex-row items-center gap-1 rounded-2 py-2 px-4 <% if(app.paths[1] == 'settings') { %>active<% } %>"><i class="fa fa-cog" aria-hidden="true"></i><span>Settings</span></div></a>
+                            <a href="/admin/users"><div class="item text-base flex flex-row items-center gap-1 rounded-2 py-2 px-4 <% if(app.paths[1] == 'users') { %>active<% } %>"><i class="fa fa-user" aria-hidden="true"></i><span>Users</span></div></a>
+                            <a href="/admin/games"><div class="item text-base flex flex-row items-center gap-1 rounded-2 py-2 px-4 <% if(app.paths[1] == 'games') { %>active<% } %>"><i class="fa fa-heart" aria-hidden="true"></i><span>Games</span></div></a>
+                            <a href="/admin/payments"><div class="item text-base flex flex-row items-center gap-1 rounded-2 py-2 px-4 <% if(app.paths[1] == 'payments') { %>active<% } %>"><i class="fa fa-exchange" aria-hidden="true"></i><span>Payments</span></div></a>
+                            <a href="/admin/gamebots"><div class="item text-base flex flex-row items-center gap-1 rounded-2 py-2 px-4 <% if(app.paths[1] == 'gamebots') { %>active<% } %>"><i class="fa fa-laptop" aria-hidden="true"></i><span>Game Bots</span></div></a>
+                            <a href="/admin/support"><div class="item text-base flex flex-row items-center gap-1 rounded-2 py-2 px-4 <% if(app.paths[1] == 'support') { %>active<% } %>"><i class="fa fa-comment" aria-hidden="true"></i><span>Support</span></div></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="main-panel">
+                    <div class="body flex flex-col w-full p-4">
+                        <%- body %>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</body>
+</html>

@@ -1,0 +1,34 @@
+<div class="table-container">
+	<div class="table-header">
+		<div class="table-row">
+			<div class="table-column text-left">Rank</div>
+			<div class="table-column text-left">User</div>
+			<div class="table-column text-left">Games played</div>
+			<div class="table-column text-left">Total played</div>
+			<div class="table-column text-left">Total winnings</div>
+		</div>
+	</div>
+
+	<div class="table-body">
+		<% if(response.leaderboard.length > 0){ %>
+            <% response.leaderboard.forEach(function(item, id){ %>
+                <div class="table-row">
+                    <div class="table-column text-left">#<%= id + 1 %></div>
+                    <div class="table-column text-left">
+                        <div class="flex items-center h-full gap-1">
+                            <img class="icon-small rounded-full" src="<%= item.avatar %>">
+                            <div class="text-left truncate pr-1"><%= item.name %></div>
+                        </div>
+                    </div>
+                    <div class="table-column text-left"><%= item.games %></div>
+                    <div class="table-column text-left">$<%= item.bets %></div>
+                    <div class="table-column text-left">$<%= item.winnings %></div>
+                </div>
+            <% }); %>
+		<% } else { %>
+			<%- include('./components/emptyTable.ejs', {
+				title: 'No data found'
+			}); %>
+		<% } %>
+	</div>
+</div>

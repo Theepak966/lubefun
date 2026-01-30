@@ -1,0 +1,434 @@
+.offers-options-name {
+	font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.offers-options {
+	display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+}
+
+@media (max-width: 768px){
+	.offers-options {
+    	gap: 0.5rem;
+		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	}
+}
+
+.offers-options a.disabled{
+	opacity: 1 !important;
+}
+
+.offers-options a.disabled .offers-option{
+	background-color: var(--card-disabled) !important;
+}
+
+.offers-options a.disabled .offers-option-image{
+	opacity: 0.5 !important;
+}
+
+.offers-options a:not(.disabled) .offers-option-info{
+	display: none;
+}
+
+.offers-option {
+	height: 125px;
+	background-color: var(--card);
+}
+
+.offers-option-image-content {
+	background-color: var(--secondary);
+	width: 100%;
+	height: 70%;
+	position: relative;
+}
+
+.offers-option-info{
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	background-color: var(--card);
+}
+
+.offers-option-image {
+	max-height: 80%;
+    max-width: 80%;
+}
+
+.offers-option-name {
+	width: 100%;
+    height: 30%;
+    font-size: 14px;
+    letter-spacing: 2px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.crypto-panel.active .submit{
+    display: none;
+}
+
+.crypto-panel:not(.active) .payment{
+    display: none;
+}
+
+.coin.btc {
+	background: url(../img/payments/crypto/btc.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.eth {
+	background: url(../img/payments/crypto/eth.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.ltc {
+	background: url(../img/payments/crypto/ltc.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.bch {
+	background: url(../img/payments/crypto/bch.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.usdttrc20 {
+	background: url(../img/payments/crypto/usdttrc20.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.usdterc20 {
+	background: url(../img/payments/crypto/usdterc20.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.usdtbsc {
+	background: url(../img/payments/crypto/usdtbsc.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.usdtsol {
+	background: url(../img/payments/crypto/usdtsol.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.usdtmatic {
+	background: url(../img/payments/crypto/usdtmatic.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.usdc {
+	height: 28px;
+	width: 28px;
+	display: inline-flex;
+	vertical-align: middle;
+	background: url(../img/payments/crypto/usdc.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.ton {
+	background: url(../img/payments/crypto/ton.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.trx {
+	background: url(../img/payments/crypto/trx.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.doge {
+	background: url(../img/payments/crypto/doge.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.xrp {
+	background: url(../img/payments/crypto/xrp.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.bnbbsc {
+	background: url(../img/payments/crypto/bnbbsc.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.sol {
+	background: url(../img/payments/crypto/sol.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.coin.shibbsc {
+	background: url(../img/payments/crypto/shibbsc.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.crypto-deposit-qrcode {
+	width: 150px;
+	height: 150px;
+    min-width: 150px;
+	min-height: 150px;
+	display: inline-table;
+	border: 10px solid var(--color-white);
+	border-radius: 10px;
+	position: relative;
+	background-color: var(--color-white);
+}
+
+.crypto-deposit-qrcode img {
+	height: 100%;
+}
+
+.crypto-deposit-qrcode.btc::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/btc.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.eth::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/eth.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.ltc::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/ltc.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.bch::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/bch.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.usdttrc20::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/usdttrc20.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.usdterc20::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/usdterc20.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.usdtbsc::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/usdtbsc.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.usdtsol::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/usdtsol.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.usdtmatic::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/usdtmatic.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.usdc::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/usdc.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.ton::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/ton.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.trx::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/trx.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.doge::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/doge.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.xrp::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/xrp.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.bnbbsc::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/bnbbsc.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.sol::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/sol.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}
+
+.crypto-deposit-qrcode.shibbsc::after {
+	display: block;
+	content: "";
+	width: 50px;
+	height: 50px;
+	background: url(../img/payments/crypto/shibbsc.png) no-repeat 50% 50%;
+	background-size: contain;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	margin: auto;
+	left: 0px;
+	right: 0px;
+}

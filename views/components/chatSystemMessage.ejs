@@ -1,0 +1,15 @@
+<div class="chat-message flex flex-col gap-2 relative p-1" data-message="<%= id %>">
+    <div class="flex flex-row items-center gap-1 relative w-full pl-1">
+        <img class="icon-medium rounded-full" src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg">
+
+        <div class="chat-message-header flex flex-col justify-center gap-1">
+            <div class="chat-message-name chat-link-system truncate">System</div>
+
+            <div class="chat-message-time"><%= time %></div>
+
+            <%- script %>
+        </div>
+    </div>
+
+    <div class="chat-message-content bg-card p-2 rounded-2 chat-link-system"><%= message %></div>
+</div>

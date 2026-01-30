@@ -1,0 +1,133 @@
+<div class="flex flex-col gap-2">
+	<div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-4 bg-card bg-opacity-50 rounded-2 border-2 border-card pt-8 pb-4 px-4">
+                <div class="flex flex-col gap-2 items-center">
+                    <div class="avatar-field tier-<%= response.account.user.level.tier %>">
+                        <img class="avatar icon-huge rounded-full" src="<%= response.account.user.avatar %>">
+                    </div>
+
+                    <div class="flex justify-center gap-2 font-bold text-xl">
+                        <div class="capitalize chat-link-<%= response.account.user.rank %>"><%= response.account.user.rank %></div>
+
+                        <div class="truncate"><%= response.account.user.name %></div>
+                    </div>
+
+                    <div class="level-bar flex items-center gap-1">
+                        <div class="font-bold">Lvl. <%= Math.min(response.account.user.level.level + 1, 100) - 1 %></div>
+
+                        <div class="progress-container rounded-1">
+                            <% var style = 'style="width: ' + response.account.user.level.progress + '%;"'; %>
+
+                            <div class="progress-bar transition duration-200 ease-linear rounded-1" <%- style %>></div>
+                            <div class="progress-content flex flex-row justify-center items-center gap-1 font-bold">
+                                <span><%= response.account.user.level.have %></span>
+                                <span>/</span>
+                                <span><%= response.account.user.level.next %></span>
+                            </div>
+                        </div>
+
+                        <div class="font-bold"><%= Math.min(response.account.user.level.level + 1, 100) %></div>
+                    </div>
+                </div>
+
+                <div class="flex responsive flex-row gap-2 items-center justify-between">
+                    <div class="text-muted-foreground">Member since <%= response.account.user.created %></div>
+                    <div><span class="text-muted-foreground">User ID:</span> <%= response.account.user.userid %></div>
+                </div>
+            </div>
+
+            <div class="flex responsive flex-row gap-2">
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Deposited</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.deposited %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Withdrawn</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.withdrawn %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Wagered</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.wagered %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Profit</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.profit %></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="account-tabs top flex flex-wrap flex-row gap-2 border-b-2 border-card">
+            <a href="/account/settings"><button class="button">Settings</button></a>
+            <a href="/account/deposits"><button class="button active">Balance History</button></a>
+            <a href="/account/games"><button class="button">Games History</button></a>
+            <a href="/account/transactions"><button class="button">Transactions History</button></a>
+            <a href="/account/exclusion"><button class="button">Self Exclusion</button></a>
+            <a href="/account/security"><button class="button">Security</button></a>
+        </div>
+
+        <div class="flex responsive flex-row gap-4">
+            <div class="account-tabs flex flex-wrap flex-col gap-2 pr-4 border-r-2 border-card">
+                <a href="/account/deposits"><button class="button active">Deposits</button></a>
+                <a href="/account/withdrawals"><button class="button">Withdrawals</button></a>
+            </div>
+
+            <div class="table-container w-full">
+                <div class="table-header">
+                    <div class="table-row">
+                        <div class="table-column text-left">Id</div>
+                        <div class="table-column text-left">Amount</div>
+                        <div class="table-column text-left">Actual Paid</div>
+                        <div class="table-column text-left">Method</div>
+                        <div class="table-column text-left">Status</div>
+                        <div class="table-column text-left">Date</div>
+                    </div>
+                </div>
+
+                <div class="table-body" id="account_deposits">
+                    <% if(response.account.deposits.list.length > 0){ %>
+                        <% response.account.deposits.list.forEach(function(item){ %>
+                            <div class="table-row <%= { completed: 'text-success', declined: 'text-danger', pending: 'text-warning', partially_paid: 'text-warning', clearing: 'text-warning' }[item.status] %>">
+                                <div class="table-column text-left"><%= item.id %></div>
+                                <div class="table-column text-left"><%= item.amount %></div>
+                                <div class="table-column text-left"><%= item.paid %></div>
+                                <div class="table-column text-left"><%= item.method %></div>
+                                <div class="table-column text-left"><%= { completed: 'Completed', declined: 'Declined', pending: 'Pending', partially_paid: 'Partially Paid', clearing: 'Clearing' }[item.status] %></div>
+                                <div class="table-column text-left"><%= item.date %></div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <%- include('./components/emptyTable.ejs', {
+                            title: 'No data found'
+                        }); %>
+                    <% } %>
+                </div>
+
+                <div class="table-footer">
+                    <div class="flex items-center justify-center bg-secondary p-2">
+                        <%- include('./components/pageNavigator.ejs', {
+							id: 'pagination_account_deposits',
+							page: response.account.deposits.page,
+							pages: response.account.deposits.pages
+						}); %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

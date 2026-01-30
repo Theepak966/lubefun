@@ -1,0 +1,68 @@
+worker_processes  1;
+
+pid        /tmp/lubee-nginx.pid;
+error_log  /tmp/lubee-nginx-error.log info;
+
+events {
+  worker_connections  1024;
+}
+
+http {
+  # Keep this config self-contained so it can be run with `nginx -c ...`
+  # without relying on system-level include paths.
+  default_type  application/octet-stream;
+
+  access_log  /tmp/lubee-nginx-access.log;
+
+  sendfile        on;
+  keepalive_timeout  65;
+
+  # Socket.IO / WebSocket upgrade helper.
+  map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+  }
+
+  upstream lubee_app {
+    # App.js listens on APP_PORT. For local/dev we proxy to 3000 by default.
+    server 127.0.0.1:3000;
+    keepalive 32;
+  }
+
+  server {
+    listen 80;
+    listen [::]:80;
+    server_name www.lube.fun lube.fun;
+
+    client_max_body_size 25m;
+
+    # Standard forwarded headers so the app can reliably read client IPs
+    # and generate correct absolute URLs when needed.
+    proxy_set_header Host              $host;
+    proxy_set_header X-Real-IP         $remote_addr;
+    proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-Host  $host;
+
+    # WebSocket endpoint used by Socket.IO.
+    location /socket.io/ {
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade    $http_upgrade;
+      proxy_set_header Connection $connection_upgrade;
+
+      proxy_read_timeout  3600s;
+      proxy_send_timeout  3600s;
+
+      proxy_pass http://lubee_app;
+    }
+
+    # Everything else (static + SSR routes + API endpoints)
+    location / {
+      proxy_http_version 1.1;
+      proxy_read_timeout  120s;
+      proxy_send_timeout  120s;
+
+      proxy_pass http://lubee_app;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<div class="item transition duration-500 <% if(!enable){ %>disabled<% } %>">
+    <% if(enable){ %>
+        <div class="info bg-secondary bg-opacity-50 transition duration-200">
+            <div class="rtp text-sm font-bold"><%= rtp %>% RTP</div>
+
+            <div class="start flex flex-col gap-2 items-center">
+                <a href="/<%= game %>"><div class="play flex flex-col items-center justify-center transition duration-500"><i class="fa fa-play" aria-hidden="true"></i></div></a>
+            </div>
+
+            <div class="name text-base text-center font-bold truncate"><%= name %></div>
+        </div>
+    <% } else { %>
+        <div class="info bg-secondary bg-opacity-50 transition duration-200">
+            <div class="description text-sm text-center font-bold">This game is temporary disabled!</div>
+        </div>
+    <% } %>
+
+    <div class="name text-base font-bold transition duration-500"><%= name %></div>
+    <div class="description text-xs font-bold transition duration-500"><%= description %></div>
+
+    <div class="image transition duration-500"><img src="<%= image %>"></div>
+</div>

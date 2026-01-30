@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: SELECT * FROM `games_history` AS `main` WHERE (SELECT COUNT(*) FROM `games_history` AS `sub` WHERE sub.visible = 1 AND sub.game = main.game AND sub.id >= main.id) <= 10 AND `visible` = 1 ORDER BY `id` DESC

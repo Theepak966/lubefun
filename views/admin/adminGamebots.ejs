@@ -1,0 +1,109 @@
+<div class="flex flex-col gap-2">
+    <% response.admin.gamebots.games.forEach(function(item){ %>
+        <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+            <div class="text-left font-bold text-base"><%= item.name %> Game Bots</div>
+
+            <div class="text-muted-foreground">If this is enabled, all users can call bots on <%= item.name %> Game.</div>
+
+            <%- include('../components/switchField.ejs', {
+                placeholder: item.name + ' Game Bots',
+                classes: [ 'admin_switch_settings' ],
+                attributes: [
+                    { name: 'data-settings', value: 'games_bots_enable_' + item.game }
+                ],
+                checked: item.enable
+            }); %>
+        </div>
+    <% }); %>
+
+    <div class="flex flex-col gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+        <div class="text-left font-bold text-base">Create Game Bot</div>
+
+        <div class="text-muted-foreground">Set up an automated bot that can join games.</div>
+
+        <%- include('../components/inputField.ejs', {
+            type: 'text',
+            placeholder: 'Bot Name',
+            id: 'admin_gamebots_name',
+            errors: [ 'required' ],
+            features: [
+                '<button class="button button-primary shadow-2" id="admin_gamebots_create">Create</button>'
+            ]
+        }); %>
+    </div>
+
+    <div class="flex flex-col gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+        <div class="flex flex-row gap-2">
+            <%- include('../components/inputField.ejs', {
+                type: 'text',
+                placeholder: 'Search Bot (userid, username, name)',
+                id: 'admin_gamebots_search'
+            }); %>
+
+            <%- include('../components/dropdownField.ejs', {
+                type: 'bottom',
+                placeholder: 'Order by',
+                id: 'admin_gamebots_order',
+                items: [
+                    { name: 'Creation date', value: 0 },
+                    { name: 'Name A-Z', value: 1 },
+                    { name: 'Name Z-A', value: 2 },
+                    { name: 'Price acending', value: 3 },
+                    { name: 'Price descending', value: 4 }
+                ]
+            }); %>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <div class="table-row">
+                    <div class="table-column text-left">User</div>
+                    <div class="table-column text-left">User Id</div>
+                    <div class="table-column text-left">Balance</div>
+                    <div class="table-column text-right">Action</div>
+                </div>
+            </div>
+            <div class="table-body" id="admin_gamebots_list">
+                <% if(response.admin.gamebots.bots.list.length > 0){ %>
+                    <% response.admin.gamebots.bots.list.forEach(function(item){ %>
+                        <div class="table-row">
+                            <div class="table-column text-left">
+                                <div class="flex items-center gap-1">
+                                    <div class="avatar-field <%= [ 'tier-steel', 'tier-bronze', 'tier-silver', 'tier-gold', 'tier-diamond' ][Math.floor(item.user.level / 25)] %> relative">
+                                        <img class="avatar icon-small rounded-full" src="<%= item.user.avatar %>">
+                                        <div class="level sup-small-left flex justify-center items-center border-2 border-secondary rounded-full"><%= item.user.level %></div>
+                                    </div>
+
+                                    <div class="text-left w-full truncate"><%= item.user.name %></div>
+                                </div>
+                            </div>
+
+                            <div class="table-column text-left pointer" data-copy="text" data-text="<%= item.user.userid %>"><%= item.user.userid %></div>
+                            <div class="table-column text-left"><%= item.balance %>$</div>
+
+                            <div class="table-column full text-right">
+                                <div class="flex responsive flex-row justify-end gap-1">
+                                    <a href="/user/<%= item.user.userid %>" target="_blank"><button class="button button-primary shadow-2">Profile</button></a>
+                                    <button class="button button-primary shadow-2 admin_gamebot_moderate" data-userid="<%= item.user.userid %>">Moderate</button>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <%- include('../components/emptyTable.ejs', {
+                        title: 'No data found'
+                    }); %>
+                <% } %>
+            </div>
+            <div class="table-footer">
+                <div class="flex items-center justify-center bg-secondary p-2">
+                    <%- include('../components/pageNavigator.ejs', {
+                        id: 'pagination_admin_gamebots',
+                        page: response.admin.gamebots.bots.page,
+                        pages: response.admin.gamebots.bots.pages
+                    }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

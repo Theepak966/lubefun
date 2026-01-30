@@ -1,0 +1,26 @@
+<div class="bet-history flex flex-col items-center gap-2">
+	<div class="bet-select flex flex-row items-center justify-center">
+		<button class="history-load button flex-1 active" data-type="all_bets">All bets</button>
+		<button class="history-load button flex-1" data-type="big_bets">Big bets</button>
+		<% if(page != 'home') { %><button class="history-load button flex-1" data-type="game_bets">Game bets</button><% } %>
+		<button class="history-load button flex-1" data-type="my_bets">My bets</button>
+	</div>
+
+	<div class="table-container w-full">
+		<div class="table-header">
+			<div class="table-row">
+				<div class="table-column text-left">User</div>
+				<div class="table-column text-left">Game</div>
+				<div class="table-column text-left">Wager</div>
+				<div class="table-column text-left">Multiplier</div>
+				<div class="table-column text-right">Payout</div>
+			</div>
+		</div>
+
+		<div class="table-body" id="history_list">
+			<% for(var i = 0; i < 10; i++){ %>
+                <%- include('../components/liveHistorySkeleton.ejs'); %>
+            <% } %>
+		</div>
+	</div>
+</div>

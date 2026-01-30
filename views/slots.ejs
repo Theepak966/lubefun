@@ -1,0 +1,29 @@
+<div class="slots-page">
+	<div class="slots-header">
+		<h1 class="slots-title">Slots</h1>
+		<p class="slots-subtitle">Premium slot games from leading providers</p>
+	</div>
+
+	<div class="slots-grid-full" id="slots_grid">
+		<% 
+		var slotsData = response && response.slots && response.slots.games ? response.slots.games : [];
+		%>
+		<% if(slotsData && slotsData.length > 0) { %>
+			<% slotsData.forEach(function(item){ %>
+				<%- include('./components/slotCard.ejs', { ...item, ...{
+					enable: item.enable && (settings.games.classic.find(a => a.game == 'casino').enable || account.permissions.play_disabled)
+				} }); %>
+			<% }); %>
+		<% } else { %>
+			<% for(var i = 0; i < 20; i++){ %>
+				<div class="slot-card-skeleton">
+					<div class="slot-card-image"></div>
+					<div class="slot-card-info">
+						<div class="slot-card-name"></div>
+						<div class="slot-card-provider"></div>
+					</div>
+				</div>
+			<% } %>
+		<% } %>
+	</div>
+</div>

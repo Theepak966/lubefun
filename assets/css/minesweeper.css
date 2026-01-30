@@ -1,0 +1,113 @@
+.minesweeper-wrapper{
+	height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.minesweeper-container{
+	aspect-ratio: 1;
+    height: 100%;
+}
+
+.minesweeper-grid {
+	display: grid;
+	grid-gap: 5px;
+	grid-template-columns: repeat(5, calc((100% - 4 * 5px) / 5));
+	grid-template-rows: repeat(5, calc((100% - 4 * 5px) / 5));
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.minesweeper-grid .item .multiplier{
+    font-weight: bold;
+	color: var(--foreground);
+	position: absolute;
+	bottom: 5%;
+}
+
+.minesweeper-grid .item {
+	overflow: hidden;
+	background: var(--muted-foreground);
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+	border-radius: 0.5rem;
+	position: relative;
+}
+
+.minesweeper-grid .item.danger {
+	background: var(--color-danger) !important;
+}
+
+.minesweeper-grid .item.success {
+	background: var(--color-success) !important;
+}
+
+.minesweeper-grid .item::after{
+	position: absolute;
+	z-index: 0;
+}
+
+.minesweeper-grid .item.danger::after{
+	display: block;
+	content: "";
+	background: url(../img/minesweeper/bomb.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.minesweeper-grid .item.success::after{
+	display: block;
+	content: "";
+	background: url(../img/minesweeper/gem.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.minesweeper-grid .item:not(.danger):not(.success)::after{
+	display: block;
+	content: "";
+	background: url(../img/minesweeper/default.png) no-repeat 50% 50%;
+	background-size: contain;
+}
+
+.minesweeper-bombsamount.active{
+	border: solid 2px var(--primary) !important;
+}
+
+@media (min-width: 768px){
+	.minesweeper-container{
+		max-height: 80%;
+		max-width: 100%;
+	}
+
+	.minesweeper-grid .item .multiplier {
+		font-size: 20px;
+	}
+
+	.minesweeper-grid .item::after{
+		width: 60%;
+		height: 60%;
+	}
+}
+
+@media (max-width: 768px){
+	.minesweeper-wrapper{
+        flex-grow: 1;
+	}
+
+    .minesweeper-container{
+		max-height: 100%;
+		max-width: 100%;
+        flex-grow: 1;
+	}
+
+	.minesweeper-grid .item .multiplier {
+		font-size: 12px;
+	}
+
+	.minesweeper-grid .item::after{
+		width: 50%;
+		height: 50%;
+	}
+}

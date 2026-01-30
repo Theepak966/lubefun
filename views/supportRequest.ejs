@@ -1,0 +1,99 @@
+<div class="support-request flex flex-col gap-6">
+    <div class="flex responsive flex-row gap-2 items-center">
+        <div class="text-xl font-bold"><%= response.support.request.subject %></div>
+
+        <div class="<%= [ { 0: 'bg-success bg-opacity-50', 1: 'bg-success bg-opacity-50', 2: 'bg-warning bg-opacity-50' }[response.support.request.status], 'bg-info bg-opacity-50' ][response.support.request.closed] %> text-2xs p-1 rounded-1" id="support_request_status"><%= [ { 0: 'Opened', 1: 'Opened', 2: 'Awaiting your reply' }[response.support.request.status], 'Solved' ][response.support.request.closed] %></div>
+    </div>
+
+    <div class="flex flex-col gap-4">
+        <div class="flex responsive flex-row gap-4 items-start">
+            <div class="flex flex-col gap-2 w-full" id="support_messages">
+                <% response.support.messages.forEach(function(item){ %>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex justify-between items-center gap-2 px-2">
+                            <div class="flex items-center gap-1 overflow-hidden">
+                                <div class="avatar-field <%= [ 'tier-steel', 'tier-bronze', 'tier-silver', 'tier-gold', 'tier-diamond' ][Math.floor(item.user.level / 25)] %> relative">
+                                    <img class="avatar icon-small rounded-full" src="<%= item.user.avatar %>">
+                                    <div class="level sup-small-left flex justify-center items-center border-2 border-secondary rounded-full"><%= item.user.level %></div>
+                                </div>
+
+                                <div class="flex flex-col text-left overflow-hidden">
+                                    <div class="text-base truncate"><%= item.user.name %></div>
+
+                                    <% if(item.response) { %>
+                                        <div class="text-success text-xs">Support Staff</div>
+                                    <% } else { %>
+                                        <div class="text-danger text-xs">Me</div>
+                                    <% } %>
+                                </div>
+                            </div>
+
+                            <div class="text-muted-foreground text-xs"><%= item.date %></div>
+                        </div>
+
+                        <% if(item.response) { %>
+                            <div class="message response bg-card p-4 text-left ml-6">
+                                <div class="flex flex-col gap-4 text-left mt-2">
+                                    <div class="text-muted-foreground">Greetings <%= response.support.request.requester %>,</div>
+
+                                    <div><%- item.message %></div>
+
+                                    <div class="text-muted-foreground">
+                                        <div>All the best,</div>
+                                        <div><%= item.user.name %></div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <div class="message bg-card p-4 text-left ml-6"><%- item.message %></div>
+                        <% } %>
+                    </div>
+                <% }); %>
+            </div>
+
+            <div class="request flex flex-row justify-between gap-6 bg-info bg-opacity-50 p-4 rounded-2">
+                <div class="flex flex-col gap-2">
+                    <div class="font-bold">Id</div>
+                    <div class="font-bold">Department</div>
+                    <div class="font-bold">Requester</div>
+                    <div class="font-bold">Created</div>
+                    <div class="font-bold">Last activity</div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <div><%= response.support.request.id %></div>
+                    <div id="support_request_department"><%= { 0: 'General / Others', 1: 'Bug report', 2: 'Trade offer issue', 3: 'Improvements / Ideas', 4: 'Marketing / Partnership', 5: 'Ranking up' }[response.support.request.department] %></div>
+                    <div><%= response.support.request.requester %></div>
+                    <div><%= response.support.request.created %></div>
+                    <div id="support_request_updated"><%= response.support.request.updated %></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="support-request-actions <% if (response.support.request.closed) { %>closed<% } else { %>opened<% } %> border-t-2 border-card pt-2" id="support_request_actions">
+            <div class="support-request-action flex flex-col gap-4 items-start" data-action="closed">
+                <div class="text-muted-foreground">This request is closed for comments. You can create a follow-up.</div>
+            </div>
+
+            <div class="support-request-action flex flex-col gap-4 items-start" data-action="opened">
+                <div class="flex flex-col gap-2 items-start w-full">
+                    <%- include('./components/textareaField.ejs', {
+                        name: 'Reply Message',
+                        id: 'support_reply_message',
+                        classes: [],
+                        attributes: [],
+                        value: null,
+                        readonly: false,
+                        errors: [ 'required', 'minimum_10_characters' ],
+                        features: []
+                    }); %>
+
+                    <div class="flex flex-row items-center gap-1">
+                        <button class="button button-primary shadow-2 large" id="support_reply" data-id="<%= response.support.request.id %>">Submit reply</button>
+                        <button class="button button-danger shadow-2 large" id="support_close" data-id="<%= response.support.request.id %>">Close request</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,81 @@
+.fair-panel .acordeon .acordeon-item {
+	background: var(--card);
+}
+
+.fair-panel .acordeon .acordeon-item:not(.active):hover {
+	background: var(--accent) !important;
+}
+
+.fair-panel .acordeon .acordeon-item .acordeon-content {
+	color: var(--muted-foreground);
+}
+
+.fair-panel .acordeon .acordeon-item:not(:last-child) {
+	border-bottom: solid 2px var(--secondary);
+}
+
+.fair-panel .acordeon .acordeon-item:not(:first-child):not(.active) {
+	margin-top: 0px !important;
+}
+
+.fair-panel .acordeon .acordeon-item:not(:first-child) {
+	margin-top: 10px;
+}
+
+.fair-panel .acordeon .acordeon-item:not(:last-child):not(.active) {
+	margin-bottom: 0px !important;
+}
+
+.fair-panel .acordeon .acordeon-item:not(:last-child) {
+	margin-bottom: 10px;
+}
+
+.fair-results{
+	overflow-y: auto;
+}
+
+/* CODE */
+
+.language-javascript {
+	font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1em;
+	background: #1e1e1e; /* color */
+	padding: 0.5rem;
+	border-radius: 0.25rem;
+	white-space: nowrap;
+    overflow-y: auto;
+}
+
+.language-javascript .line .keyword {
+	color: #c586c0; /* color */
+}
+
+.language-javascript .line .operator, .language-javascript .line .punctuation {
+	color: #d4d4d4; /* color */
+}
+
+.language-javascript .line .parameter, .language-javascript .line .variable {
+	color: #9cdcfe; /* color */
+}
+
+.language-javascript .line .number {
+	color: #b5cea8; /* color */
+}
+
+.language-javascript .line .string {
+	color: #ce9178; /* color */
+}
+
+.language-javascript .line .comment {
+	color: #6a9955; /* color */
+}
+
+.language-javascript .line .function {
+	color: #dcdcaa; /* color */
+}
+
+.language-javascript .line.end {
+	margin-bottom: 1rem;
+}
+
+/* END CODE */

@@ -1,0 +1,233 @@
+<div class="flex responsive flex-col gap-2">
+	<div class="grid responsive split-column-4 gap-2">
+		<div class="bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+			<div class="flex flex-col gap-2 justify-between h-full">
+				<div class="text-center font-bold text-base">Connect</div>
+
+                <div class="flex flex-row gap-2 justify-center items-center">
+                    <div class="social-login steam icon-large rounded-full flex justify-center items-center"></div>
+
+                    <div class="text-left text-muted-foreground">
+                        <div>Link your <span class="text-primary">Steam</span> to your account</div>
+                        <div>And receive <span class="text-primary"><%= response.rewards.amounts.steam %> coins</span></div>
+                    </div>
+                </div>
+
+				<% if(!response.rewards.binds.steam){ %>
+                    <a href="/auth/steam?link=true&returnUrl=/<%= app.paths.join('/') %>">
+                        <button class="button button-primary shadow-2 w-full">Connect</button>
+                    </a>
+				<% } else if(response.rewards.collected.steam){ %>
+				    <button class="button button-primary shadow-2 disabled w-full">Collected</button>
+				<% } else { %>
+				    <button class="button button-primary shadow-2 w-full" id="collect_reward_bind" data-bind="steam">Collect</button>
+				<% } %>
+			</div>
+		</div>
+
+		<div class="bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+			<div class="flex flex-col gap-2 justify-between h-full">
+				<div class="text-center font-bold text-base">Connect</div>
+
+                <div class="flex flex-row gap-2 justify-center items-center">
+                    <div class="social-login google icon-large rounded-full flex justify-center items-center"></div>
+
+                    <div class="text-left text-muted-foreground">
+                        <div>Link your <span class="text-primary">Google</span> to your account</div>
+                        <div>And receive <span class="text-primary"><%= response.rewards.amounts.google %> coins</span></div>
+                    </div>
+                </div>
+
+				<% if(!response.rewards.binds.google){ %>
+                    <a href="/auth/google?link=true&returnUrl=/<%= app.paths.join('/') %>">
+                        <button class="button button-primary shadow-2 w-full">Connect</button>
+                    </a>
+                <% } else if(response.rewards.collected.google){ %>
+				    <button class="button button-primary shadow-2 disabled w-full">Collected</button>
+				<% } else { %>
+				    <button class="button button-primary shadow-2 w-full" id="collect_reward_bind" data-bind="google">Collect</button>
+				<% } %>
+			</div>
+		</div>
+
+		<div class="bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+			<div class="flex flex-col gap-2 justify-between h-full">
+				<div class="text-center font-bold text-base">Connect</div>
+
+				<div class="flex flex-row gap-2 justify-center items-center">
+                    <div class="social-login discord icon-large rounded-full flex justify-center items-center"></div>
+
+                    <div class="text-left text-muted-foreground">
+                        <div>Link your <span class="text-primary">Discord</span> to your account</div>
+                        <div>And receive <span class="text-primary"><%= response.rewards.amounts.discord %> coins</span></div>
+                    </div>
+                </div>
+
+				<% if(!response.rewards.binds.discord){ %>
+                    <a href="/auth/discord?link=true&returnUrl=/<%= app.paths.join('/') %>">
+                        <button class="button button-primary shadow-2 w-full">Connect</button>
+                    </a>
+                <% } else if(response.rewards.collected.discord){ %>
+				    <button class="button button-primary shadow-2 disabled w-full">Collected</button>
+				<% } else { %>
+				    <button class="button button-primary shadow-2 w-full" id="collect_reward_bind" data-bind="discord">Collect</button>
+				<% } %>
+			</div>
+		</div>
+
+		<div class="bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+			<div class="flex flex-col gap-2 justify-between h-full">
+				<div class="text-center font-bold text-base">Connect</div>
+
+				<div class="flex flex-row gap-2 justify-center items-center">
+                    <div class="social-login facebook icon-large rounded-full flex justify-center items-center"></div>
+
+                    <div class="text-left text-muted-foreground">
+                        <div>Link your <span class="text-primary">Facebook</span> to your account</div>
+                        <div>And receive <span class="text-primary"><%= response.rewards.amounts.facebook %> coins</span></div>
+                    </div>
+                </div>
+
+				<% if(!response.rewards.binds.facebook){ %>
+                    <a class="disabled" href="/auth/facebook?link=true&returnUrl=/<%= app.paths.join('/') %>">
+                        <button class="button button-primary shadow-2 w-full">Connect (comming soon)</button>
+                    </a>
+                <% } else if(response.rewards.collected.facebook){ %>
+				    <button class="button button-primary shadow-2 disabled w-full">Collected</button>
+				<% } else { %>
+				    <button class="button button-primary shadow-2 disabled w-full" id="collect_reward_bind" data-bind="facebook">Collect</button>
+				<% } %>
+			</div>
+		</div>
+	</div>
+
+	<div class="grid responsive split-column-3 gap-2">
+		<div class="bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+			<div class="flex flex-col gap-2 justify-between h-full">
+				<div class="text-center font-bold text-base">Daily gift</div>
+
+				<div class="text-muted-foreground">
+					<div>Deposit at least <span class="text-primary">5.00 coins</span> in the last <span class="text-primary">7 days</span> to earn up to <span class="text-primary"><%= response.rewards.amounts.daily.total %> coins</span> daily</div>
+					<div>The amount is based by your level. The amount starts from <span class="text-primary"><%= response.rewards.amounts.daily.start %> coins</span> and each level increase with <span class="text-primary"><%= response.rewards.amounts.daily.level %> coins</span></div>
+				</div>
+
+				<button class="button button-primary shadow-2 w-full" id="collect_reward_daily">Collect</button>
+			</div>
+		</div>
+
+		<div class="bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+			<div class="flex flex-col gap-2 justify-between h-full">
+				<div class="text-center font-bold text-base">Referral code</div>
+
+				<div class="flex flex-col gap-1">
+					<div class="text-muted-foreground mb-2">Use any referral code and receive <span class="text-primary"><%= response.rewards.amounts.refferal_code %> coins</span></div>
+
+                    <%- include('./components/inputField.ejs', {
+                        type: 'text',
+                        placeholder: 'Referral Code',
+                        id: 'referral_redeem_code',
+                        value: response.rewards.redeemed ? 'Referred by ' + response.rewards.redeemed : null,
+                        readonly: response.rewards.redeemed ? true : false,
+                        errors: [ 'required', 'minimum_6_characters', 'only_letters_numbers' ],
+                        features: []
+                    }); %>
+				</div>
+
+				<% if(response.rewards.redeemed) { %>
+				    <button class="button button-primary shadow-2 disabled w-full">Collected</button>
+				<% } else { %>
+				    <button class="button button-primary shadow-2 w-full" id="collect_reward_referral_redeem">Collect</button>
+				<% } %>
+			</div>
+		</div>
+
+		<div class="bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+			<div class="flex flex-col gap-2 justify-between h-full">
+				<div class="text-center font-bold text-base">Create referral code</div>
+
+				<div class="flex flex-col gap-1">
+					<div class="text-muted-foreground">Create and share your referral code to give <span class="text-primary"><%= response.rewards.amounts.refferal_code %> coins</span></div>
+
+                    <%- include('./components/inputField.ejs', {
+                        type: 'text',
+                        placeholder: 'Create Code',
+                        id: 'referral_create_code',
+                        value: response.rewards.referral,
+                        errors: [ 'required', 'minimum_6_characters', 'only_letters_numbers' ]
+                    }); %>
+				</div>
+
+				<% if(response.rewards.referral){ %>
+				    <button class="button button-primary shadow-2 w-full" id="collect_reward_referral_create">Update</button>
+				<% } else { %>
+				    <button class="button button-primary shadow-2 w-full" id="collect_reward_referral_create">Create</button>
+				<% } %>
+			</div>
+		</div>
+	</div>
+
+	<div class="grid responsive split-column-3 gap-2">
+		<div class="bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+			<div class="flex flex-col gap-2 justify-between h-full">
+				<div class="text-center font-bold text-base">Bonus code</div>
+
+                <%- include('./components/inputField.ejs', {
+                    type: 'text',
+                    placeholder: 'Bonus Code',
+                    id: 'bonus_redeem_code',
+                    errors: [ 'required', 'minimum_6_characters', 'only_letters_numbers' ]
+                }); %>
+
+				<button class="button button-primary shadow-2 w-full" id="collect_reward_bonus_redeem">Collect</button>
+			</div>
+		</div>
+
+		<% if(account.permissions.create_bonus){ %>
+		<div class="bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+			<div class="flex flex-col justify-between h-full">
+				<div class="text-center font-bold text-base">Create bonus code</div>
+
+                <%- include('./components/inputField.ejs', {
+                    type: 'text',
+                    placeholder: 'Bonus Code',
+                    id: 'bonus_create_code',
+                    errors: [ 'required', 'minimum_6_characters', 'only_letters_numbers' ],
+                    features: [
+                        '<button class="button" id="bonus_create_generate"><i class="fa fa-random" aria-hidden="true"></i></button>'
+                    ]
+                }); %>
+
+                <%- include('./components/inputField.ejs', {
+                    type: 'text',
+                    placeholder: 'Amount [' + response.rewards.requirements.bonus_amount.min +' - ' + response.rewards.requirements.bonus_amount.max + ']',
+                    id: 'bonus_create_amount',
+                    value: response.rewards.requirements.bonus_amount.min,
+                    errors: [ 'required', 'number' ],
+                    features: [
+                        '<button class="button changeshort_action" data-id="#bonus_create_amount" data-fixed="1" data-action="+0.01">+0.01</button>',
+                        '<button class="button changeshort_action" data-id="#bonus_create_amount" data-fixed="1" data-action="+0.10">+0.10</button>',
+                        '<button class="button changeshort_action" data-id="#bonus_create_amount" data-fixed="1" data-action="+1.00">+1.00</button>',
+                        '<button class="button changeshort_action" data-id="#bonus_create_amount" data-fixed="1" data-action="+10.00">+10.00</button>'
+                    ]
+                }); %>
+
+                <%- include('./components/inputField.ejs', {
+                    type: 'text',
+                    placeholder: 'Maximum Uses [' + response.rewards.requirements.bonus_uses.min +' - ' + response.rewards.requirements.bonus_uses.max + ']',
+                    id: 'bonus_create_uses',
+                    value: response.rewards.requirements.bonus_uses.min,
+                    errors: [ 'required', 'number' ],
+                    features: [
+                        '<button class="button changeshort_action" data-id="#bonus_create_uses" data-fixed="0" data-action="+1">+1</button>',
+                        '<button class="button changeshort_action" data-id="#bonus_create_uses" data-fixed="0" data-action="-1">-1</button>',
+                        '<button class="button changeshort_action" data-id="#bonus_create_uses" data-fixed="0" data-action="+10">+10</button>',
+                        '<button class="button changeshort_action" data-id="#bonus_create_uses" data-fixed="0" data-action="-10">-10</button>'
+                    ]
+                }); %>
+
+				<button class="button button-primary shadow-2 w-full" id="collect_reward_bonus_create">Create</button>
+			</div>
+		</div>
+		<% } %>
+	</div>
+</div>

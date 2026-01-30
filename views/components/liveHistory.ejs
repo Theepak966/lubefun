@@ -1,0 +1,33 @@
+<div class="table-row">
+    <div class="table-column text-left">
+        <div class="flex items-center gap-1">
+            <%- include('./userAvatar.ejs', { user, size: 'small', classes: [], features: [] }); %>
+
+            <div class="text-left w-full truncate"><%= user.name %></div>
+        </div>
+    </div>
+    <div class="table-column text-left font-bold capitalize"><%= game %></div>
+    <div class="table-column text-left">
+        <div class="flex flex-row items-center justify-start gap-1">
+            <div class="coin main"></div>
+            <span><%= amount %></span>
+        </div>
+    </div>
+    <div class="table-column text-left"><%= multiplier %>x</div>
+
+    <% if(winning > 0) { %>
+        <div class="table-column text-right success">
+            <div class="flex flex-row items-center justify-end gap-1">
+                <div class="coin main"></div>
+                <span>+<%= winning %></span>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="table-column text-right">
+            <div class="flex flex-row items-center justify-end gap-1">
+                <div class="coin main"></div>
+                <span><%= winning %></span>
+            </div>
+        </div>
+    <% } %>
+</div>

@@ -1,0 +1,36 @@
+<div class="flex flex-1 flex-col items-center gap-4">
+	<div class="flex justify-start w-full">
+		<a href="/casino"><button class="button button-accent shadow-2 flex flex-row gap-2 items-center justify-center">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            <span>Go Back</span>
+        </button></a>
+	</div>
+
+	<div class="casino-game flex flex-1 flex-col">
+        <div class="content flex flex-col flex-1" id="casino_game"></div>
+
+        <div class="control flex flex-row gap-2 items-center justify-between">
+            <div class="flex flex-row items-center gap-1">
+                <button class="button button-accent shadow-2 flex flex-row gap-2 items-center justify-center">
+                    <i class="fa fa-expand" aria-hidden="true"></i>
+                    <span>Full Screen</span>
+                </button>
+
+                <button class="favorite button button-accent shadow-2" id="casino_favorite"><i class="fa fa-heart" aria-hidden="true"></i></button>
+            </div>
+
+            <img class="logo" src="/img/logo.png">
+
+            <div class="flex flex-row items-center gap-1">
+                <div class="text-xs font-bold">Fun Play</div>
+
+                <%- include('./components/switchField.ejs', {
+                    id: 'casino_game_mode',
+                    checked: app.paths.length <= 3
+                }); %>
+
+                <div class="text-xs font-bold">Real Play</div>
+            </div>
+        </div>
+    </div>
+</div>

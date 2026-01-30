@@ -1,0 +1,117 @@
+<div class="header">
+    <!-- Left: Logo -->
+    <a href="/" class="logo flex justify-center items-center">
+        <img src="/img/logo.png">
+    </a>
+
+    <div class="navigation flex flex-row items-center justify-between">
+        <!-- Center: Game Navigation Tabs -->
+        <div class="navbar-games flex flex-row items-center justify-center gap-1 flex-1">
+            <a href="/crash" class="navbar-game-tab <% if(app.paths[0] == 'crash') { %>active<% } %>">
+                <span>Crash</span>
+            </a>
+            <a href="/coinflip" class="navbar-game-tab <% if(app.paths[0] == 'coinflip') { %>active<% } %>">
+                <span>Coinflip</span>
+            </a>
+            <a href="/mines" class="navbar-game-tab <% if(app.paths[0] == 'mines') { %>active<% } %>">
+                <span>Mines</span>
+            </a>
+            <a href="/tower" class="navbar-game-tab <% if(app.paths[0] == 'tower') { %>active<% } %>">
+                <span>Tower</span>
+            </a>
+            <a href="/" class="navbar-game-tab navbar-game-tab-slots <% if(app.paths.length === 0 || app.paths[0] === '') { %>active<% } %>">
+                <span>Slots</span>
+            </a>
+        </div>
+
+        <!-- Right: Auth / Balance -->
+        <div class="navbar-right flex flex-row items-center gap-3">
+            <% if(user) { %>
+                <!-- Balance Pill with Dropdown -->
+                <div class="navbar-balance-wrapper relative">
+                    <div class="navbar-balance-pill pointer balances">
+                        <% if(page == 'casino' && app.paths.length > 2){ %>
+                            <div class="balance flex flex-row items-center justify-center gap-2">
+                                <span class="balance-icon">💰</span>
+                                <span class="amount" style="font-size: 14px; font-weight: 600;">In play</span>
+                            </div>
+                        <% } else { %>
+                            <div class="balance flex flex-row items-center justify-center gap-2" data-type="total">
+                                <span class="balance-icon">💰</span>
+                                <span class="amount">0.00</span>
+                                <span class="balance-currency">SOL</span>
+                                <i class="fa fa-angle-down balance-arrow" aria-hidden="true"></i>
+                            </div>
+                            
+                            <!-- Dropdown Menu -->
+                            <div class="navbar-balance-dropdown list flex flex-col transition duration-200 hidden">
+                                <a href="/deposit" class="navbar-dropdown-item">
+                                    <span>Deposit</span>
+                                </a>
+                                <a href="/withdraw" class="navbar-dropdown-item">
+                                    <span>Withdraw</span>
+                                </a>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            <% } else { %>
+                <!-- Sign In Button -->
+                <a href="/login?returnUrl=/<%= app.paths.join('/') %>" class="navbar-signin-btn">
+                    <span>Sign In</span>
+                </a>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<!-- Top Games Navigation Bar - Removed, moved to navbar -->
+
+<div class="header mobile flex flex-row justify-between gap-2">
+    <a href="/" class="logo flex justify-start items-center">
+        <img src="/img/logo_mini.png">
+    </a>
+
+    <div class="navigation flex flex-row items-center justify-end gap-2 h-full">
+        <% if(user) { %>
+            <div class="flex flex-row items-center gap-4 relative h-full">
+                <div class="balances pointer flex flex-row gap-2 items-center justify-center h-full">
+                    <% if(page == 'casino' && app.paths.length > 2){ %>
+                        <div class="balance flex flex-row items-center justify-center gap-2" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 9999px; padding: 6px 12px;">
+                            <div class="coin main"></div>
+                            <span class="amount" style="font-size: 14px; font-weight: 700;">In play</span>
+                        </div>
+                    <% } else { %>
+                        <div class="balance flex flex-row items-center justify-center gap-2" data-type="total">
+                            <div class="coin main"></div>
+                            <span class="amount">0.00</span>
+                        </div>
+
+                        <div class="flex flex-row items-center justify-center text-lg h-full ml-1" style="color: rgba(6, 182, 212, 0.7); transition: all 0.3s ease;">
+                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                        </div>
+
+                        <div class="list flex flex-col transition duration-200 hidden">
+                            <div class="balance flex flex-row items-center justify-between gap-2 w-full" data-type="main" data-balance="0.00">
+                                <div class="text-sm font-bold text-muted-foreground">Main</div>
+
+                                <div class="flex flex-row items-center justify-center gap-2">
+                                    <div class="coin main"></div>
+                                    <span class="amount" style="font-weight: 700;">0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+
+        <% } else { %>
+            <a class="h-full" href="/login?returnUrl=/<%= app.paths.join('/') %>">
+                <button type="button" class="button button-card shadow-2 h-full flex justify-center items-center">Sign In</button>
+            </a>
+        <% } %>
+
+        <button class="button pullout_view" data-pullout="menu"><i class="fa fa-bars" aria-hidden="true"></i></button>
+        <button class="button pullout_view" data-pullout="chat"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+</div>

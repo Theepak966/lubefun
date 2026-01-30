@@ -1,0 +1,30 @@
+<div class="coinflip-player <% if(!winner) { %>active<% } %> w-5 h-full bg-secondary rounded-2 p-1">
+    <div class="flex flex-col justify-between items-center h-full">
+        <div class="flex flex-col items-center justify-center size-full gap-2">
+            <% if(user){ %>
+                <%- include('./userAvatar.ejs', { user, size: 'large', classes: [], features: [
+                    '<div class="level sop-large-left flex justify-center items-center border-2 border-secondary bg-secondary rounded-full"><img src="/img/coinflip/coin' + position + '.png"></div>'
+                ] }); %>
+
+                <div class="text-center w-full truncate"><%= user.name %></div>
+            <% } else if(joined) { %>
+                <% if(creator) { %>
+                    <div class="relative">
+                        <button class="coinflip-callbot button button-primary shadow-2 w-full" data-id="<%= id %>">Call a Bot</button>
+                        <div class="sop-large-left flex justify-center items-center border-2 border-primary bg-secondary rounded-full"><img src="/img/coinflip/coin<%= position %>.png"></div>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <div class="relative">
+                    <button class="coinflip-join button button-primary shadow-2 w-full" data-id="<%= id %>">Join Game</button>
+                    <div class="sop-large-left flex justify-center items-center border-2 border-primary bg-secondary rounded-full"><img src="/img/coinflip/coin<%= position %>.png"></div>
+                </div>
+            <% } %>
+        </div>
+
+        <div class="bg-card rounded-2 border-2 border-card px-2 flex flex-row items-center justify-center gap-1">
+            <div class="coin main"></div>
+            <span class="text-base"><%= amount %></span>
+        </div>
+    </div>
+</div>

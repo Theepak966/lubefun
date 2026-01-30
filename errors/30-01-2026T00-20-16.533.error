@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: SELECT * FROM `users_rewards` WHERE `reward` = daily AND `userid` = 6ztyNyvaf4hA35YxAAAB ORDER BY `id` DESC LIMIT 1

@@ -1,0 +1,43 @@
+<div class="input_field transition duration-500 <% if(typeof disabled !== 'undefined' && disabled) { %>disabled<% } %>" data-border="#de4c41">
+    <div class="field_container">
+        <div class="field_content">
+            <input <% if(typeof type !== 'undefined'){ %>type="<%= type %>"<% } %> class="field_element_input <% if(typeof classes !== 'undefined' && Array.isArray(classes)){ %><%= classes.join(' ') %><% } %>" <% if(typeof id !== 'undefined') { %>id="<%= id %>"<% } %> <% if(typeof attributes !== 'undefined' && Array.isArray(attributes)){ %><%- attributes.map(a => a.name + '="' + a.value + '"').join(' ') %><% } %> <% if(typeof value !== 'undefined') { %>value="<%= value %>"<% } %> <% if(typeof readonly !== 'undefined' && readonly) { %>readonly<% } %>>
+
+            <% if(typeof currency !== 'undefined'){ %>
+                <div class="field_label transition duration-500">
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin <%= currency %>"></div>
+                        <% if(typeof placeholder !== 'undefined'){ %><span><%= placeholder %></span><% } %>
+                    </div>
+                </div>
+            <% } else { %>
+                <% if(typeof placeholder !== 'undefined'){ %><div class="field_label transition duration-500"><%= placeholder %></div><% } %>
+            <% } %>
+        </div>
+
+        <div class="field_extra">
+            <% if(typeof features !== 'undefined' && Array.isArray(features)){ %>
+                <% features.forEach(function(item){ %>
+                    <%- item %>
+                <% }); %>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="field_bottom">
+        <% if(typeof errors !== 'undefined' && Array.isArray(errors)){ %>
+            <% if(errors.includes('required')) { %><div class="field_error" data-error="required">This field is required</div><% } %>
+            <% if(errors.includes('number')) { %><div class="field_error" data-error="number">This field must be a number</div><% } %>
+            <% if(errors.includes('percentage')) { %><div class="field_error" data-error="percentage">This field must be a percentage</div><% } %>
+            <% if(errors.includes('greater')) { %><div class="field_error" data-error="greater">You must enter a greater value</div><% } %>
+            <% if(errors.includes('lesser')) { %><div class="field_error" data-error="lesser">You must enter a lesser value</div><% } %>
+            <% if(errors.includes('positive_integer')) { %><div class="field_error" data-error="positive_integer">This field must be a positive integer number</div><% } %>
+            <% if(errors.includes('minimum_6_characters')) { %><div class="field_error" data-error="minimum_6_characters">This field must be a text with minimum 6 characters</div><% } %>
+            <% if(errors.includes('minimum_10_characters')) { %><div class="field_error" data-error="minimum_10_characters">This field must be a text with minimum 10 characters</div><% } %>
+            <% if(errors.includes('only_letters_numbers')) { %><div class="field_error" data-error="only_letters_numbers">This field must contain only letters and numbers</div><% } %>
+            <% if(errors.includes('password')) { %><div class="field_error" data-error="password">At least 8 characters, maximum 64 characters, one uppercase, one lowercase, one number and one symbol</div><% } %>
+            <% if(errors.includes('email')) { %><div class="field_error" data-error="email">This field must be a email</div><% } %>
+            <% if(errors.includes('name')) { %><div class="field_error" data-error="name">At least 2 characters, maximum 64 characters</div><% } %>
+        <% } %>
+    </div>
+</div>

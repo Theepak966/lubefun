@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: SELECT chat_ignore.userid, users.userid AS `ignoreid`, users.name, users.avatar, users.xp, chat_ignore.time FROM `chat_ignore` INNER JOIN `users` ON chat_ignore.ignoreid = users.userid WHERE chat_ignore.removed = 0

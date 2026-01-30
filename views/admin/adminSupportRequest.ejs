@@ -1,0 +1,132 @@
+<div class="support-request flex flex-col gap-6">
+    <div class="flex responsive flex-row gap-2 items-center">
+        <div class="text-xl font-bold"><%= response.admin.support.request.subject %></div>
+
+        <div class="<%= [ { 0: 'bg-danger bg-opacity-50', 1: 'bg-warning bg-opacity-50', 2: 'bg-success bg-opacity-50' }[response.admin.support.request.status], 'bg-info bg-opacity-50' ][response.admin.support.request.closed] %> text-2xs p-1 rounded-1" id="admin_support_request_status"><%= [ { 0: 'Opened', 1: 'Unsolved', 2: 'Answered' }[response.admin.support.request.status], 'Solved'][response.admin.support.request.closed] %></div>
+    </div>
+
+    <div class="flex flex-col gap-4">
+        <div class="flex responsive flex-row gap-4 items-start">
+            <div class="flex flex-col gap-2 w-full" id="admin_support_messages">
+                <% response.admin.support.messages.forEach(function(item){ %>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex justify-between items-center gap-2 px-2">
+                            <div class="flex items-center gap-1 overflow-hidden">
+                                <div class="avatar-field <%= [ 'tier-steel', 'tier-bronze', 'tier-silver', 'tier-gold', 'tier-diamond' ][Math.floor(item.user.level / 25)] %> relative">
+                                    <img class="avatar icon-small rounded-full" src="<%= item.user.avatar %>">
+                                    <div class="level sup-small-left flex justify-center items-center border-2 border-secondary rounded-full"><%= item.user.level %></div>
+                                </div>
+
+                                <div class="flex flex-col text-left overflow-hidden">
+                                    <div class="text-base truncate"><%= item.user.name %></div>
+
+                                    <% if(item.response) { %>
+                                        <div class="text-success text-xs">Support Staff</div>
+                                    <% } else { %>
+                                        <div class="text-danger text-xs">He</div>
+                                    <% } %>
+                                </div>
+                            </div>
+
+                            <div class="text-muted-foreground text-xs"><%= item.date %></div>
+                        </div>
+
+                        <% if(item.response) { %>
+                            <div class="message response bg-card p-4 text-left ml-6">
+                                <div class="flex flex-col gap-4 text-left mt-2">
+                                    <div class="text-muted-foreground">Greetings <%= response.admin.support.request.requester %>,</div>
+
+                                    <div><%- item.message %></div>
+
+                                    <div class="text-muted-foreground">
+                                        <div>All the best,</div>
+                                        <div><%= item.user.name %></div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <div class="message bg-card p-4 text-left ml-6"><%- item.message %></div>
+                        <% } %>
+                    </div>
+                <% }); %>
+            </div>
+
+            <div class="request flex flex-row justify-between gap-6 bg-info bg-opacity-50 p-4 rounded-2">
+                <div class="flex flex-col gap-2">
+                    <div class="font-bold">Id</div>
+                    <div class="font-bold">Department</div>
+                    <div class="font-bold">Requester</div>
+                    <div class="font-bold">Created</div>
+                    <div class="font-bold">Last activity</div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <div><%= response.admin.support.request.id %></div>
+                    <div id="admin_support_request_department"><%= { 0: 'General / Others', 1: 'Bug report', 2: 'Trade offer issue', 3: 'Improvements / Ideas', 4: 'Marketing / Partnership', 5: 'Ranking up' }[response.admin.support.request.department] %></div>
+                    <div><%= response.admin.support.request.requester %></div>
+                    <div><%= response.admin.support.request.created %></div>
+                    <div id="admin_support_request_updated"><%= response.admin.support.request.updated %></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-support-request-actions <% if (response.admin.support.request.closed) { %>closed<% } else if(response.admin.support.request.status == 0){ %>opened<% } else { %>claimed<% } %> border-t-2 border-card pt-2" id="admin_support_request_actions">
+            <div class="admin-support-request-action flex flex-col gap-4 items-start" data-action="closed">
+                <div class="text-muted-foreground">This request is closed for comments. You can create a follow-up.</div>
+            </div>
+
+            <div class="admin-support-request-action flex flex-col gap-4 items-start" data-action="opened">
+                <div class="flex flex-col gap-2 items-start">
+                    <div class="text-muted-foreground">Claiming a ticket assigns it to you, giving you exclusive control to respond and manage the support request.</div>
+
+                    <button class="button button-primary shadow-2 large" id="admin_support_claim" data-id="<%= response.admin.support.request.id %>">Claim request</button>
+                </div>
+            </div>
+
+            <div class="admin-support-request-action flex flex-col gap-4 items-start" data-action="claimed">
+                <div class="flex flex-col gap-2 items-start w-full">
+                    <%- include('../components/textareaField.ejs', {
+                        name: 'Reply Message',
+                        id: 'admin_support_reply_message',
+                        classes: [],
+                        attributes: [],
+                        value: null,
+                        readonly: false,
+                        errors: [ 'required', 'minimum_10_characters' ],
+                        features: []
+                    }); %>
+
+                    <div class="flex flex-row items-center gap-1">
+                        <button class="button button-primary shadow-2 large" id="admin_support_reply" data-id="<%= response.admin.support.request.id %>">Submit reply</button>
+                        <button class="button button-danger shadow-2 large" id="admin_support_close" data-id="<%= response.admin.support.request.id %>">Close request</button>
+                    </div>
+
+                    <div class="flex flex-row items-center gap-1">
+                        <%- include('../components/dropdownField.ejs', {
+                            type: 'bottom',
+                            placeholder: 'Department',
+                            id: 'admin_support_department',
+                            selected: response.admin.support.request.department,
+                            items: [
+                                { name: 'General / Others', value: 0 },
+                                { name: 'Bug report', value: 1 },
+                                { name: 'Trade offer issue', value: 2 },
+                                { name: 'Improvements / Ideas', value: 3 },
+                                { name: 'Marketing / Partnership', value: 4 },
+                                { name: 'Ranking up', value: 5 }
+                            ]
+                        }); %>
+
+                        <button class="button button-danger shadow-2 large" id="admin_support_change_department" data-id="<%= response.admin.support.request.id %>">Change department</button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2 items-start">
+                    <div class="text-muted-foreground">Releasing a ticket removes your ownership, making it available for other support staff to claim and handle. Use this if you're unable to continue with the request or want to hand it off.</div>
+
+                    <button class="button button-danger shadow-2 large" id="admin_support_release" data-id="<%= response.admin.support.request.id %>">Release request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

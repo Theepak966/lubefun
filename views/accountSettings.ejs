@@ -1,0 +1,169 @@
+<div class="flex flex-col gap-2">
+	<div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-4 bg-card bg-opacity-50 rounded-2 border-2 border-card pt-8 pb-4 px-4">
+                <div class="flex flex-col gap-2 items-center">
+                    <div class="avatar-field tier-<%= response.account.user.level.tier %>">
+                        <img class="avatar icon-huge rounded-full" src="<%= response.account.user.avatar %>">
+                    </div>
+
+                    <div class="flex justify-center gap-2 font-bold text-xl">
+                        <div class="capitalize chat-link-<%= response.account.user.rank %>"><%= response.account.user.rank %></div>
+
+                        <div class="truncate"><%= response.account.user.name %></div>
+                    </div>
+
+                    <div class="level-bar flex items-center gap-1">
+                        <div class="font-bold">Lvl. <%= Math.min(response.account.user.level.level + 1, 100) - 1 %></div>
+
+                        <div class="progress-container rounded-1">
+                            <% var style = 'style="width: ' + response.account.user.level.progress + '%;"'; %>
+
+                            <div class="progress-bar transition duration-200 ease-linear rounded-1" <%- style %>></div>
+                            <div class="progress-content flex flex-row justify-center items-center gap-1 font-bold">
+                                <span><%= response.account.user.level.have %></span>
+                                <span>/</span>
+                                <span><%= response.account.user.level.next %></span>
+                            </div>
+                        </div>
+
+                        <div class="font-bold"><%= Math.min(response.account.user.level.level + 1, 100) %></div>
+                    </div>
+                </div>
+
+                <div class="flex responsive flex-row gap-2 items-center justify-between">
+                    <div class="text-muted-foreground">Member since <%= response.account.user.created %></div>
+                    <div><span class="text-muted-foreground">User ID:</span> <%= response.account.user.userid %></div>
+                </div>
+            </div>
+
+            <div class="flex responsive flex-row gap-2">
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Deposited</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.deposited %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Withdrawn</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.withdrawn %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Wagered</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.wagered %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Profit</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.profit %></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="account-tabs top flex flex-wrap flex-row gap-2 border-b-2 border-card">
+            <a href="/account/settings"><button class="button active">Settings</button></a>
+            <a href="/account/deposits"><button class="button">Balance History</button></a>
+            <a href="/account/games"><button class="button">Games History</button></a>
+            <a href="/account/transactions"><button class="button">Transactions History</button></a>
+            <a href="/account/exclusion"><button class="button">Self Exclusion</button></a>
+            <a href="/account/security"><button class="button">Security</button></a>
+        </div>
+
+        <div class="flex responsive flex-row gap-2">
+
+            <div class="flex flex-col gap-2 w-full">
+                <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                    <div class="text-left font-bold text-base">Sounds</div>
+
+                    <div class="text-muted-foreground">If this is enabled, the game sounds will be active.</div>
+
+                    <%- include('./components/switchField.ejs', {
+                        placeholder: 'Sounds',
+                        classes: [ 'change-setting' ],
+                        attributes: [
+                            { name: 'data-setting', value: 'sounds' }
+                        ]
+                    }); %>
+                </div>
+
+                <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                    <div class="text-left font-bold text-base">Anonymous</div>
+
+                    <div class="text-muted-foreground">If this is enabled, your profile name and avatar will be anonymously.</div>
+
+                    <%- include('./components/switchField.ejs', {
+                        placeholder: 'Anonymous',
+                        classes: [ 'change-setting' ],
+                        attributes: [
+                            { name: 'data-setting', value: 'anonymous' }
+                        ]
+                    }); %>
+                </div>
+
+                <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                    <div class="text-left font-bold text-base">Private Mode</div>
+
+                    <div class="text-muted-foreground">If this is enabled, your profile will be private.</div>
+
+                    <%- include('./components/switchField.ejs', {
+                        placeholder: 'Private Mode',
+                        classes: [ 'change-setting' ],
+                        attributes: [
+                            { name: 'data-setting', value: 'private' }
+                        ]
+                    }); %>
+                </div>
+
+                <div class="flex flex-col items-start gap-1">
+                    <div class="text-left text-base">Linked Accounts</div>
+
+                    <div class="flex responsive flex-row gap-1">
+                        <% if(!response.account.settings.binds.value.steam){ %>
+                            <a class="<% if(!response.account.settings.binds.enable.steam){ %>disabled<% } %>" href="/auth/steam?link=true&returnUrl=/<%= app.paths.join('/') %>">
+                                <button class="button button-primary shadow-2">Link with Steam</button>
+                            </a>
+                        <% } else { %>
+                            <button class="button button-primary shadow-2 disabled">Linked with Steam</button>
+                        <% } %>
+
+                        <% if(!response.account.settings.binds.value.google){ %>
+                            <a class="<% if(!response.account.settings.binds.enable.google){ %>disabled<% } %>" href="/auth/google?link=true&returnUrl=/<%= app.paths.join('/') %>">
+                                <button class="button button-primary shadow-2">Link with Google</button>
+                            </a>
+                        <% } else { %>
+                            <button class="button button-primary shadow-2 disabled">Linked with Google</button>
+                        <% } %>
+
+                        <% if(!response.account.settings.binds.value.discord){ %>
+                            <a class="<% if(!response.account.settings.binds.enable.discord){ %>disabled<% } %>" href="/auth/discord?link=true&returnUrl=/<%= app.paths.join('/') %>">
+                                <button class="button button-primary shadow-2">Link with Discord</button>
+                            </a>
+                        <% } else { %>
+                            <button class="button button-primary shadow-2 disabled">Linked with Discord</button>
+                        <% } %>
+
+                        <% if(!response.account.settings.binds.value.facebook){ %>
+                            <a class="<% if(!response.account.settings.binds.enable.facebook){ %>disabled<% } %>" href="/auth/facebook?link=true&returnUrl=/<%= app.paths.join('/') %>">
+                                <button class="button button-primary shadow-2">Link with Facebook</button>
+                            </a>
+                        <% } else { %>
+                            <button class="button button-primary shadow-2 disabled">Linked with Facebook</button>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

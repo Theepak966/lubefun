@@ -1,0 +1,18 @@
+<div class="slot-card <% if(!enable){ %>disabled<% } %>" data-id="<%= id %>">
+    <div class="slot-card-image">
+        <img src="<%= image %>" alt="<%= name %>">
+        <% if(enable){ %>
+            <div class="slot-card-overlay">
+                <a href="/casino/slots/<%= id %>" class="slot-card-play-btn">
+                    <i class="fa fa-play" aria-hidden="true"></i>
+                    <span>Play</span>
+                </a>
+            </div>
+        <% } %>
+    </div>
+    
+    <div class="slot-card-info">
+        <div class="slot-card-name"><%= name %></div>
+        <div class="slot-card-provider"><%= provider %></div>
+    </div>
+</div>

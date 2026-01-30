@@ -1,0 +1,44 @@
+<div class="chat-message flex flex-col gap-2 relative p-1 chat-content-<%= { '0': 'member', '1': 'admin', '2': 'moderator', '3': 'helper', '4': 'veteran', '5': 'pro', '6': 'youtuber', '7': 'streamer', '8': 'developer', '100': 'owner' }[rank] %>" data-message="<%= id %>">
+    <div class="flex flex-row items-center gap-1 relative w-full pl-1">
+        <%- include('./userAvatar.ejs', { user, size: 'medium', classes: [], features: [] }); %>
+
+        <div class="chat-message-header flex flex-col justify-center gap-1">
+            <div class="flex flex-row gap-4 justify-between items-center">
+                <div class="chat-message-name chat-link-<%= { '0': 'member', '1': 'admin', '2': 'moderator', '3': 'helper', '4': 'veteran', '5': 'pro', '6': 'youtuber', '7': 'streamer', '8': 'developer', '100': 'owner' }[rank] %> truncate">
+                    <% if(rank != 0) { %>
+                        <div class="chat-message-rank mr-1 rounded-1 chat-rank-<%= { '0': 'member', '1': 'admin', '2': 'moderator', '3': 'helper', '4': 'veteran', '5': 'pro', '6': 'youtuber', '7': 'streamer', '8': 'developer', '100': 'owner' }[rank] %>"><%= { '0': 'member', '1': 'admin', '2': 'moderator', '3': 'helper', '4': 'veteran', '5': 'pro', '6': 'youtuber', '7': 'streamer', '8': 'developer', '100': 'owner' }[rank] %></div>
+                    <% } %>
+
+                    <%= user.name %>
+                </div>
+
+                <div class="chat-message-open-menu text-sm text-muted-foreground pointer px-1"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+            </div>
+
+            <div class="chat-message-time"><%= time %></div>
+
+            <%- script %>
+        </div>
+
+        <div class="chat-message-menu bg-secondary border-2 border-card rounded-2 p-1 flex flex-col hidden transition duration-200">
+            <div class="chat-message-menu-item bg-secondary flex flex-row items-center gap-2 p-2 rounded-2">Loading...</div>
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-2 bg-card p-2 rounded-2">
+        <% if(reply != null){ %>
+            <div class="chat-reply flex flex-row items-center gap-2">
+                <i class="fa fa-reply" aria-hidden="true"></i>
+
+                <div class="inline-block">
+                    <img class="avatar" src="<%= reply.user.avatar %>">
+
+                    <span class="name"><%= reply.user.name %></span>
+                    <span class="message"><%- reply.message %></span>
+                </div>
+            </div>
+        <% } %>
+
+        <div class="chat-message-content"><%- message %></div>
+    </div>
+</div>

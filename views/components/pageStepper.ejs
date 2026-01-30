@@ -1,0 +1,9 @@
+<div class="pagination-content flex flex-row gap-2 w-full" id="<%= id %>" data-page="<%= page %>">
+    <div class="flex flex-row gap-2 justify-between items-center w-full">
+        <div class="pagination-item flex items-center justify-center" data-page="<%= Math.max(1, page - 1) %>">«</div>
+
+        <div class="bg-card flex flex-row items-center justify-center border-2 border-card px-2 rounded-2 h-full"><%= page %>/<%= pages %></div>
+
+        <div class="pagination-item flex items-center justify-center" data-page="<%= Math.min(pages, page + 1) %>">»</div>
+    </div>
+</div>

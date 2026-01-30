@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: SELECT * FROM `minesweeper_bets` WHERE `ended` = 0

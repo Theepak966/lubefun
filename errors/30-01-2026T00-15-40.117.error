@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: SELECT * FROM `crash_seeds` WHERE `removed` = 0 AND `time` > 1769645740 ORDER BY `id` DESC LIMIT 1

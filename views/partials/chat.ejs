@@ -1,0 +1,140 @@
+<div class="slider left flex flex-row items-center justify-end p-2 pullout_view" data-pullout="chat">
+	<i class="fa fa-comments" aria-hidden="true"></i>
+</div>
+
+<div class="pullout left flex flex-col" data-pullout="chat">
+	<%- include('../components/chatRain.ejs'); %>
+
+	<div class="chat-group flex flex-col">
+		<div id="chat-area">
+            <% for(var i = 0; i < 10; i++){ %>
+                <%- include('../components/chatMessageSkeleton.ejs'); %>
+            <% } %>
+        </div>
+
+		<div class="flex flex-col gap-2 p-2 relative">
+			<div class="button button-accent shadow-2 p-2 flex flex-row gap-2 items-center justify-center hidden" id="chat_paused">
+                <i class="fa fa-pause" aria-hidden="true"></i>
+
+                <span>Chat is Paused</span>
+            </div>
+
+			<div class="emojis-panel flex flex-row justify-center items-center gap-2 bg-secondary border-2 border-card rounded-2 p-2 transition duration-200 hidden">
+				<% [ 'smile', 'smiley', 'grin', 'pensive', 'weary', 'astonished', 'rolling_eyes', 'relaxed', 'wink', 'woozy_face', 'zany_face', 'hugging', 'joy', 'sob', 'grimacing', 'rofl', 'face_monocle', 'thinking', 'pleading_face', 'sleeping', 'sunglasses', 'heart_eyes', 'smiling_hearts', 'kissing_heart', 'star_struck', 'nerd', 'innocent', 'face_vomiting', 'money_mouth', 'cold_sweat', 'partying_face', 'exploding_head', 'rage', 'hot_face', 'cold_face', 'smiling_imp', 'alien', 'clown', 'scream_cat', 'smiley_cat', 'robot', 'ghost', 'skull', 'poop', 'jack_o_lantern', '100', 'bell', 'birthday', 'gift', 'first_place', 'trophy', 'tada', 'crown', 'fire', 'heart', 'broken_heart', 'wave', 'clap', 'raised_hands', 'thumbsup', 'peace', 'ok_hand', 'muscle', 'punch', 'moneybag' ].forEach(function(item){ %>
+                    <img class="chat-emoji" title=":<%= item %>:" data-emoji=":<%= item %>:" src="/img/emojis/<%= item %>.png">
+                <% }); %>
+
+                <% [ 'crypepe', 'firinpepe', 'happepe', 'monkachrist', 'okpepe', 'sadpepe' ].forEach(function(item){ %>
+                    <img class="chat-emoji" title=":<%= item %>:" data-emoji=":<%= item %>:" src="/img/emojis/<%= item %>.png">
+                <% }); %>
+
+                <% [ 'gaben', 'kappa', 'kappapride', 'kim', 'pogchamp', 'shaq' ].forEach(function(item){ %>
+                    <img class="chat-emoji" title=":<%= item %>:" data-emoji=":<%= item %>:" src="/img/emojis/<%= item %>.png">
+                <% }); %>
+
+                <% [ 'alert', 'awp', 'bananadance', 'carlton', 'fortdance', 'grenade', 'lolizard', 'partyblob', 'saxguy', 'squidab', 'turtle', 'zombie' ].forEach(function(item){ %>
+                    <img class="chat-emoji" title=":<%= item %>:" data-emoji=":<%= item %>:" src="/img/emojis/<%= item %>.gif">
+                <% }); %>
+
+                <% [ 'bet', 'cant', 'cashout', 'doit', 'dont', 'feelsbad', 'feelsgood', 'gg', 'gl', 'highroller', 'joinme', 'letsgo', 'win', 'lose', 'nice', 'sniped', 'midtick', 'lowtick' ].forEach(function(item){ %>
+                    <img class="chat-emoji" title=":<%= item %>:" data-emoji=":<%= item %>:" src="/img/emojis/<%= item %>.png">
+                <% }); %>
+			</div>
+
+			<form class="flex flex-col gap-2 bg-card p-1 rounded-2" id="chat-input-form">
+				<div class="chat-reply flex flex-row justify-between items-center gap-2 mt-1 ml-2 mr-2 hidden" id="chat_reply">
+					<div class="flex flex-row items-center gap-2">
+						<i class="fa fa-reply" aria-hidden="true"></i>
+
+						<div class="inline-block">
+							<img class="avatar" src="">
+
+							<span class="name"></span>
+							<span class="message"></span>
+						</div>
+					</div>
+
+					<div class="pointer" id="chat_reply_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+				</div>
+
+				<div class="flex flex-row items-center gap-2">
+					<input type="text" class="chat-input" placeholder="Type a message..." id="chat_message" maxlength="200" autocomplete="off">
+
+					<button type="submit" class="button button-primary shadow-2">Send</button>
+				</div>
+			</form>
+
+			<div class="flex flex-row gap-1 w-full">
+                <%- include('../components/dropdownField.ejs', {
+                    type: 'top',
+                    id: 'chat_channel',
+                    items: [
+                        { name: '<div class="flex flex-row items-center justify-between gap-2"><div class="flex flex-row items-center gap-1"><img class="rounded-full" src="/img/lang/en.png"><span>English</span></div><div class="online flex flex-row items-center" data-channel="en">0</div></div>', value: 'en' },
+                        { name: '<div class="flex flex-row items-center justify-between gap-2"><div class="flex flex-row items-center gap-1"><img class="rounded-full" src="/img/lang/ro.png"><span>Română</span></div><div class="online flex flex-row items-center" data-channel="ro">0</div></div>', value: 'ro' },
+                        { name: '<div class="flex flex-row items-center justify-between gap-2"><div class="flex flex-row items-center gap-1"><img class="rounded-full" src="/img/lang/fr.png"><span>Français</span></div><div class="online flex flex-row items-center" data-channel="fr">0</div></div>', value: 'fr' },
+                        { name: '<div class="flex flex-row items-center justify-between gap-2"><div class="flex flex-row items-center gap-1"><img class="rounded-full" src="/img/lang/ru.png"><span>Pусский</span></div><div class="online flex flex-row items-center" data-channel="ru">0</div></div>', value: 'ru' },
+                        { name: '<div class="flex flex-row items-center justify-between gap-2"><div class="flex flex-row items-center gap-1"><img class="rounded-full" src="/img/lang/de.png"><span>German</span></div><div class="online flex flex-row items-center" data-channel="de">0</div></div>', value: 'de' }
+                    ]
+                }); %>
+
+				<button class="button button-card rounded-2 text-base" id="chat_emojis"><i class="fa fa-smile-o" aria-hidden="true"></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="pullout left flex flex-col" data-pullout="menu">
+	<div class="menu wrapper-page flex flex-col size-full">
+		<div class="flex flex-col gap-4 p-4" style="overflow: hidden; overflow-y: auto;">
+			<div class="flex flex-col gap-4">
+				<% settings.games.classic.forEach(function(item){ %>
+                    <a class="<% if(!item.enable && !account.permissions.play_disabled){ %>disabled<% } %>" href="/<%= item.game %>">
+                        <div class="item head flex items-center <% if(app.paths[0] == item.game) { %>active<% } %>">
+                            <img src="/img/menu/<%= item.game %>.png">
+                            <div class="ml-1"><%= item.name %></div>
+                        </div>
+                    </a>
+                <% }); %>
+
+                <% settings.games.original.forEach(function(item){ %>
+                    <a class="<% if(!item.enable && !account.permissions.play_disabled){ %>disabled<% } %>" href="/<%= item.game %>">
+                        <div class="item head flex items-center <% if(app.paths[0] == item.game) { %>active<% } %>">
+                            <img src="/img/menu/<%= item.game %>.png">
+                            <div class="ml-1"><%= item.name %></div>
+                        </div>
+                    </a>
+                <% }); %>
+			</div>
+
+			<div class="flex flex-col gap-2">
+                <a href="/deposit"><div class="item <% if(page == 'deposit') { %>active<% } %>">Deposit</div></a>
+                <a href="/withdraw"><div class="item <% if(page == 'withdraw') { %>active<% } %>">Withdraw</div></a>
+				<a href="/fair"><div class="item <% if(page == 'fair') { %>active<% } %>">Provably Fair</div></a>
+				<a href="/faq"><div class="item <% if(page == 'faq') { %>active<% } %>">FAQ</div></a>
+				<a href="/tos"><div class="item <% if(page == 'tos') { %>active<% } %>">Terms Of Service</div></a>
+				<a href="/support"><div class="item <% if(page == 'support') { %>active<% } %>">Support</div></a>
+				<a href="/leaderboard"><div class="item <% if(page == 'leaderboard') { %>active<% } %>">Leaderboard</div></a>
+				<a href="/rewards"><div class="item <% if(page == 'rewards') { %>active<% } %>">Rewards</div></a>
+				<a href="/affiliates"><div class="item <% if(page == 'affiliates') { %>active<% } %>">Affiliates</div></a>
+				<a href="/account"><div class="item text-success <% if(page == 'profile') { %>active<% } %>">Profile</div></a>
+
+				<div class="item"><div class="text-success pointer" data-modal="show" data-id="#modal_dailycases_cases">Daily Cases</div></div>
+
+                <% if(user) { %>
+                    <% if(settings.allowed.admin.includes(user.userid)) { %><a href="/admin" target="_blank"><div class="item text-success">Admin</div></a><% } %>
+                <% } %>
+
+                <% if(user) { %>
+				    <div class="item"><div class="text-danger pointer" data-modal="show" data-id="#modal_auth_logout">Logout</div></div>
+				<% } else { %>
+				    <a href="/login?returnUrl=/<%= app.paths.join('/') %>"><div class="item"><div class="text-success pointer">Sign In</div></div></a>
+				<% } %>
+
+				<div class="flex gap-1 mt-2 text-xl">
+					<a href="<%= app.links.twitter_page %>" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+					<a href="<%= app.links.steam_group %>" target="_blank"><i class="fa fa-steam" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

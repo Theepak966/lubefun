@@ -1,0 +1,504 @@
+/* Coinflip Page */
+.coinflip-page {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	padding: 12px;
+	gap: 12px;
+}
+
+/* Flips Section */
+.coinflip-flips-section {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	flex: 1;
+	overflow-y: auto;
+}
+
+.coinflip-section-title {
+	margin-bottom: 4px;
+}
+
+.coinflip-section-title h2 {
+	font-size: 20px;
+	font-weight: 700;
+	color: #ffffff;
+	margin: 0;
+	letter-spacing: -0.02em;
+}
+
+/* Empty State */
+.coinflip-empty-state {
+	padding: 40px 20px;
+	text-align: center;
+	background: #141a28;
+	border: 1px solid var(--border-color);
+	border-radius: 12px;
+}
+
+.coinflip-empty-state.hidden {
+	display: none;
+}
+
+/* Simulated Activity Subtitle */
+.coinflip-simulated-subtitle {
+	margin-top: 4px;
+}
+
+.coinflip-simulated-subtitle.hidden {
+	display: none;
+}
+
+.coinflip-simulated-badge {
+	display: inline-block;
+	padding: 4px 12px;
+	font-size: 12px;
+	font-weight: 500;
+	color: #fad84e;
+	background: rgba(250, 216, 78, 0.1);
+	border: 1px solid rgba(250, 216, 78, 0.3);
+	border-radius: 6px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+/* Create Flip Panel */
+.coinflip-create-panel {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 12px 16px;
+	background: #141a28;
+	border: 1px solid var(--border-color);
+	border-radius: 12px;
+	flex-shrink: 0;
+}
+
+.coinflip-create-left {
+	flex: 1;
+	min-width: 0;
+}
+
+.coinflip-create-right {
+	flex: 0 0 auto;
+}
+
+.coinflip-side-selector {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+	padding: 8px;
+	background: #111622;
+	border: 1px solid var(--border-color);
+	border-radius: 8px;
+}
+
+.coinflip-coin-select {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 4px;
+	opacity: 0.5;
+}
+
+.coinflip-coin-select.active {
+	opacity: 1;
+	background: rgba(79, 124, 255, 0.15);
+	border: 1px solid rgba(79, 124, 255, 0.3);
+}
+
+.coinflip-coin-select:hover {
+	opacity: 0.8;
+}
+
+.coinflip-coin-select img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.coinflip-create-btn {
+	padding: 10px 24px;
+	font-weight: 600;
+	box-shadow: 0 0 15px rgba(79, 124, 255, 0.25);
+}
+
+.coinflip-create-btn:hover {
+	box-shadow: 0 0 20px rgba(79, 124, 255, 0.4);
+}
+
+/* Flip List */
+.coinflip-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	flex: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
+	min-height: 0;
+}
+
+/* Flip Card */
+.coinflip-card {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 20px;
+	background: #141a28;
+	border: 1px solid var(--border-color);
+	border-radius: 12px;
+	transition: all 0.2s ease;
+	gap: 20px;
+}
+
+.coinflip-card:hover {
+	background: #1a2332;
+	border-color: rgba(255, 255, 255, 0.1);
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Status States */
+.coinflip-joinable {
+	border-color: rgba(34, 197, 94, 0.2);
+}
+
+.coinflip-joinable:hover {
+	border-color: rgba(34, 197, 94, 0.4);
+	box-shadow: 0 0 15px rgba(34, 197, 94, 0.1);
+}
+
+.coinflip-inplay {
+	border-color: rgba(139, 92, 246, 0.2);
+	animation: coinflip-pulse 2s ease-in-out infinite;
+}
+
+@keyframes coinflip-pulse {
+	0%, 100% {
+		border-color: rgba(139, 92, 246, 0.2);
+	}
+	50% {
+		border-color: rgba(139, 92, 246, 0.4);
+	}
+}
+
+.coinflip-finished {
+	opacity: 0.6;
+}
+
+.coinflip-finished:hover {
+	opacity: 0.8;
+}
+
+/* Card Sections */
+.coinflip-card-left {
+	flex: 1;
+	min-width: 0;
+}
+
+.coinflip-card-center {
+	flex: 0 0 auto;
+	min-width: 120px;
+}
+
+.coinflip-card-right {
+	flex: 1;
+	justify-content: flex-end;
+	min-width: 0;
+}
+
+/* Player Info */
+.coinflip-player-name {
+	font-size: 14px;
+	font-weight: 600;
+	color: #ffffff;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.coinflip-bot-badge{
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 18px;
+	padding: 0 8px;
+	border-radius: 9999px;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	color: rgba(255,255,255,0.95);
+	background: rgba(79, 124, 255, 0.14);
+	border: 1px solid rgba(79, 124, 255, 0.35);
+	box-shadow: 0 0 12px rgba(79, 124, 255, 0.18);
+}
+
+.coinflip-creator-badge {
+	font-size: 11px;
+	font-weight: 500;
+	color: #9aa4b2;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+/* BOT Badge */
+.coinflip-bot-badge {
+	display: inline-block;
+	padding: 2px 6px;
+	margin-left: 6px;
+	font-size: 10px;
+	font-weight: 700;
+	color: #fad84e;
+	background: rgba(250, 216, 78, 0.15);
+	border: 1px solid rgba(250, 216, 78, 0.3);
+	border-radius: 4px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+/* Simulated Label */
+.coinflip-simulated-label {
+	font-size: 10px;
+	font-weight: 500;
+	color: #9aa4b2;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	opacity: 0.7;
+}
+
+/* Bot Only Text */
+.coinflip-bot-only-text {
+	font-size: 12px;
+	font-weight: 500;
+	color: #9aa4b2;
+	font-style: italic;
+	padding: 8px 16px;
+}
+
+.coinflip-empty-slot {
+	font-size: 14px;
+	color: #9aa4b2;
+	font-style: italic;
+}
+
+/* VS Icon */
+.coinflip-vs-icon {
+	font-size: 24px;
+	font-weight: 700;
+	color: #9aa4b2;
+	letter-spacing: 0.1em;
+}
+
+/* Status Badge */
+.coinflip-status-badge {
+	font-size: 11px;
+	font-weight: 600;
+	padding: 4px 10px;
+	border-radius: 9999px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.coinflip-status-joinable {
+	background: rgba(34, 197, 94, 0.15);
+	color: #22c55e;
+	border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.coinflip-status-inplay {
+	background: rgba(139, 92, 246, 0.15);
+	color: #8b5cf6;
+	border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.coinflip-status-finished {
+	background: rgba(154, 164, 178, 0.15);
+	color: #9aa4b2;
+	border: 1px solid rgba(154, 164, 178, 0.3);
+}
+
+/* Timer */
+.coinflip-timer-circle {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	border: 2px solid rgba(139, 92, 246, 0.4);
+	background: rgba(139, 92, 246, 0.1);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: coinflip-timer-pulse 1s ease-in-out infinite;
+}
+
+@keyframes coinflip-timer-pulse {
+	0%, 100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(1.05);
+		opacity: 0.9;
+	}
+}
+
+.coinflip-timer-text {
+	font-size: 16px;
+	font-weight: 700;
+	color: #8b5cf6;
+}
+
+/* Amount Display */
+.coinflip-amount {
+	font-size: 18px;
+	font-weight: 700;
+	color: #ffffff;
+}
+
+.coinflip-amount-value {
+	letter-spacing: 0.02em;
+}
+
+/* Join Button */
+.coinflip-join-btn {
+	padding: 8px 20px;
+	background: #4f7cff;
+	border: 1px solid rgba(79, 124, 255, 0.4);
+	border-radius: 9999px;
+	color: #ffffff;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: 0 0 12px rgba(79, 124, 255, 0.2);
+}
+
+.coinflip-join-btn:hover {
+	background: #5a87ff;
+	box-shadow: 0 0 18px rgba(79, 124, 255, 0.35);
+	transform: scale(1.05);
+}
+
+.coinflip-player-2 {
+	flex: 0 0 auto;
+}
+
+/* Result */
+.coinflip-result-icon {
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.coinflip-result-icon img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.coinflip-result-text {
+	font-size: 13px;
+	color: #9aa4b2;
+	font-weight: 500;
+}
+
+/* Coin Animation (preserve existing) */
+.coinflip-coin {
+	width: 48px;
+	height: 48px;
+	position: relative;
+}
+
+.coinflip-coin .front,
+.coinflip-coin .back {
+	width: 100%;
+	height: 100%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/* Grid Layout (old - keep for compatibility) */
+.coinflip-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 12px;
+}
+
+.coinflip-game {
+	background: #141a28;
+	border: 1px solid var(--border-color);
+	border-radius: 12px;
+}
+
+/* Old bet item (keep for compatibility) */
+.coinflip_betitem {
+	background: #141a28;
+	border: 1px solid var(--border-color);
+	border-radius: 12px;
+	padding: 16px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+	.coinflip-page {
+		padding: 8px;
+		gap: 8px;
+	}
+
+	.coinflip-create-panel {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 12px;
+		padding: 12px;
+	}
+
+	.coinflip-create-left,
+	.coinflip-create-right {
+		width: 100%;
+	}
+
+	.coinflip-create-right {
+		justify-content: space-between;
+	}
+
+	.coinflip-side-selector {
+		justify-content: center;
+	}
+
+	.coinflip-card {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 12px;
+		padding: 12px;
+	}
+
+	.coinflip-card-left,
+	.coinflip-card-center,
+	.coinflip-card-right {
+		width: 100%;
+	}
+
+	.coinflip-card-right {
+		justify-content: space-between;
+	}
+
+	.coinflip-join-btn {
+		padding: 12px 24px;
+		font-size: 14px;
+		width: 100%;
+	}
+}

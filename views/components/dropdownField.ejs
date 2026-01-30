@@ -1,0 +1,28 @@
+<div class="dropdown_field <%= type %> transition duration-500 <% if(typeof disabled !== 'undefined' && disabled) { %>disabled<% } %>">
+    <div class="field_container">
+        <div class="field_content">
+            <input type="text" class="field_element_input <% if(typeof classes !== 'undefined' && Array.isArray(classes)){ %><%= classes.join(' ') %><% } %>" <% if(typeof id !== 'undefined') { %>id="<%= id %>"<% } %> <% if(typeof attributes !== 'undefined' && Array.isArray(attributes)){ %><%- attributes.map(a => a.name + '="' + a.value + '"').join(' ') %><% } %> value="<% if(typeof items !== 'undefined' && Array.isArray(items)){ %><% if(typeof selected !== 'undefined' && selected < items.length){ %><%- items[selected].value %><% } else { %><%- items[0].value %><% } %><% } %>">
+            <div class="field_dropdown"><% if(typeof items !== 'undefined' && Array.isArray(items)){ %><% if(typeof selected !== 'undefined' && selected < items.length){ %><%- items[selected].name %><% } else { %><%- items[0].name %><% } %><% } %></div>
+
+            <div class="field_element_dropdowns">
+                <% if(typeof items !== 'undefined' && Array.isArray(items)){ %>
+                    <% items.forEach(function(item, index){ %>
+                        <div class="field_element_dropdown" value="<%= item.value %>" data-index="<%= index %>"><%- item.name %></div>
+                    <% }); %>
+                <% } %>
+            </div>
+
+           <% if(typeof placeholder !== 'undefined'){ %>
+                <div class="field_label active transition duration-500"><%= placeholder %></div>
+            <% } %>
+        </div>
+
+        <div class="field_extra">
+            <div class="field_caret">
+                <i class="fa fa-caret-down" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="field_bottom"></div>
+</div>

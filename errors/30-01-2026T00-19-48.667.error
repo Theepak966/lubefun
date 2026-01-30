@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: UPDATE `crash_rolls` SET `ended` = 1 WHERE `id` = NaN

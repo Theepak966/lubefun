@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!--  META  -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title><%= name %> | <%= app.name %></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1">
+        <meta name="keywords" content="<%= app.keywords.join(',') %>">
+        <meta name="description" content="<%= app.description %>">
+        <meta name="author" content="<%= app.author %>">
+        <meta name="theme-color" content="<%= app.themecolor %>">
+
+        <meta property="og:url" content="<%= app.url %>">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="<%= app.name %>">
+        <meta property="og:title" content="<%= app.name %>">
+        <meta property="og:description" content="<%= app.description %>">
+        <meta property="og:image" content="<%= app.url %>/img/logo.png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/img/favicon-96x96.png" sizes="96x96">
+
+        <!--  CSS  -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,500,400italic,500italic,700,700italic" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
+        <link href="/css/globals.css" rel="stylesheet">
+        <link href="/css/bouncer.css" rel="stylesheet">
+
+        <!--  JAVASCRIPT  -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinysort/2.3.6/tinysort.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+
+        <%- '<script>var app = ' + JSON.stringify({ page: page, url: app.url, name: app.name, paths: app.paths, port: app.port, secure: app.secure, recaptcha: app.recaptcha }, null, 4) + ';</script>' %>
+
+        <script type="text/javascript" src="/js/components.js"></script>
+        <script type="text/javascript" src="/js/app.js"></script>
+	</head>
+
+	<body>
+        <%- include('../partials/modals.ejs') %>
+
+		<%- body %>
+	</body>
+</html>

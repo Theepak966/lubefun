@@ -1,0 +1,10 @@
+<div class="w-full text-center font-bold text-xl">Email Confirmation Sent</div>
+
+<div><span class="text-muted-foreground">An email with a confirmation link is on way to </span><%= response.email %></div>
+
+<div class="text-muted-foreground">If you don't receive an email soon, check that the email address you entered is correct, check your spam folder or reach out to support if the issue persist.</div>
+
+<div class="flex flex-row gap-1 justify-center items-center w-full">
+    <span class="text-muted-foreground text-base">Don't want to register anymore?</span>
+    <a href="/auth/logout?returnUrl=<%= response.returnUrl %>"><div class="text-base">Log Out</div></a>
+</div>

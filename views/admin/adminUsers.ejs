@@ -1,0 +1,74 @@
+<div class="flex flex-col gap-2">
+    <div class="flex flex-row gap-2">
+        <%- include('../components/inputField.ejs', {
+            type: 'text',
+            placeholder: 'Search User (userid, username, name, ip)',
+            id: 'admin_users_search'
+        }); %>
+
+        <%- include('../components/dropdownField.ejs', {
+            type: 'bottom',
+            placeholder: 'Order by',
+            id: 'admin_users_order',
+            items: [
+                { name: 'Registed date', value: 0 },
+                { name: 'Name A-Z', value: 1 },
+                { name: 'Name Z-A', value: 2 },
+                { name: 'Balance acending', value: 3 },
+                { name: 'Balance descending', value: 4 },
+                { name: 'Rank', value: 5 }
+            ]
+        }); %>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <div class="table-row">
+                <div class="table-column text-left">User</div>
+                <div class="table-column text-left">User Id</div>
+                <div class="table-column text-left">Balance</div>
+                <div class="table-column text-left">Rank</div>
+                <div class="table-column text-left">Registed date</div>
+                <div class="table-column text-right">Action</div>
+            </div>
+        </div>
+        <div class="table-body" id="admin_users_list">
+            <% if(response.admin.users.list.length > 0){ %>
+                <% response.admin.users.list.forEach(function(item){ %>
+                    <div class="table-row">
+                        <div class="table-column text-left">
+                            <div class="flex items-center gap-1">
+                                <div class="avatar-field <%= [ 'tier-steel', 'tier-bronze', 'tier-silver', 'tier-gold', 'tier-diamond' ][Math.floor(item.user.level / 25)] %> relative">
+                                    <img class="avatar icon-small rounded-full" src="<%= item.user.avatar %>">
+                                    <div class="level sup-small-left flex justify-center items-center border-2 border-secondary rounded-full"><%= item.user.level %></div>
+                                </div>
+
+                                <div class="text-left w-full truncate"><%= item.user.name %></div>
+                            </div>
+                        </div>
+
+                        <div class="table-column text-left pointer" data-copy="text" data-text="<%= item.user.userid %>"><%= item.user.userid %></div>
+                        <div class="table-column text-left"><%= item.balance %>$</div>
+                        <div class="table-column text-left font-bold uppercase chat-link-<%= item.rank %>"><%= item.rank %></div>
+                        <div class="table-column text-left"><%= item.created %></div>
+
+                        <div class="table-column text-right"><a href="/admin/users/<%= item.user.userid %>"><button class="button button-primary shadow-2">Moderate</button></a></div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <%- include('../components/emptyTable.ejs', {
+                    title: 'No data found'
+                }); %>
+            <% } %>
+        </div>
+        <div class="table-footer">
+            <div class="flex items-center justify-center bg-secondary p-2">
+                <%- include('../components/pageNavigator.ejs', {
+                    id: 'pagination_admin_users',
+                    page: response.admin.users.page,
+                    pages: response.admin.users.pages
+                }); %>
+            </div>
+        </div>
+    </div>
+</div>

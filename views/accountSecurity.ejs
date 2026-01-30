@@ -1,0 +1,230 @@
+<div class="flex flex-col gap-2">
+	<div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-4 bg-card bg-opacity-50 rounded-2 border-2 border-card pt-8 pb-4 px-4">
+                <div class="flex flex-col gap-2 items-center">
+                    <div class="avatar-field tier-<%= response.account.user.level.tier %>">
+                        <img class="avatar icon-huge rounded-full" src="<%= response.account.user.avatar %>">
+                    </div>
+
+                    <div class="flex justify-center gap-2 font-bold text-xl">
+                        <div class="capitalize chat-link-<%= response.account.user.rank %>"><%= response.account.user.rank %></div>
+
+                        <div class="truncate"><%= response.account.user.name %></div>
+                    </div>
+
+                    <div class="level-bar flex items-center gap-1">
+                        <div class="font-bold">Lvl. <%= Math.min(response.account.user.level.level + 1, 100) - 1 %></div>
+
+                        <div class="progress-container rounded-1">
+                            <% var style = 'style="width: ' + response.account.user.level.progress + '%;"'; %>
+
+                            <div class="progress-bar transition duration-200 ease-linear rounded-1" <%- style %>></div>
+                            <div class="progress-content flex flex-row justify-center items-center gap-1 font-bold">
+                                <span><%= response.account.user.level.have %></span>
+                                <span>/</span>
+                                <span><%= response.account.user.level.next %></span>
+                            </div>
+                        </div>
+
+                        <div class="font-bold"><%= Math.min(response.account.user.level.level + 1, 100) %></div>
+                    </div>
+                </div>
+
+                <div class="flex responsive flex-row gap-2 items-center justify-between">
+                    <div class="text-muted-foreground">Member since <%= response.account.user.created %></div>
+                    <div><span class="text-muted-foreground">User ID:</span> <%= response.account.user.userid %></div>
+                </div>
+            </div>
+
+            <div class="flex responsive flex-row gap-2">
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Deposited</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.deposited %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Withdrawn</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.withdrawn %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Wagered</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.wagered %></span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center gap-1 bg-card bg-opacity-50 rounded-2 border-2 border-card p-4 w-full">
+                    <div class="text-muted-foreground font-bold">Profit</div>
+                    <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="coin main"></div>
+                        <span class="text-primary text-xl"><%= response.account.stats.profit %></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="account-tabs top flex flex-wrap flex-row gap-2 border-b-2 border-card">
+            <a href="/account/settings"><button class="button">Settings</button></a>
+            <a href="/account/deposits"><button class="button">Balance History</button></a>
+            <a href="/account/games"><button class="button">Games History</button></a>
+            <a href="/account/transactions"><button class="button">Transactions History</button></a>
+            <a href="/account/exclusion"><button class="button">Self Exclusion</button></a>
+            <a href="/account/security"><button class="button active">Security</button></a>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="flex flex-col items-start gap-2">
+                <div class="text-left font-bold text-base">Email</div>
+
+                <div class="text-muted-foreground">Please enter your new email address below. A email will be sent to verify the new email.</div>
+
+                <%- include('./components/inputField.ejs', {
+                    type: 'text',
+                    placeholder: 'Email',
+                    classes: [ 'account_email' ],
+                    value: response.account.security.email,
+                    errors: [ 'required', 'email' ],
+                    features: [
+                        '<button class="button button-primary shadow-2" id="save_account_email">Save</button>'
+                    ]
+                }); %>
+            </div>
+
+            <div class="flex flex-col gap-2 items-start">
+                <div class="text-left font-bold text-base">Change Your Password</div>
+
+                <div class="text-muted-foreground">For your security, we highly recommend that you choose a unique password that you don't use for any other online account.</div>
+
+                <button type="button" class="button button-primary shadow-2" data-modal="show" data-id="#modal_auth_change_password">Change Password</button>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <div class="text-left font-bold text-base">Two-Factor Authentication</div>
+
+                <div class="text-muted-foreground">Two-factor authentication (also known as 2FA) helps protect your account by requiring you to enter an additional code when you log in.</div>
+
+                <div class="account-security flex flex-col gap-2">
+                    <div class="security-method <% if(response.account.security.twofactor_authentication.authenticator_app.enabled){ %>enabled<% } %> <% if(response.account.security.twofactor_authentication.authenticator_app.primary){ %>primary<% } %> flex flex-row gap-4 items-center bg-card bg-opacity-50 rounded-2 border-2 border-card py-2 px-4 w-full" data-method="authenticator_app">
+                        <div class="method-icon flex flex-row items-center justify-center bg-secondary">
+                            <img src="/img/security/phone.png">
+
+                            <div class="method-selected flex justify-center items-center text-xs"><i class="fa fa-check" aria-hidden="true"></i></div>
+                        </div>
+
+                        <div class="flex flex-row gap-2 justify-between items-center w-full relative">
+                            <div class="flex flex-col items-start gap-2 size-full">
+                                <div class="flex flex-row gap-2 items-center">
+                                    <div class="text-left font-bold text-base">Authenticator App</div>
+
+                                    <div class="method-badge bg-primary bg-opacity-50 rounded-1 border-2 border-primary p-1 font-bold text-xs">Primary</div>
+                                </div>
+
+                                <div class="text-muted-foreground">Use an Authenticator App as your two-factor authentication. You’ll be asked to enter the security code provided by your Authenticator App.</div>
+                            </div>
+
+                            <button class="button button-primary shadow-2 method-disabled" id="enable_authenticator_app">Set up</button>
+
+                            <div class="method-enabled">
+                                <div class="method-open-menu text-base text-muted-foreground pointer p-1 h-full"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+
+                                <div class="method-menu bg-secondary border-2 border-card rounded-2 p-1 flex flex-col transition duration-200 hidden">
+                                    <div class="method-menu-item bg-secondary flex flex-row items-center gap-2 p-2 rounded-2 font-bold method-primary twofa_primary_method" data-method="authenticator_app">Make my primary 2FA method</div>
+                                    <div class="method-menu-item bg-secondary flex flex-row items-center gap-2 p-2 rounded-2 font-bold" id="manage_authenticator_app">Manage backup codes</div>
+                                    <div class="method-menu-item bg-secondary flex flex-row items-center gap-2 p-2 rounded-2 font-bold" id="disable_authenticator_app">Remove method</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="security-method <% if(response.account.security.twofactor_authentication.email_verification.enabled){ %>enabled<% } %> <% if(response.account.security.twofactor_authentication.email_verification.primary){ %>primary<% } %> flex flex-row gap-4 items-center bg-card bg-opacity-50 rounded-2 border-2 border-card py-2 px-4 w-full" data-method="email_verification">
+                        <div class="method-icon flex flex-row items-center justify-center bg-secondary">
+                            <img src="/img/security/email.png">
+
+                            <div class="method-selected flex justify-center items-center text-xs"><i class="fa fa-check" aria-hidden="true"></i></div>
+                        </div>
+
+                        <div class="flex flex-row gap-2 justify-between items-center w-full relative">
+                            <div class="flex flex-col items-start gap-2 size-full">
+                                <div class="flex flex-row gap-2 items-center">
+                                    <div class="text-left font-bold text-base">Email Verification</div>
+
+                                    <div class="method-badge bg-primary bg-opacity-50 rounded-1 border-2 border-primary p-1 font-bold text-xs">Primary</div>
+                                </div>
+
+                                <div class="text-muted-foreground">Use your email address as your two-factor authentication. You’ll be asked to enter the security code sent to the address associated with your account.</div>
+                            </div>
+
+                            <button class="button button-primary shadow-2 method-disabled" id="enable_email_verification">Set up</button>
+
+                            <div class="method-enabled">
+                                <div class="method-open-menu text-base text-muted-foreground pointer p-1 h-full"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+
+                                <div class="method-menu bg-secondary border-2 border-card rounded-2 p-1 flex flex-col transition duration-200 hidden">
+                                    <div class="method-menu-item bg-secondary flex flex-row items-center gap-2 p-2 rounded-2 font-bold method-primary twofa_primary_method" data-method="email_verification">Make my primary 2FA method</div>
+                                    <div class="method-menu-item bg-secondary flex flex-row items-center gap-2 p-2 rounded-2 font-bold" id="disable_email_verification">Remove method</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <div class="text-left font-bold text-base">Active Sessions</div>
+
+                <div class="text-muted-foreground">In case you don't recognize the device or location on one of the sessions, make sure to log it out and change your password, as your steam account might have been compromised.</div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-row">
+                            <div class="table-column text-left">Device</div>
+                            <div class="table-column text-left">Browser</div>
+                            <div class="table-column text-left">Location</div>
+                            <div class="table-column text-left">Date</div>
+
+                            <% if(!response.account.looking){ %>
+                            <div class="table-column text-right">Action</div>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <div class="table-body" id="my_devices">
+                        <% if(response.account.security.sessions.length > 0){ %>
+                            <% response.account.security.sessions.forEach(function(item){ %>
+                                <div class="table-row <% if(item.current){ %>bg-success bg-opacity-50<% } %>" data-session="<%= item.id %>">
+                                    <div class="table-column text-left"><%= item.device.device %> - <%= item.device.os.name %> - <%= item.device.os.version %></div>
+                                    <div class="table-column text-left"><%= item.device.browser.name %> <%= item.device.browser.version %></div>
+                                    <div class="table-column text-left"><%= item.location %></div>
+                                    <div class="table-column text-left"><%= item.date %></div>
+
+                                    <% if(!response.account.looking){ %>
+                                    <div class="table-column text-right"><button class="button button-primary shadow-2 remove_session" data-session="<%= item.id %>">Logout</button></div>
+                                    <% } %>
+                                </div>
+                            <% }); %>
+                        <% } else { %>
+                            <%- include('./components/emptyTable.ejs', {
+                                title: 'No data found'
+                            }); %>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+
+            <% if(account.authorized.account){ %>
+                <div class="flex flex-row gap-2">
+                    <button class="button button-primary shadow-2" id="remove_sessions">Log out of all sessions</button>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>

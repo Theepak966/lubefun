@@ -1,0 +1,95 @@
+<div class="coinflip-card <% if(status == 0) { %>coinflip-joinable<% } else if(status == 1 || status == 2 || status == 3) { %>coinflip-inplay<% } else if(status == 4) { %>coinflip-finished<% } %>" data-id="<%= id %>" <% if(isBotFlip === true) { %>data-isBotFlip="true"<% } %>>
+	<!-- Left: Player 1 -->
+	<div class="coinflip-card-left flex flex-row items-center gap-3">
+		<% var player1 = players.find(a => a.position == 0); %>
+		<% if(player1 && player1.user) { %>
+			<%- include('./userAvatar.ejs', { user: player1.user, size: 'small', classes: [], features: [] }); %>
+			<div class="flex flex-col gap-1">
+				<div class="coinflip-player-name">
+					<%= player1.user.name %>
+					<% if(player1.bot == 1) { %><span class="coinflip-bot-badge">BOT</span><% } %>
+				</div>
+				<% if(creator && player1.user.userid == creator) { %>
+					<div class="coinflip-creator-badge">Creator</div>
+				<% } %>
+			</div>
+		<% } else { %>
+			<div class="coinflip-empty-slot">Waiting...</div>
+		<% } %>
+	</div>
+
+	<!-- Center: VS / Status -->
+	<div class="coinflip-card-center flex flex-col items-center justify-center gap-2">
+		<% if(status == 0) { %>
+			<div class="coinflip-vs-icon">VS</div>
+			<div class="coinflip-status-badge coinflip-status-joinable">Joinable</div>
+		<% } else if(status == 1) { %>
+			<div class="coinflip-timer-circle">
+				<div class="coinflip-timer-text" id="coinflip_timer_<%= id %>"><%= data.time %></div>
+			</div>
+			<div class="coinflip-status-badge coinflip-status-inplay">In Play</div>
+			<% var script = '<script>' +
+				'var coinflip_timer_' + id + ' = ' + data.time + ';' +
+				'if(coinflip_interval_' + id + ') clearInterval(coinflip_interval_' + id + ');' +
+				'var coinflip_interval_' + id + ' = setInterval(function(){' +
+					'coinflip_timer_' + id + '--;' +
+					'$("#coinflip_timer_' + id + '").text(coinflip_timer_' + id + ');' +
+					'if(coinflip_timer_' + id + ' <= 0) clearInterval(coinflip_interval_' + id + ');' +
+				'}, 1000);' +
+			'</script>'; %>
+			<%- script %>
+		<% } else if(status == 2) { %>
+			<div class="coinflip-status-badge coinflip-status-inplay">EOS</div>
+		<% } else if(status == 3) { %>
+			<div class="coinflip-coin coinflip-coin-animation-<%= data.winner %>">
+				<div class="front absolute top-0 bottom-0 left-0 right-0"></div>
+				<div class="back absolute top-0 bottom-0 left-0 right-0"></div>
+			</div>
+			<div class="coinflip-status-badge coinflip-status-inplay">Flipping</div>
+		<% } else if(status == 4) { %>
+			<div class="coinflip-result-icon coinflip-result-<%= data.winner %>">
+				<img src="/img/coinflip/coin<%= data.winner %>.png">
+			</div>
+			<div class="coinflip-status-badge coinflip-status-finished">Finished</div>
+		<% } %>
+	</div>
+
+	<!-- Right: Player 2 / Amount / Action -->
+	<div class="coinflip-card-right flex flex-row items-center gap-4">
+		<div class="coinflip-amount flex flex-col items-end gap-1">
+			<div class="flex flex-row items-center gap-2">
+				<div class="coin main"></div>
+				<span class="coinflip-amount-value"><%= amount %></span>
+			</div>
+			<% if(isBotFlip === true) { %>
+				<div class="coinflip-simulated-label">Simulated</div>
+			<% } %>
+		</div>
+
+		<% if(status == 0) { %>
+			<% if(isBotFlip === true) { %>
+				<div class="coinflip-bot-only-text">Bots Only</div>
+			<% } else { %>
+				<button class="coinflip-join-btn coinflip-join" data-id="<%= id %>">Join</button>
+			<% } %>
+		<% } else if(status == 1 || status == 2 || status == 3) { %>
+			<div class="coinflip-player-2 flex flex-row items-center gap-2">
+				<% var player2 = players.find(a => a.position == 1); %>
+				<% if(player2 && player2.user) { %>
+					<%- include('./userAvatar.ejs', { user: player2.user, size: 'small', classes: [], features: [] }); %>
+					<div class="coinflip-player-name">
+						<%= player2.user.name %>
+						<% if(player2.bot == 1) { %><span class="coinflip-bot-badge">BOT</span><% } %>
+					</div>
+				<% } %>
+			</div>
+		<% } else if(status == 4) { %>
+			<div class="coinflip-result-text">
+				<% var winner = players.find(a => a.position == data.winner); %>
+				<% if(winner && winner.user) { %>
+					<%= winner.user.name %> won
+				<% } %>
+			</div>
+		<% } %>
+	</div>
+</div>

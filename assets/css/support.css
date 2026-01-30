@@ -1,0 +1,26 @@
+.support-request .message {
+	border-radius: 0 0.5rem 0.5rem 0.5rem;
+}
+
+.support-request .message.response {
+	background: #344039 !important; /* color */
+}
+
+.support-request .request {
+	width: 300px;
+	min-width: 300px;
+}
+
+@media (max-width: 768px){
+    .support-request .request {
+        width: 100%;
+    }
+}
+
+.support-request-actions.closed .support-request-action:not([data-action="closed"]){
+    display: none;
+}
+
+.support-request-actions.opened .support-request-action:not([data-action="opened"]){
+    display: none;
+}

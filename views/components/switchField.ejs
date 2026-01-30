@@ -1,0 +1,17 @@
+<div class="switch_field transition duration-500 <% if(typeof disabled !== 'undefined' && disabled) { %>disabled<% } %>">
+    <div class="field_container">
+        <div class="field_content">
+            <input type="checkbox" class="field_element_input <% if(typeof classes !== 'undefined' && Array.isArray(classes)){ %><%= classes.join(' ') %><% } %>" <% if(typeof id !== 'undefined') { %>id="<%= id %>"<% } %> <% if(typeof attributes !== 'undefined' && Array.isArray(attributes)){ %><%- attributes.map(a => a.name + '="' + a.value + '"').join(' ') %><% } %> <% if(typeof checked !== 'undefined' && checked) { %>checked<% } %>>
+
+            <div class="field_switch">
+                <div class="field_switch_bar"></div>
+            </div>
+
+            <% if(typeof placeholder !== 'undefined'){ %><div class="field_label active transition duration-500"><%= placeholder %></div><% } %>
+        </div>
+
+        <div class="field_extra"></div>
+    </div>
+
+    <div class="field_bottom"></div>
+</div>

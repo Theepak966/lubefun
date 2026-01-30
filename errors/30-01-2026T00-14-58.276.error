@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: SELECT * FROM `games_history` WHERE `visible` = 1 ORDER BY `id` DESC LIMIT 10

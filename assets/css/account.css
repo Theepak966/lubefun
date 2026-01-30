@@ -1,0 +1,110 @@
+.account-tabs .button{
+    height: 100%;
+    width: 100%;
+    padding: 14px 24px !important;
+}
+
+.account-tabs .button.active{
+    padding: 12px 24px !important;
+    background: var(--card);
+}
+
+@media (min-width: 768px){
+    .account-tabs.top .button.active{
+        border-radius: 0.25rem 0.25rem 0 0;
+    }
+}
+
+@media (max-width: 768px){
+    .account-tabs{
+        -webkit-box-orient: horizontal !important;
+        -webkit-box-direction: normal !important;
+        -ms-flex-direction: row !important;
+        flex-direction: row !important;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+
+    .account-tabs.top .button.active{
+        border-radius: 0.25rem;
+    }
+}
+
+.account-security .security-method .method-icon{
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    min-height: 70px;
+    border-radius: 50%;
+    position: relative;
+}
+
+.account-security .security-method .method-icon img{
+    max-width: 50%;
+    max-height: 50%;
+}
+
+.account-security .security-method:not(.primary) .method-badge{
+    display: none;
+}
+
+.account-security .security-method.primary .method-primary{
+    display: none;
+}
+
+.account-security .security-method:not(.enabled) .method-enabled{
+    display: none;
+}
+
+.account-security .security-method.enabled .method-disabled{
+    display: none;
+}
+
+.account-security .security-method:not(.enabled) .method-icon .method-selected{
+    display: none;
+}
+
+.account-security .security-method.enabled .method-icon{
+    border: solid 2px #21934c; /* color */
+    box-shadow: inset 0 0 4px #21934c; /* color */
+}
+
+.account-security .security-method .method-icon .method-selected{
+    background-color: #21934c; /* color */
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	border-radius: 50%;
+	color: #0f5b2d; /* color */
+	z-index: 1;
+}
+
+.account-security .security-method .method-menu {
+    position: absolute;
+    top: 100%;
+    right: 0px;
+    color: var(--foreground);
+    z-index: 1;
+    max-width: 100%;
+    opacity: 0;
+}
+
+.account-security .security-method .method-menu .method-menu-item:hover {
+	background: var(--card) !important;
+	cursor: pointer;
+}
+
+.account-qrcode {
+	width: 150px;
+	height: 150px;
+    min-width: 150px;
+	min-height: 150px;
+	display: inline-table;
+	border: 10px solid var(--color-white);
+	border-radius: 10px;
+	position: relative;
+	background-color: var(--color-white);
+}

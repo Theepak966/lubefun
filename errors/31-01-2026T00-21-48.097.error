@@ -1,0 +1,9 @@
+Error: Unknown authentication strategy "discord"
+    at attempt (/Users/theepak/Desktop/lubefinal/lubee.rar/coca8424_77ac39e3/node_modules/passport/lib/middleware/authenticate.js:193:39)
+    at authenticate (/Users/theepak/Desktop/lubefinal/lubee.rar/coca8424_77ac39e3/node_modules/passport/lib/middleware/authenticate.js:379:7)
+    at exports.discord (/Users/theepak/Desktop/lubefinal/lubee.rar/coca8424_77ac39e3/controllers/api/auth.js:219:37)
+    at Layer.handle [as handle_request] (/Users/theepak/Desktop/lubefinal/lubee.rar/coca8424_77ac39e3/node_modules/express/lib/router/layer.js:95:5)
+    at next (/Users/theepak/Desktop/lubefinal/lubee.rar/coca8424_77ac39e3/node_modules/express/lib/router/route.js:149:13)
+    at /Users/theepak/Desktop/lubefinal/lubee.rar/coca8424_77ac39e3/node_modules/express-rate-limit/dist/index.cjs:807:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async /Users/theepak/Desktop/lubefinal/lubee.rar/coca8424_77ac39e3/node_modules/express-rate-limit/dist/index.cjs:691:5

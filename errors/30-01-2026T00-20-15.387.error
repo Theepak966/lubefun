@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: SELECT `reason` FROM `maintenance` WHERE `removed` = 0 ORDER BY `id` DESC LIMIT 1

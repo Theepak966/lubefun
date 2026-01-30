@@ -1,0 +1,92 @@
+<div class="flex flex-col gap-2">
+    <div class="flex flex-row gap-2">
+        <%- include('../components/inputField.ejs', {
+            type: 'text',
+            placeholder: 'Search Request',
+            id: 'admin_support_search'
+        }); %>
+
+        <%- include('../components/dropdownField.ejs', {
+            type: 'bottom',
+            placeholder: 'Status',
+            id: 'admin_support_filter_status',
+            items: [
+                { name: 'Any', value: 0 },
+                { name: 'Opened', value: 1 },
+                { name: 'Unsolved', value: 2 },
+                { name: 'Answered', value: 3 },
+                { name: 'Solved', value: 4 }
+            ]
+        }); %>
+
+        <%- include('../components/dropdownField.ejs', {
+            type: 'bottom',
+            placeholder: 'Department',
+            id: 'admin_support_filter_department',
+            items: [
+                { name: 'Any', value: 0 },
+                { name: 'General / Others', value: 1 },
+                { name: 'Bug report', value: 2 },
+                { name: 'Trade offer issue', value: 3 },
+                { name: 'Improvements / Ideas', value: 4 },
+                { name: 'Marketing / Partnership', value: 5 },
+                { name: 'Ranking up', value: 6 }
+            ]
+        }); %>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <div class="table-row">
+                <div class="table-column text-left">Subject</div>
+                <div class="table-column text-left">Department</div>
+                <div class="table-column text-left">Created</div>
+                <div class="table-column text-left">Last Activity</div>
+                <div class="table-column text-left">Assigned To</div>
+                <div class="table-column text-right">Status</div>
+            </div>
+        </div>
+        <div class="table-body" id="admin_support_requests">
+            <% if(response.admin.support.requests.list.length > 0){ %>
+                <% response.admin.support.requests.list.forEach(function(item){ %>
+                    <div class="table-row">
+                        <div class="table-column text-left"><a class="underline" href="/admin/support/requests/<%= item.id %>"><%= item.subject %></a></div>
+                        <div class="table-column text-left"><%= { 0: 'General / Others', 1: 'Bug report', 2: 'Trade offer issue', 3: 'Improvements / Ideas', 4: 'Marketing / Partnership', 5: 'Ranking up' }[item.department] %></div>
+                        <div class="table-column text-left"><%= item.created %></div>
+                        <div class="table-column text-left"><%= item.updated %></div>
+                        <div class="table-column text-left">
+                            <% if(item.assigned){ %>
+                                <div class="flex items-center gap-1">
+                                    <div class="avatar-field <%= [ 'tier-steel', 'tier-bronze', 'tier-silver', 'tier-gold', 'tier-diamond' ][Math.floor(item.assigned.level / 25)] %> relative">
+                                        <img class="avatar icon-small rounded-full" src="<%= item.assigned.avatar %>">
+                                        <div class="level sup-small-left flex justify-center items-center border-2 border-secondary rounded-full"><%= item.assigned.level %></div>
+                                    </div>
+
+                                    <div class="text-left w-full truncate"><%= item.assigned.name %></div>
+                                </div>
+                            <% } else if(item.closed) { %>
+                                <div class="font-bold text-danger">Unavailable</div>
+                            <% } else { %>
+                                <div class="font-bold text-success">Available</div>
+                            <% } %>
+                        </div>
+                        <div class="table-column"><div class="flex flex-row justify-end"><div class="<%= [ { 0: 'bg-danger bg-opacity-50', 1: 'bg-warning bg-opacity-50', 2: 'bg-success bg-opacity-50' }[item.status], 'bg-info bg-opacity-50' ][item.closed] %> p-1 rounded-1"><%= [ { 0: 'Opened', 1: 'Unsolved', 2: 'Answered' }[item.status], 'Solved' ][item.closed] %></div></div></div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <%- include('../components/emptyTable.ejs', {
+                    title: 'No requests found'
+                }); %>
+            <% } %>
+        </div>
+        <div class="table-footer">
+            <div class="flex items-center justify-center bg-secondary p-2">
+                <%- include('../components/pageNavigator.ejs', {
+                    id: 'pagination_admin_support_requests',
+                    page: response.admin.support.requests.page,
+                    pages: response.admin.support.requests.pages
+                }); %>
+            </div>
+        </div>
+    </div>
+</div>

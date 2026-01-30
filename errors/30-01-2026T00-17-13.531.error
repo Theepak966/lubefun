@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: INSERT INTO `rain_history` SET `amount` = 1, `finish` = 1769733435, `time` = 1769732233

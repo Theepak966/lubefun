@@ -1,0 +1,133 @@
+<div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+        <div class="text-left font-bold text-base">Confirmation Listings</div>
+
+        <div class="flex flex-row gap-2">
+            <button class="button button-accent shadow-2 dashboard-load switch_panel active" data-id="confirmation" data-panel="crypto">Crypto</button>
+        </div>
+
+        <div class="switch_content" data-id="confirmation" data-panel="crypto">
+            <div class="table-container">
+                <div class="table-header">
+                    <div class="table-row">
+                        <div class="table-column text-left">Id</div>
+                        <div class="table-column text-left">User Id</div>
+                        <div class="table-column text-left">Amount</div>
+                        <div class="table-column text-left">Currency</div>
+                        <div class="table-column text-left">Date</div>
+                        <div class="table-column text-right">Action</div>
+                    </div>
+                </div>
+
+                <div class="table-body" id="admin_crypto_confirmations">
+                    <% if(response.admin.payments.crypto.list.length > 0){ %>
+                        <% response.admin.payments.crypto.list.forEach(function(item){ %>
+                            <div class="table-row">
+                                <div class="table-column text-left">#<%= item.id %></div>
+                                <div class="table-column text-left pointer" data-copy="text" data-text="<%= item.userid %>"><%= item.userid %></div>
+                                <div class="table-column text-left"><%= item.amount %></div>
+                                <div class="table-column text-left uppercase"><%= item.currency %></div>
+                                <div class="table-column text-left"><%= item.date %></div>
+
+                                <div class="table-column full text-right">
+                                    <div class="flex responsive flex-row justify-end gap-1">
+                                        <button class="button button-primary shadow-2 admin_trades_confirm" data-method="crypto" data-trade="<%= item.id %>">Confirm</button>
+                                        <button class="button button-primary shadow-2 admin_trades_cancel" data-method="crypto" data-trade="<%= item.id %>">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <%- include('../components/emptyTable.ejs', {
+                            title: 'No data found'
+                        }); %>
+                    <% } %>
+                </div>
+
+                <div class="table-footer">
+                    <div class="flex items-center justify-center bg-secondary p-2">
+                        <%- include('../components/pageNavigator.ejs', {
+                            id: 'pagination_admin_crypto_confirmations',
+                            page: response.admin.payments.crypto.page,
+                            pages: response.admin.payments.crypto.pages
+                        }); %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="flex flex-col gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+        <div class="text-left font-bold text-base">Confirmations Amount</div>
+
+        <div class="text-muted-foreground">The minimum amount that requires manual confirmation by an admin before processing a withdrawal.</div>
+
+        <%- include('../components/inputField.ejs', {
+            type: 'text',
+            placeholder: 'Confirmations Amount',
+            id: 'admin_payments_manually_amount_value',
+            value: response.admin.payments.manually.amount,
+            errors: [ 'required', 'number', 'greater' ],
+            features: [
+                '<button class="button button-primary shadow-2" id="admin_payments_manually_amount_set">Set</button>'
+            ]
+        }); %>
+    </div>
+
+    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+        <div class="text-left font-bold text-base">Crypto Confirmations</div>
+
+        <div class="text-muted-foreground">If this is enabled, an admin must to confirm manually the Crypto withdrawals before processing.</div>
+
+        <%- include('../components/switchField.ejs', {
+            placeholder: 'Crypto Confirmations',
+            classes: [ 'admin_switch_settings' ],
+            attributes: [
+                { name: 'data-settings', value: 'payments_manually_enable_crypto' }
+            ],
+            checked: response.admin.payments.manually.enable.crypto
+        }); %>
+    </div>
+
+    <% if(response.admin.payments.enable.crypto.length > 0){ %>
+        <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+            <div class="text-left font-bold text-base">Crypto Deposits Methods</div>
+
+            <div class="text-muted-foreground">Enable or disable Crypto methods to control their availability for deposits.</div>
+
+            <div class="flex flex-row flex-wrap gap-2">
+                <% response.admin.payments.enable.crypto.forEach(function(item){ %>
+                    <%- include('../components/switchField.ejs', {
+                        placeholder: item.name,
+                        classes: [ 'admin_switch_settings' ],
+                        attributes: [
+                            { name: 'data-settings', value: 'payments_methods_crypto_' + item.method + '_enable_deposit' }
+                        ],
+                        checked: item.enable.deposit
+                    }); %>
+                <% }); %>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+            <div class="text-left font-bold text-base">Crypto Withdraw Methods</div>
+
+            <div class="text-muted-foreground">Enable or disable Crypto methods to control their availability for withdrawals.</div>
+
+            <div class="flex flex-row flex-wrap gap-2">
+                <% response.admin.payments.enable.crypto.forEach(function(item){ %>
+                    <%- include('../components/switchField.ejs', {
+                        placeholder: item.name,
+                        classes: [ 'admin_switch_settings' ],
+                        attributes: [
+                            { name: 'data-settings', value: 'payments_methods_crypto_' + item.method + '_enable_withdraw' }
+                        ],
+                        checked: item.enable.withdraw
+                    }); %>
+                <% }); %>
+            </div>
+        </div>
+    <% } %>
+
+</div>

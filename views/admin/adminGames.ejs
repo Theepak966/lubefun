@@ -1,0 +1,90 @@
+<div class="flex flex-col gap-2">
+    <% if(response.admin.games.classic.length > 0){ %>
+        <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+            <div class="text-left font-bold text-base">Classic Game Modes</div>
+
+            <div class="text-muted-foreground">Toggle to enable or disable the specific classic game mode.</div>
+
+            <div class="flex flex-row flex-wrap gap-2">
+                <% response.admin.games.classic.forEach(function(item){ %>
+                    <%- include('../components/switchField.ejs', {
+                        placeholder: item.name,
+                        classes: [ 'admin_switch_settings' ],
+                        attributes: [
+                            { name: 'data-settings', value: 'games_games_classic_' + item.game + '_enable' }
+                        ],
+                        checked: item.enable
+                    }); %>
+                <% }); %>
+            </div>
+        </div>
+    <% } %>
+
+    <% if(response.admin.games.original.length > 0){ %>
+        <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+            <div class="text-left font-bold text-base">Original Game Modes</div>
+
+            <div class="text-muted-foreground">Toggle to enable or disable the specific original game mode.</div>
+
+            <div class="flex flex-row flex-wrap gap-2">
+                <% response.admin.games.original.forEach(function(item){ %>
+                    <%- include('../components/switchField.ejs', {
+                        placeholder: item.name,
+                        classes: [ 'admin_switch_settings' ],
+                        attributes: [
+                            { name: 'data-settings', value: 'games_games_original_' + item.game + '_enable' }
+                        ],
+                        checked: item.enable
+                    }); %>
+                <% }); %>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+            <div class="text-left font-bold text-base">House Edges</div>
+
+            <div class="text-muted-foreground">Defines the built-in advantage for original games. A higher value reduces player payouts slightly to ensure long-term profitability.</div>
+
+            <div class="flex flex-col items-start gap-2">
+                <div class="admin-house-edge flex flex-col gap-1">
+                    <% response.admin.games.original.forEach(function(item){ %>
+                        <div class="flex flex-row items-center gap-2">
+                            <%- include('../components/inputField.ejs', {
+                                type: 'text',
+                                placeholder: item.name + ' House Edge',
+                                id: 'admin_games_house_edge_' + item.game + '_value',
+                                value: item.house_edge.value,
+                                errors: [ 'required', 'number', 'percentage' ],
+                                disabled: item.house_edge.fixed,
+                                readonly: item.house_edge.fixed
+                            }); %>
+
+                            <% if(item.house_edge.fixed){ %>
+                                <div class="text-warning flex-1">This game uses a fixed house edge that cannot be modified.</div>
+                            <% } %>
+                        </div>
+                    <% }); %>
+                </div>
+
+                <button class="button button-primary shadow-2" id="admin_games_house_edge_set">Set</button>
+            </div>
+        </div>
+    <% } %>
+
+    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+        <div class="text-left font-bold text-base">Casino Real Mode</div>
+
+        <div class="text-muted-foreground">Toggle to enable or disable the real mode for casino.</div>
+
+        <div class="flex flex-row flex-wrap gap-2">
+            <%- include('../components/switchField.ejs', {
+                placeholder: 'Real Mode',
+                classes: [ 'admin_switch_settings' ],
+                attributes: [
+                    { name: 'data-settings', value: 'games_casino_real' }
+                ],
+                checked: response.admin.games.casino.real
+            }); %>
+        </div>
+    </div>
+</div>

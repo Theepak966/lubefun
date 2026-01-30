@@ -1,0 +1,22 @@
+<div class="flex flex-col gap-2">
+	<div class="flex flex-col gap-2">
+		<div class="offers-options-name">Withdraw with Cryptocurrency</div>
+
+		<div class="offers-options">
+			<% response.withdraw.enable.crypto.forEach(function(item){ %>
+                <a class="<% if(!item.enable && !account.permissions.trade_disabled){ %>disabled<% } %>" href="/withdraw/crypto/<%= item.method %>">
+                    <div class="offers-option p-2 rounded-4">
+                        <div class="offers-option-image-content flex items-center justify-center rounded-2">
+                            <div class="offers-option-info text-2xs px-2 py-1 rounded-2">Disabled</div>
+
+                            <img class="offers-option-image" src="/img/payments/crypto/<%= item.method %>.png">
+                        </div>
+
+                        <div class="offers-option-name flex justify-center items-center"><%= item.name %></div>
+                    </div>
+                </a>
+            <% }); %>
+		</div>
+	</div>
+
+</div>

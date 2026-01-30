@@ -1,0 +1,3 @@
+{
+    "ignore": [ "package-lock.json", "package.json", "prices/*.json", "cache.json", "settings.json", "public/**/*.js", "assets/**/*.js", "scripts/*.js" ]
+}

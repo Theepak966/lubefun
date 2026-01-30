@@ -1,0 +1,26 @@
+<div class="w-full text-center font-bold text-xl">Set Your Email</div>
+
+<div class="text-muted-foreground">Please enter your email address to finish setting up your account. A confirmation link will be sent to verify your email.</div>
+
+<div class="flex flex-col gap-4">
+    <form class="form_auth" autocomplete="set-email" method="POST" action="/auth/set-email?returnUrl=<%= response.returnUrl %>">
+        <div class="flex flex-col items-center gap-2">
+            <%- include('../components/inputField.ejs', {
+                type: 'text',
+                placeholder: 'Email',
+                attributes: [
+                    { name: 'name', value: 'email' },
+                    { name: 'autocomplete', value: 'email' }
+                ],
+                errors: [ 'required', 'email' ]
+            }); %>
+
+            <button type="submit" class="button button-primary shadow-2 mt-2">Submit</button>
+        </div>
+    </form>
+
+    <div class="flex flex-row gap-1 justify-center items-center w-full">
+        <span class="text-muted-foreground text-base">Don't want to register anymore?</span>
+        <a href="/auth/logout?returnUrl=<%= response.returnUrl %>"><div class="text-base">Log Out</div></a>
+    </div>
+</div>

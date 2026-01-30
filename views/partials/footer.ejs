@@ -1,0 +1,72 @@
+<div class="footer">
+	<div class="flex flex-col gap-6">
+		<div class="footer-top flex flex-row justify-between gap-6 responsive">
+			<div class="footer-logo flex flex-col gap-4">
+				<div class="justify-center">
+					<a class="justify-center flex" href="/">
+						<img src="/img/logo.png">
+					</a>
+				</div>
+
+				<div class="text-muted-foreground">Your favorite place to trade & win skins!</div>
+			</div>
+
+			<div class="footer-grid flex responsive flex-row gap-2">
+                <div class="flex flex-row gap-2">
+                    <div class="column flex flex-col items-start gap-4">
+                        <div class="title text-lg font-bold" style="background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Support</div>
+
+                        <div class="flex flex-col text-left gap-2">
+                            <a class="text-muted-foreground" href="/faq">FAQ</a>
+                            <a class="text-muted-foreground" href="/tos">Terms of Service</a>
+                            <a class="text-muted-foreground" href="/support">Support</a>
+                        </div>
+                    </div>
+
+                    <div class="column flex flex-col items-start gap-4">
+                        <div class="title text-lg font-bold" style="background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Games</div>
+
+                        <div class="flex flex-col text-left gap-2">
+                        <% settings.games.original.forEach(function(item){ %>
+                            <% if(item.enable || account.permissions.play_disabled){ %>
+                                <a class="text-muted-foreground" href="/<%= item.game %>"><%= item.name %></a>
+                            <% } %>
+                        <% }); %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-row gap-2">
+                    <div class="column flex flex-col items-start gap-4">
+                        <div class="title text-lg font-bold" style="background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Informations</div>
+
+                        <div class="flex flex-col text-left gap-2">
+                            <a class="text-muted-foreground" href="/fair">Provably Fair</a>
+                            <a class="text-muted-foreground" href="/leaderboard">Leaderboard</a>
+                            <a class="text-muted-foreground" href="/rewards">Rewards</a>
+                            <a class="text-muted-foreground" href="/affiliates">Affiliates</a>
+                        </div>
+                    </div>
+
+                    <div class="column flex flex-col items-start gap-4">
+                        <div class="title text-lg font-bold" style="background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Context</div>
+
+                        <div class="flex flex-col text-left gap-2">
+                            <a class="text-muted-foreground" href="<%= app.links.twitter_page %>" target="_blank"><i class="fa fa-twitter mr-2" aria-hidden="true"></i> Twitter</a>
+                            <a class="text-muted-foreground" href="<%= app.links.steam_group %>" target="_blank"><i class="fa fa-steam mr-2" aria-hidden="true"></i> Steam</a>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="footer-bottom flex justify-between items-center responsive gap-2 pt-2 border-t-2 border-card">
+			<div class="flex flex-row items-center gap-4">
+				<div class="bg-primary bg-opacity-50 py-1 px-2 rounded-1 font-bold" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.5) 0%, rgba(99, 102, 241, 0.5) 100%); border: 1px solid rgba(139, 92, 246, 0.5);">+18</div>
+				<div class="text-muted-foreground">© <%= new Date().getFullYear() %> <%= app.name %>. All rights reserved.</div>
+			</div>
+
+			<img src="/img/fair.png">
+		</div>
+	</div>
+</div>

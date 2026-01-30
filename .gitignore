@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+/tmp/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build outputs
+dist/
+build/
+public/js/components.js
+
+# SSL certificates (sensitive)
+ssl/*.key
+ssl/*.crt
+ssl/*.pem
+
+# Database
+*.sql.backup
+*.db
+
+# Temporary files
+*.tmp
+*.temp
+/tmp/
+
+# Nginx temp files
+/tmp/lubee-nginx.pid
+/tmp/lubee-nginx-error.log
+/tmp/lubee-nginx-access.log
+/tmp/lubee-node.pid
+/tmp/lubee-node.log

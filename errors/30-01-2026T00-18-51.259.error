@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: INSERT INTO `crash_rolls` SET `point` = 1.07, `seedid` = undefined, `nonce` = 1, `time` = 1769732331

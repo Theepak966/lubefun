@@ -1,0 +1,173 @@
+<div class="flex flex-col gap-2">
+	<div class="flex flex-row gap-2">
+		<a href="/admin/dashboard/summary"><button class="button button-accent shadow-2 active">Summary</button></a>
+		<a href="/admin/dashboard/games"><button class="button button-accent shadow-2">Games</button></a>
+		<a href="/admin/dashboard/payments"><button class="button button-accent shadow-2">Payments</button></a>
+	</div>
+
+    <div class="flex responsive flex-row gap-4 w-full">
+        <div class="dashboard-stats-grid">
+            <div class="dashboard-stats flex flex-col items-center justify-between bg-card bg-opacity-50 border-2 border-card px-2 rounded-1" data-stats="users_registed">
+                <div class="text-primary flex items-center h-full text-2xl"><span class="stats">0</span></div>
+                <div class="font-bold text-center w-full p-2 border-t-2 border-card">Users Registed</div>
+            </div>
+
+            <div class="dashboard-stats flex flex-col items-center justify-between bg-card bg-opacity-50 border-2 border-card px-2 rounded-1" data-stats="users_online">
+                <div class="text-primary flex items-center h-full text-2xl"><span class="stats">0</span></div>
+                <div class="font-bold text-center w-full p-2 border-t-2 border-card">Users Online</div>
+            </div>
+
+            <div class="dashboard-stats flex flex-col items-center justify-between bg-card bg-opacity-50 border-2 border-card px-2 rounded-1" data-stats="support_closed">
+                <div class="text-primary flex items-center h-full text-2xl"><span class="stats">0</span></div>
+                <div class="font-bold text-center w-full p-2 border-t-2 border-card">Support Requests Closed</div>
+            </div>
+
+            <div class="dashboard-stats flex flex-col items-center justify-between bg-card bg-opacity-50 border-2 border-card px-2 rounded-1" data-stats="support_opened">
+                <div class="text-primary flex items-center h-full text-2xl"><span class="stats">0</span></div>
+                <div class="font-bold text-center w-full p-2 border-t-2 border-card">Support Requests Opened</div>
+            </div>
+        </div>
+
+        <div class="dashboard-chart-grid">
+            <div class="dashboard-chart flex flex-col items-start gap-2 bg-card bg-opacity-50 border-2 border-card px-2 pb-2 rounded-1" data-graph="unique_visitors">
+                <div class="flex flex-row gap-2 justify-between items-center w-full">
+                    <div class="font-bold text-xl">Unique Visitors</div>
+
+                    <%- include('../components/dropdownField.ejs', {
+                        type: 'bottom',
+                        classes: [ 'dashboard-graph' ],
+                        items: [
+                            { name: 'This Day', value: 'day' },
+                            { name: 'This Week', value: 'week' },
+                            { name: 'This Month', value: 'month' },
+                            { name: 'This Year', value: 'year' }
+                        ]
+                    }); %>
+                </div>
+
+                <div class="size-full relative">
+                    <div class="dashboard-loader hidden bg-card bg-opacity-50 flex justify-center items-center">
+                        <div class="loader">
+                            <div class="loader-part loader-part-1">
+                                <div class="loader-dot loader-dot-1"></div>
+                                <div class="loader-dot loader-dot-2"></div>
+                            </div>
+
+                            <div class="loader-part loader-part-2">
+                                <div class="loader-dot loader-dot-1"></div>
+                                <div class="loader-dot loader-dot-2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <canvas id="dashboard_chart_unique_visitors"></canvas>
+                </div>
+            </div>
+
+            <div class="dashboard-chart flex flex-col items-start gap-2 bg-card bg-opacity-50 border-2 border-card px-2 pb-2 rounded-1" data-graph="total_requests">
+                <div class="flex flex-row gap-2 justify-between items-center w-full">
+                    <div class="font-bold text-xl">Total Requests</div>
+
+                    <%- include('../components/dropdownField.ejs', {
+                        type: 'bottom',
+                        classes: [ 'dashboard-graph' ],
+                        items: [
+                            { name: 'This Day', value: 'day' },
+                            { name: 'This Week', value: 'week' },
+                            { name: 'This Month', value: 'month' },
+                            { name: 'This Year', value: 'year' }
+                        ]
+                    }); %>
+                </div>
+
+                <div class="size-full relative">
+                    <div class="dashboard-loader hidden bg-card bg-opacity-50 flex justify-center items-center">
+                        <div class="loader">
+                            <div class="loader-part loader-part-1">
+                                <div class="loader-dot loader-dot-1"></div>
+                                <div class="loader-dot loader-dot-2"></div>
+                            </div>
+
+                            <div class="loader-part loader-part-2">
+                                <div class="loader-dot loader-dot-1"></div>
+                                <div class="loader-dot loader-dot-2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <canvas id="dashboard_chart_total_requests"></canvas>
+                </div>
+            </div>
+
+            <div class="dashboard-chart flex flex-col items-start gap-2 bg-card bg-opacity-50 border-2 border-card px-2 pb-2 rounded-1" data-graph="user_registration">
+                <div class="flex flex-row gap-2 justify-between items-center w-full">
+                    <div class="font-bold text-xl">User Registration</div>
+
+                    <%- include('../components/dropdownField.ejs', {
+                        type: 'bottom',
+                        classes: [ 'dashboard-graph' ],
+                        items: [
+                            { name: 'This Day', value: 'day' },
+                            { name: 'This Week', value: 'week' },
+                            { name: 'This Month', value: 'month' },
+                            { name: 'This Year', value: 'year' }
+                        ]
+                    }); %>
+                </div>
+
+                <div class="size-full relative">
+                    <div class="dashboard-loader hidden bg-card bg-opacity-50 flex justify-center items-center">
+                        <div class="loader">
+                            <div class="loader-part loader-part-1">
+                                <div class="loader-dot loader-dot-1"></div>
+                                <div class="loader-dot loader-dot-2"></div>
+                            </div>
+
+                            <div class="loader-part loader-part-2">
+                                <div class="loader-dot loader-dot-1"></div>
+                                <div class="loader-dot loader-dot-2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <canvas id="dashboard_chart_user_registration"></canvas>
+                </div>
+            </div>
+
+            <div class="dashboard-chart flex flex-col items-start gap-2 bg-card bg-opacity-50 border-2 border-card px-2 pb-2 rounded-1" data-graph="conversion_registration">
+                <div class="flex flex-row gap-2 justify-between items-center w-full">
+                    <div class="font-bold text-xl">CR to Reg</div>
+
+                    <%- include('../components/dropdownField.ejs', {
+                        type: 'bottom',
+                        classes: [ 'dashboard-graph' ],
+                        items: [
+                            { name: 'This Day', value: 'day' },
+                            { name: 'This Week', value: 'week' },
+                            { name: 'This Month', value: 'month' },
+                            { name: 'This Year', value: 'year' }
+                        ]
+                    }); %>
+                </div>
+
+                <div class="size-full relative">
+                    <div class="dashboard-loader hidden bg-card bg-opacity-50 flex justify-center items-center">
+                        <div class="loader">
+                            <div class="loader-part loader-part-1">
+                                <div class="loader-dot loader-dot-1"></div>
+                                <div class="loader-dot loader-dot-2"></div>
+                            </div>
+
+                            <div class="loader-part loader-part-2">
+                                <div class="loader-dot loader-dot-1"></div>
+                                <div class="loader-dot loader-dot-2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <canvas id="dashboard_chart_conversion_registration"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

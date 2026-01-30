@@ -1,0 +1,57 @@
+<div class="w-full text-center font-bold text-xl">Choose a Verification Method</div>
+
+<div class="text-muted-foreground">Select an authentication method to verify it's you.</div>
+
+<div class="auth-security flex flex-col gap-2">
+    <% if(response.methods.authenticator_app){ %>
+        <a href="/twofa/authenticator-app?returnUrl=<%= response.returnUrl %>&token=<%= response.token %>">
+            <div class="security-method flex flex-row gap-2 items-center justify-between bg-card bg-opacity-50 rounded-2 border-2 border-card py-2 px-4 w-full">
+                <div class="flex flex-row gap-4 items-center">
+                    <div class="method-icon flex flex-row items-center justify-center bg-secondary">
+                        <img src="/img/security/phone.png">
+                    </div>
+
+                    <div class="text-left font-bold text-base">Authenticator App</div>
+                </div>
+
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </div>
+        </a>
+    <% } %>
+
+    <% if(response.methods.email_verification){ %>
+        <a href="/twofa/send-email-verification?returnUrl=<%= response.returnUrl %>&token=<%= response.token %>">
+            <div class="security-method flex flex-row gap-2 items-center justify-between bg-card bg-opacity-50 rounded-2 border-2 border-card py-2 px-4 w-full">
+                <div class="flex flex-row gap-4 items-center">
+                    <div class="method-icon flex flex-row items-center justify-center bg-secondary">
+                        <img src="/img/security/email.png">
+                    </div>
+
+                    <div class="text-left font-bold text-base">Email Verification</div>
+                </div>
+
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </div>
+        </a>
+    <% } %>
+
+    <% if(response.methods.recovery_code){ %>
+        <a href="/twofa/recovery-code?returnUrl=<%= response.returnUrl %>&token=<%= response.token %>">
+            <div class="security-method flex flex-row gap-2 items-center justify-between bg-card bg-opacity-50 rounded-2 border-2 border-card py-2 px-4 w-full">
+                <div class="flex flex-row gap-4 items-center">
+                    <div class="method-icon flex flex-row items-center justify-center bg-secondary">
+                        <img src="/img/security/key.png">
+                    </div>
+
+                    <div class="text-left font-bold text-base">Recovery Code</div>
+                </div>
+
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </div>
+        </a>
+    <% } %>
+</div>
+
+<div class="flex flex-row gap-1 justify-center items-center w-full">
+    <a href="/login?returnUrl=<%= response.returnUrl %>"><div class="text-base">Back to Sign In</div></a>
+</div>

@@ -1,0 +1,68 @@
+<div class="flex flex-col gap-2">
+    <div class="flex justify-start">
+        <a href="/support"><button class="button button-accent shadow-2 flex flex-row gap-2 items-center justify-center">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            <span>Back</span>
+        </button></a>
+    </div>
+
+    <div class="flex flex-col gap-2">
+        <div class="flex flex-row gap-2">
+            <%- include('./components/inputField.ejs', {
+                type: 'text',
+                placeholder: 'Search Request',
+                id: 'support_search'
+            }); %>
+
+            <%- include('./components/dropdownField.ejs', {
+                type: 'bottom',
+                placeholder: 'Status',
+                id: 'support_filter_status',
+                items: [
+                    { name: 'Any', value: 0 },
+                    { name: 'Opened', value: 1 },
+                    { name: 'Awaiting your reply', value: 2 },
+                    { name: 'Solved', value: 3 }
+                ]
+            }); %>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <div class="table-row">
+                    <div class="table-column text-left">Subject</div>
+                    <div class="table-column text-left">Department</div>
+                    <div class="table-column text-left">Created</div>
+                    <div class="table-column text-left">Last Activity</div>
+                    <div class="table-column text-right">Status</div>
+                </div>
+            </div>
+            <div class="table-body" id="support_requests">
+                <% if(response.support.requests.list.length > 0){ %>
+                    <% response.support.requests.list.forEach(function(item){ %>
+                        <div class="table-row">
+                            <div class="table-column text-left"><a class="underline" href="/support/requests/<%= item.id %>"><%= item.subject %></a></div>
+                            <div class="table-column text-left"><%= { 0: 'General / Others', 1: 'Bug report', 2: 'Trade offer issue', 3: 'Improvements / Ideas', 4: 'Marketing / Partnership', 5: 'Ranking up' }[item.department] %></div>
+                            <div class="table-column text-left"><%= item.created %></div>
+                            <div class="table-column text-left"><%= item.updated %></div>
+                            <div class="table-column"><div class="flex flex-row justify-end"><div class="<%= [ { 0: 'bg-success bg-opacity-50', 1: 'bg-success bg-opacity-50', 2: 'bg-warning bg-opacity-50' }[item.status], 'bg-info bg-opacity-50' ][item.closed] %> p-1 rounded-1"><%= [ { 0: 'Opened', 1: 'Opened', 2: 'Awaiting your reply' }[item.status], 'Solved' ][item.closed] %></div></div></div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <%- include('./components/emptyTable.ejs', {
+                        title: 'No requests found'
+                    }); %>
+                <% } %>
+            </div>
+            <div class="table-footer">
+                <div class="flex items-center justify-center bg-secondary p-2">
+                    <%- include('./components/pageNavigator.ejs', {
+                        id: 'pagination_support_requests',
+                        page: response.support.requests.page,
+                        pages: response.support.requests.pages
+                    }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

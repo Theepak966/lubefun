@@ -1,0 +1,16 @@
+<div class="flex flex-col gap-4 justify-center items-center size-full">
+    <img class="w-4 responsive" src="/img/logo.png">
+
+    <div class="mt-2 mb-2 text-2xl"><%= response.reason %></div>
+
+    <div class="tracking-wider px-4 py-2 border-y-2 border-card text-3xl">MAINTENANCE</div>
+
+    <div class="grid split-column-2 gap-2">
+        <a target="_blank" href="<%= app.links.twitter_page %>"><div class="social-login twitter icon-medium rounded-2 flex justify-center items-center"></div></a>
+        <a target="_blank" href="<%= app.links.steam_group %>"><div class="social-login steam icon-medium rounded-2 flex justify-center items-center"></div></a>
+    </div>
+
+    <% if(!user) { %>
+        <a href="/login?returnUrl=/<%= app.paths.join('/') %>"><button class="button button-accent shadow-2">Sign In</button></a>
+    <% } %>
+</div>

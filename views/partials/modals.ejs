@@ -1,0 +1,701 @@
+<% if(page == 'admin') { %>
+<div class="modal small locked <% if(!account.authorized.admin){ %>active<% } %>" id="modal_admin_authorize">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Verification Authentication Required</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="flex flex-col gap-2">
+                    <div class="text-muted-foreground">To access the Admin page, we need to verify it's you.</div>
+
+                    <div class="grid split-column-2 gap-1">
+                        <a href="/authorize/admin?returnUrl=/<%= app.paths.join('/') %>"><button class="button button-primary shadow-2 w-full">Continue</button></a>
+                        <a href="/"><button class="button button-accent shadow-2 w-full" data-modal="hide">Cancel</button></a>
+                    </div>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page == 'admin' && app.paths[1] == 'gamebots') { %>
+<div class="modal medium" id="modal_gamebots_moderate">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Moderate bot</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="flex flex-col gap-2 text-left">
+					<div class="flex flex-col items-start gap-2">
+						<div class="text-left text-base">Edit Balance</div>
+
+                        <%- include('../components/inputField.ejs', {
+                            type: 'text',
+                            placeholder: 'Amount',
+                            id: 'admin_gamebots_balance_amount',
+                            value: '0.00',
+                            errors: [ 'required', 'number' ],
+                            features: [
+                                '<button class="button button-primary shadow-2" id="admin_gamebots_balance_edit" data-userid="">Confirm</button>'
+                            ]
+                        }); %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if([
+    'coinflip'
+].includes(page)
+) { %>
+<div class="modal medium" id="modal_fair_round">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Round Results</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="flex flex-col gap-4">
+					<div class="flex flex-col gap-2">
+						<div class="text-xs w-full truncate"><span class="text-muted-foreground mr-1">Server Seed (hashed):</span><span class="pointer" id="fair_server_seed_hashed" data-copy="text" data-text="">-</span></div>
+						<div class="text-xs w-full truncate"><span class="text-muted-foreground mr-1">Server Seed:</span><span class="pointer" id="fair_server_seed" data-copy="text" data-text="">-</span></div>
+						<div class="text-xs w-full truncate"><span class="text-muted-foreground mr-1">Public Seed:</span><span class="pointer" id="fair_public_seed" data-copy="text" data-text="">-</span></div>
+						<div class="text-xs w-full truncate"><span class="text-muted-foreground mr-1">Nonce:</span><span class="pointer" id="fair_nonce" data-copy="text" data-text="">-</span></div>
+						<div class="text-xs w-full truncate"><span class="text-muted-foreground mr-1">EOS block:</span><a id="fair_block_link" href="" target="_black"><span id="fair_block">-</span></a></div>
+					</div>
+
+					<div class="flex flex-col gap-2" id="fair_draw">
+						<div class="text-xs w-full truncate"><span class="text-muted-foreground mr-1">Draw Public Seed:</span><span class="pointer" id="fair_draw_public_seed" data-copy="text" data-text="">-</span></div>
+						<div class="text-xs w-full truncate"><span class="text-muted-foreground mr-1">Draw EOS block:</span><a id="fair_draw_block_link" href="" target="_black"><span id="fair_draw_block">-</span></a></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer text-center">
+				<button type="button" class="button button-primary shadow-2" data-modal="hide">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page == 'crash') { %>
+<div class="modal medium" id="modal_fair_crash">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Provably Fair</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="flex flex-col gap-4">
+					<%- include('../components/inputField.ejs', {
+                        type: 'text',
+                        placeholder: 'Round Id',
+                        id: 'crash_fair_id',
+                        value: 'hidden',
+                        readonly: true
+                    }); %>
+
+                    <%- include('../components/inputField.ejs', {
+                        type: 'text',
+                        placeholder: 'Public Seed',
+                        id: 'crash_fair_public_seed',
+                        value: 'hidden',
+                        features: [
+                            '<button class="button" data-copy="input" data-input="#crash_fair_public_seed">Copy</button>'
+                        ]
+                    }); %>
+				</div>
+			</div>
+			<div class="modal-footer text-center">
+				<button type="button" class="button button-primary shadow-2" data-modal="hide">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page == 'admin' && app.paths[1] == 'settings') { %>
+<div class="modal medium" id="modal_tracking_joins_dashboard">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Dashboard Tracking Joins</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body">
+				<div class="dashboard-chart flex flex-col items-start gap-2" data-graph="tracking_joins" data-id="0">
+                    <div class="flex flex-row gap-2 justify-between items-center w-full">
+                        <div class="font-bold text-xl">Tracking Joins</div>
+
+                        <%- include('../components/dropdownField.ejs', {
+                            type: 'bottom',
+                            classes: [ 'dashboard-graph' ],
+                            items: [
+                                { name: 'This Day', value: 'day' },
+                                { name: 'This Week', value: 'week' },
+                                { name: 'This Month', value: 'month' },
+                                { name: 'This Year', value: 'year' }
+                            ]
+                        }); %>
+                    </div>
+
+                    <div class="size-full relative">
+                        <div class="dashboard-loader hidden bg-card bg-opacity-50 flex justify-center items-center">
+                            <div class="loader">
+                                <div class="loader-part loader-part-1">
+                                    <div class="loader-dot loader-dot-1"></div>
+                                    <div class="loader-dot loader-dot-2"></div>
+                                </div>
+
+                                <div class="loader-part loader-part-2">
+                                    <div class="loader-dot loader-dot-1"></div>
+                                    <div class="loader-dot loader-dot-2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <canvas id="dashboard_chart_tracking_joins"></canvas>
+                    </div>
+                </div>
+			</div>
+			<div class="modal-footer text-center">
+				<button type="button" class="button button-primary shadow-2" data-modal="hide">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<div class="modal small" id="modal_confirm_action">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Confirmation</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="text-center mb-2">Do you confirm your next action?</div>
+
+				<div class="grid split-column-2 gap-1">
+					<button class="button button-accent shadow-2" id="confirm_action_no" data-modal="hide">Cancel</button>
+					<button class="button button-primary shadow-2" id="confirm_action_yes" data-modal="hide">Confirm</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal small" id="modal_confirm_identity">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Confirmation</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="text-center mb-2">Confirm your identity by providing a secret code!</div>
+
+                <%- include('../components/inputField.ejs', {
+                    type: 'password',
+                    placeholder: 'Secret',
+                    id: 'confirm_identity_secret',
+                    errors: [ 'required' ]
+                }); %>
+
+				<div class="grid split-column-2 gap-1 mt-2">
+					<button class="button button-accent shadow-2" id="confirm_identity_no" data-modal="hide">Cancel</button>
+					<button class="button button-primary shadow-2" id="confirm_identity_yes" data-modal="hide">Confirm</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% if(page != 'admin') { %>
+<div class="modal small" id="modal_error_insufficient_balance">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Oops, your balance is too low</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="text-left mb-2">You need <span class="amount">0.00</span> coins more to continue your action.</div>
+
+                <div class="flex justify-center items-center">
+					<a href="/deposit"><button class="button button-primary shadow-2">Deposit</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page != 'admin') { %>
+<div class="modal small" id="modal_error_withdraw_rollover">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Play through required</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+                <div class="flex flex-col gap-1 mb-2">
+                    <div class="text-left text-muted-foreground">You have recently deposited or claimed a reward. We require you to play through this amount one time before withdrawing to prevent abuse.</div>
+				    <div class="text-left">You must play through with <span class="amount">0.00</span> coins more to unlock the withdraw.</div>
+                </div>
+
+				<div class="flex justify-center items-center">
+					<a href="/"><button class="button button-primary shadow-2">Play</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page != 'admin') { %>
+<div class="modal small" id="modal_error_auth">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Sign in</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="text-left mb-2">Please sign in to start playing!</div>
+
+				<div class="flex justify-center items-center">
+					<a href="/login?returnUrl=/<%= app.paths.join('/') %>"><button class="button button-primary shadow-2">Sign In</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page != 'admin') { %>
+<div class="modal medium" id="modal_command_online">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Online list</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div id="online_list">
+					<%- include('../components/emptyState.ejs', {
+						title: 'No players online'
+					}); %>
+				</div>
+			</div>
+			<div class="modal-footer text-center">
+				<button type="button" class="button button-primary shadow-2" data-modal="hide">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page != 'admin') { %>
+<div class="modal medium" id="modal_command_help">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Help</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="acordeon w-full rounded-2 overflow-auto" id="chat_commands">
+					<%- include('../components/emptyState.ejs', {
+						title: 'No commands available'
+					}); %>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page != 'admin') { %>
+<div class="modal medium" id="modal_command_tip">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Tip to Player</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="flex flex-row gap-2 items-center responsive">
+					<div class="bg-card p-2 rounded-2 w-4 h-full responsive">
+						<div class="flex flex-row gap-2 items-center">
+							<div id="tip_player_avatar"></div>
+
+							<div class="truncate" id="tip_player_name">none</div>
+						</div>
+					</div>
+
+					<%- include('../components/inputField.ejs', {
+                        type: 'text',
+                        placeholder: 'Tip Amount',
+                        id: 'tip_player_amount',
+                        attributes: [
+                            { name: 'data-amount', value: 'tip_player' }
+                        ],
+                        value: '0.01',
+                        errors: [ 'required', 'number', 'greater', 'lesser' ]
+                    }); %>
+				</div>
+			</div>
+			<div class="modal-footer text-center">
+				<button type="button" class="button button-primary shadow-2" data-modal="hide" id="send_tip_player" data-userid="">Send</button>
+				<button type="button" class="button button-primary shadow-2" data-modal="hide">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page != 'admin') { %>
+<div class="modal medium" id="modal_command_mute">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Mute Player</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left overflow-unset">
+				<div class="flex flex-col gap-2">
+					<div class="flex flex-row gap-2 items-center responsive">
+						<div class="bg-card p-2 rounded-2 w-4 h-full responsive">
+							<div class="flex flex-row gap-2 items-center">
+								<div id="mute_player_avatar"></div>
+
+								<div class="truncate" id="mute_player_name">none</div>
+							</div>
+						</div>
+
+						<%- include('../components/inputField.ejs', {
+                            type: 'text',
+                            placeholder: 'Reason',
+                            id: 'mute_player_reason',
+                            errors: [ 'required' ]
+                        }); %>
+					</div>
+
+					<div class="flex flex-row gap-2">
+                        <%- include('../components/dropdownField.ejs', {
+                            type: 'bottom',
+                            placeholder: 'Format Date',
+                            id: 'mute_player_date',
+                            items: [
+                                { name: 'Minutes', value: 'minutes' },
+                                { name: 'Hours', value: 'hours' },
+                                { name: 'Days', value: 'days' },
+                                { name: 'Months', value: 'months' },
+                                { name: 'Years', value: 'years' }
+                            ]
+                        }); %>
+
+                        <%- include('../components/inputField.ejs', {
+                            type: 'text',
+                            placeholder: 'Amount',
+                            id: 'mute_player_amount',
+                            value: 5,
+                            errors: [ 'required', 'number', 'positive_integer' ]
+                        }); %>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer text-center">
+				<button type="button" class="button button-primary shadow-2" data-modal="hide" id="mute_player_set" data-userid="">Mute</button>
+				<button type="button" class="button button-primary shadow-2" data-modal="hide" id="mute_player_permanently" data-userid="">Permanently</button>
+				<button type="button" class="button button-primary shadow-2" data-modal="hide">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page != 'admin') { %>
+<div class="modal large" id="modal_command_ignorelist">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Ignore List</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="chat-ignorelist overflow-auto" id="chat_ignorelist">
+					<%- include('../components/emptyState.ejs', {
+						title: 'No ignored players'
+					}); %>
+				</div>
+			</div>
+			<div class="modal-footer text-center">
+				<button type="button" class="button button-primary shadow-2" data-modal="hide">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page != 'admin') { %>
+<div class="modal medium" id="modal_tip_rain">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Tip to Rain</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="flex flex-col gap-2 overflow-auto h-full">
+					<div class="flex flex-col gap-1">
+						<div class="text-left text-muted-foreground indent-1">Rain is a unique, free-to-play rewards feature. Users who have minimum level 1 can solve a captcha to join and receive a share of a coins pot, which is funded by community tips during that period. Players can tip rains for added fun and rewards.</div>
+						<div class="text-left text-muted-foreground indent-1">You can choose to donate your balance towards the rain pot. Everyone will see your tip in chat. Minimum tip is 0.01 coins. Tipping rain doesn't make you eligible to join.</div>
+					</div>
+
+                    <%- include('../components/inputField.ejs', {
+                        type: 'text',
+                        placeholder: 'Tip Amount',
+                        id: 'chat_rain_tip_amount',
+                        attributes: [
+                            { name: 'data-amount', value: 'tip_rain' }
+                        ],
+                        value: '0.01',
+                        errors: [ 'required', 'number', 'greater', 'lesser' ]
+                    }); %>
+				</div>
+			</div>
+			<div class="modal-footer text-center">
+				<button type="button" class="button button-primary shadow-2" data-modal="hide" id="chat_rain_tip">Send</button>
+				<button type="button" class="button button-primary shadow-2" data-modal="hide">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page != 'admin') { %>
+<div class="modal medium" id="modal_auth_change_password">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Change Password</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+
+			<div class="modal-body text-left">
+				<form class="form_auth" method="POST" action="/auth/change-password">
+					<div class="flex flex-col items-center gap-2">
+						<%- include('../components/inputField.ejs', {
+                            type: 'password',
+                            placeholder: 'Current password',
+                            attributes: [
+                                { name: 'name', value: 'current_password' }
+                            ],
+                            errors: [ 'required', 'password' ],
+                            features: [
+                                '<button type="button" tabindex="-1" class="button field_element_password" data-type="show"><i class="fa fa-eye" aria-hidden="true"></i></button>',
+                                '<button type="button" tabindex="-1" class="button field_element_password" data-type="hide"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>'
+                            ]
+                        }); %>
+
+                        <%- include('../components/inputField.ejs', {
+                            type: 'password',
+                            placeholder: 'New password',
+                            attributes: [
+                                { name: 'name', value: 'password' }
+                            ],
+                            errors: [ 'required', 'password' ],
+                            features: [
+                                '<button type="button" tabindex="-1" class="button field_element_password" data-type="show"><i class="fa fa-eye" aria-hidden="true"></i></button>',
+                                '<button type="button" tabindex="-1" class="button field_element_password" data-type="hide"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>'
+                            ]
+                        }); %>
+
+                        <%- include('../components/inputField.ejs', {
+                            type: 'password',
+                            placeholder: 'Confirm new password',
+                            attributes: [
+                                { name: 'name', value: 'confirm_password' }
+                            ],
+                            errors: [ 'required', 'password' ],
+                            features: [
+                                '<button type="button" tabindex="-1" class="button field_element_password" data-type="show"><i class="fa fa-eye" aria-hidden="true"></i></button>',
+                                '<button type="button" tabindex="-1" class="button field_element_password" data-type="hide"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>'
+                            ]
+                        }); %>
+
+						<button type="submit" class="button button-primary shadow-2 mt-1">Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<div class="modal small" id="modal_auth_logout">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Logout</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+
+			<div class="modal-body text-left">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="text-center">Do you wish to log out?</div>
+
+                    <div class="grid split-column-2 gap-1 w-full">
+                        <button class="button button-accent shadow-2" data-modal="hide">Cancel</button>
+
+                        <a href="/auth/logout?returnUrl=/<%= app.paths.join('/') %>">
+                            <button class="button button-primary shadow-2 w-full">Logout</button>
+                        </a>
+                    </div>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% if(page != 'admin') { %>
+<div class="modal small" id="modal_twofa_email_verification">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Check Your Inbox</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="text-left">Enter the 6-digit security code we sent on your email address.</div>
+
+                    <div class="flex flex-col items-center gap-2 w-full">
+                        <%- include('../components/inputField.ejs', {
+                            type: 'text',
+                            placeholder: 'Security Code',
+                            id: 'email_verification_code',
+                            errors: [ 'required' ]
+                        }); %>
+
+                        <button class="button button-primary shadow-2 mt-1" id="activate_email_verification">Submit</button>
+                    </div>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<% if(page == 'account' && app.paths[1] == 'security'){ %>
+<div class="modal medium" id="modal_twofa_authenticator_app">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Enable Authenticator App</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+                <div class="flex flex-col items-center gap-2">
+                    <div class="w-full flex flex-row justify-center">
+                        <div class="account-qrcode" id="authenticator_app_qrcode"></div>
+                    </div>
+
+                    <div class="flex flex-row gap-2 items-center justify-center bg-card bg-opacity-50 rounded-2 p-4 w-full">
+                        <div class="truncate" id="authenticator_app_secret">none</div>
+                        <div class="text-muted-foreground" id="authenticator_app_secret_copy" data-copy="text" data-text="none">Copy</div>
+                    </div>
+
+                    <%- include('../components/inputField.ejs', {
+                        type: 'text',
+                        placeholder: 'Authentication Code',
+                        id: 'authenticator_app_token',
+                        errors: [ 'required' ],
+                        features: [
+                            '<button class="button button-primary shadow-2" id="activate_authenticator_app">Activate</button>'
+                        ]
+                    }); %>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal medium" id="modal_twofa_authenticator_app_codes">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Your Authenticator App Backup Codes</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+                <div class="flex flex-col gap-2">
+                    <div class="text-muted-foreground">If you lose access to your authenticator app, you can sign in to your account using the backup codes available here.</div>
+                    <div class="text-muted-foreground">Write, copy, or download these backup codes and keep them somewhere safe.</div>
+
+                    <div class="grid split-column-2 gap-1 w-full" id="authenticator_app_codes"></div>
+
+                    <div class="flex flex-row gap-2 w-full">
+                        <button class="button button-accent shadow-2 large w-full" id="authenticator_app_codes_copy" data-copy="text" data-text="none">Copy</button>
+                        <button class="button button-accent shadow-2 large w-full" id="authenticator_app_codes_download" data-download="<%= app.abbreviation %> Authenticator App Codes.txt" data-text="none">Download</button>
+                    </div>
+
+                    <div class="text-muted-foreground"><span class="font-bold">Note:</span> You can only use each backup code once.</div>
+			    </div>
+			</div>
+			<div class="modal-footer text-center">
+				<button type="button" class="button button-primary shadow-2" id="generate_codes_authenticator_app">Generate new codes</button>
+				<button type="button" class="button button-accent shadow-2" data-modal="hide">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal small locked <% if(!account.authorized.account){ %>active<% } %>" id="modal_account_authorize">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Verification Authentication Required</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-left">
+				<div class="flex flex-col gap-2">
+                    <div class="text-muted-foreground">To access the Account Security page, we need to verify it's you.</div>
+
+                    <div class="grid split-column-2 gap-1">
+                        <a href="/authorize/account?returnUrl=/<%= app.paths.join('/') %>"><button class="button button-primary shadow-2 w-full">Continue</button></a>
+                        <a href="/account"><button class="button button-accent shadow-2 w-full" data-modal="hide">Cancel</button></a>
+                    </div>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
+
+<div class="modal small" id="modal_recaptcha">
+	<div class="modal-dialog flex justify-center items-center">
+		<div class="modal-content rounded-2">
+			<div class="modal-header flex items-center justify-between">
+				<div class="modal-title">Verify Recaptcha</div>
+				<div class="modal-close flex justify-center items-center rounded-1" data-modal="hide"><i aria-hidden="true" class="fa fa-times"></i></div>
+			</div>
+			<div class="modal-body text-base">
+				<div class="flex justify-center" id="g-recaptcha"></div>
+			</div>
+		</div>
+	</div>
+</div>

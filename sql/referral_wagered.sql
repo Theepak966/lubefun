@@ -1,0 +1,9 @@
+CREATE TABLE `referral_wagered` (
+    `id` bigint(32) NOT NULL AUTO_INCREMENT,
+    `userid` varchar(36) NOT NULL,
+    `referral` varchar(36) NOT NULL,
+    `amount` decimal(32,2) NOT NULL,
+    `commission` decimal(32,5) NOT NULL,
+    `time` bigint(32) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_general_ci;

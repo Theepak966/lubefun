@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: SELECT * FROM `coinflip_games` WHERE `ended` = 0 AND `canceled` = 0

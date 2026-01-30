@@ -1,0 +1,68 @@
+<div class="flex flex-1 flex-col gap-2">
+	<div class="casino-banner">
+        <div class="slot flex flex-col items-start gap-2">
+            <div class="title font-bold text-danger">Slots & Live Casino</div>
+            <div class="description">Start Your Winning Journey!</div>
+        </div>
+    </div>
+
+    <div class="casino-tabs top flex responsive flex-row gap-2 border-b-2 border-card">
+        <a href="/casino/lobby"><button class="button">Lobby</button></a>
+        <a href="/casino/slots"><button class="button active">Slots</button></a>
+        <a href="/casino/live"><button class="button">Live Games</button></a>
+        <a href="/casino/favorites"><button class="button">Favorites</button></a>
+    </div>
+
+    <div class="flex flex-row gap-1 responsive">
+        <%- include('./components/inputField.ejs', {
+            type: 'text',
+            placeholder: 'Search Game',
+            id: 'casino_slots_games_search'
+        }); %>
+
+        <div class="flex flex-row gap-1">
+            <%- include('./components/dropdownField.ejs', {
+                type: 'bottom',
+                placeholder: 'Order by',
+                id: 'casino_slots_games_order',
+                items: [
+                    { name: 'Popularity', value: 0 },
+                    { name: 'Amount Won', value: 1 },
+                    { name: 'Name A-Z', value: 2 },
+                    { name: 'Name Z-A', value: 3 }
+                ]
+            }); %>
+
+            <%- include('./components/dropdownField.ejs', {
+                type: 'bottom',
+                placeholder: 'Provider',
+                id: 'casino_slots_games_provider',
+                items: [
+                    { name: 'All Providers', value: 'all' }
+                ]
+            }); %>
+	    </div>
+	</div>
+
+    <div class="casino-title flex flex-row items-center gap-2">
+        <img src="/img/slots.png">
+
+        <span>Slots</span>
+    </div>
+
+    <div class="flex flex-col flex-1 gap-2">
+        <div class="casino-games flex-1 h-full" id="casino_slots_games">
+            <% for(var i = 0; i < 100; i++){ %>
+                <%- include('./components/casinoGameSkeleton.ejs'); %>
+            <% } %>
+        </div>
+
+        <div class="flex items-center justify-center bg-secondary p-2 border-t-2 border-card">
+            <%- include('./components/pageStepper.ejs', {
+                id: 'pagination_casino_slots_games',
+                page: 1,
+                pages: 1
+            }); %>
+        </div>
+    </div>
+</div>

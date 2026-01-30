@@ -1,0 +1,15 @@
+.faq-panel {
+	border-radius: 5px;
+	background: var(--card);
+	color: var(--color-white) !important;
+	text-align: left;
+}
+
+.faq-panel .acordeon .acordeon-item:not(:last-child) {
+	border-bottom: solid 2px var(--secondary);
+    padding-bottom: 0.5rem;
+}
+
+.faq-panel .acordeon .acordeon-item.active .acordeon-trigger{
+	transform: rotateZ(180deg);
+}

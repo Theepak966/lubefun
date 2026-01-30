@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: INSERT INTO `crash_seeds` SET `server_seed` = 61b5062d68adc2c89844379cfb36c1733c66ce89a248453bd0265dd1464d797a, `public_seed` = d49a4fceeb293f0af32043d9ee24db6557631eb1dfaff809333ce7f82f3530e2, `time` = 1769732140

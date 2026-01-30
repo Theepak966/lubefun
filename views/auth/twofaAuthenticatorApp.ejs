@@ -1,0 +1,31 @@
+<div class="w-full text-center font-bold text-xl">Enter Security Code</div>
+
+<div class="text-muted-foreground">Enter the 6-digit code shown in your authenticator app.</div>
+
+<div class="flex flex-col gap-4">
+    <form class="form_auth" autocomplete="twofa" method="POST" action="/twofa/authenticator-app?returnUrl=<%= response.returnUrl %>&token=<%= response.token %>">
+        <div class="flex flex-col items-center gap-2">
+            <%- include('../components/inputField.ejs', {
+                type: 'text',
+                placeholder: 'Security Code',
+                attributes: [
+                    { name: 'name', value: 'code' },
+                    { name: 'autocomplete', value: 'code' }
+                ],
+                errors: [ 'required' ]
+            }); %>
+
+            <button type="submit" class="button button-primary shadow-2 mt-2">Submit</button>
+        </div>
+    </form>
+
+    <% if(Object.keys(response.methods).some(a => response.methods[a] && a != 'authenticator_app')){ %>
+        <div class="flex flex-row gap-1 justify-center items-center w-full">
+            <a href="/twofa/options?returnUrl=<%= response.returnUrl %>&token=<%= response.token %>"><div class="text-base">Try another way</div></a>
+        </div>
+    <% } %>
+
+    <div class="flex flex-row gap-1 justify-center items-center w-full">
+        <a href="/login?returnUrl=<%= response.returnUrl %>"><div class="text-base">Back to Sign In</div></a>
+    </div>
+</div>

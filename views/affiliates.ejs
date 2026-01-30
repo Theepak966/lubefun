@@ -1,0 +1,144 @@
+<div class="flex flex-row gap-2 responsive">
+	<div class="w-3 responsive">
+		<div class="flex flex-col gap-2">
+			<div class="table-container">
+				<div class="table-header">
+					<div class="table-row">
+						<div class="table-column text-left">Tier</div>
+						<div class="table-column text-left">Requirements</div>
+						<div class="table-column text-left">Deposit</div>
+						<div class="table-column text-left">Bet</div>
+					</div>
+				</div>
+
+				<div class="table-body">
+					<% response.affiliates.requirements.forEach(function(item){ %>
+					<div class="table-row">
+						<div class="table-column text-left"><%= item.tier %></div>
+						<div class="table-column text-left"><%= item.amount %></div>
+						<div class="table-column text-left"><%= item.commissions.deposit %>%</div>
+						<div class="table-column text-left"><%= item.commissions.bet %>%</div>
+					</div>
+					<% }); %>
+				</div>
+			</div>
+
+			<div class="flex flex-col gap-1 bg-card bg-opacity-50 border-2 border-secondary p-2 rounded-2">
+				<div class="flex justify-between text-xs">
+					<div class="uppercase font-bold text-muted-foreground">Progress</div>
+					<div><%= response.affiliates.rank.deposited %> / <%= response.affiliates.rank.target %></div>
+				</div>
+
+				<div class="progress-container small w-full rounded-1">
+					<% var style = 'style="width: ' + response.affiliates.rank.progress + '%;"'; %>
+
+                    <div class="progress-bar rounded-1" <%- style %>></div>
+					<div class="progress-content pl-2 flex justify-start items-center">Tier <%= response.affiliates.rank.tier %></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="w-9 responsive">
+		<div class="flex flex-col gap-2">
+			<div class="bg-secondary bg-opacity-50 border-2 border-secondary p-2 rounded-2 grid split-column-2 gap-2">
+				<div class="flex flex-col items-center justify-center">
+					<div class="uppercase text-lg"><%= response.affiliates.commissions.bet %> bet commission!</div>
+					<div class="text-primary text-sm">We give commission of your friends bets!</div>
+				</div>
+
+				<div class="flex flex-col items-center justify-center">
+					<div class="uppercase text-lg"><%= response.affiliates.commissions.deposit %>% deposit commission!</div>
+					<div class="text-primary text-sm">Get coins when friends deposit!</div>
+				</div>
+			</div>
+
+			<div class="grid split-column-4 gap-2 responsive">
+				<div class="flex justify-between bg-card border-2 border-secondary p-2 rounded-2">
+					<div class="flex flex-col gap-1 text-left">
+						<div class="uppercase font-bold text-muted-foreground text-xs">Bet commission</div>
+
+                        <div class="flex flex-row items-center justify-center gap-1">
+                            <div class="coin main"></div>
+                            <span class="text-base"><%= response.affiliates.stats.commissions.wagered %></span>
+                        </div>
+					</div>
+				</div>
+				<div class="flex justify-between bg-card border-2 border-secondary p-2 rounded-2">
+					<div class="flex flex-col gap-1 text-left">
+						<div class="uppercase font-bold text-muted-foreground text-xs">Deposit commission</div>
+
+                        <div class="flex flex-row items-center justify-center gap-1">
+                            <div class="coin main"></div>
+                            <span class="text-base"><%= response.affiliates.stats.commissions.deposited %></span>
+                        </div>
+					</div>
+				</div>
+				<div class="flex justify-between bg-card border-2 border-secondary p-2 rounded-2">
+					<div class="flex flex-col gap-1 text-left">
+						<div class="uppercase font-bold text-muted-foreground text-xs">Collected</div>
+
+                        <div class="flex flex-row items-center justify-center gap-1">
+                            <div class="coin main"></div>
+                            <span class="text-base"><%= response.affiliates.stats.collected %></span>
+                        </div>
+					</div>
+				</div>
+				<div class="flex justify-between bg-card border-2 border-secondary p-2 rounded-2">
+					<div class="flex flex-col gap-1 text-left">
+						<div class="uppercase font-bold text-muted-foreground text-xs">Available</div>
+
+                        <div class="flex flex-row items-center justify-center gap-1">
+                            <div class="coin main"></div>
+                            <span class="text-base"><%= response.affiliates.stats.available %></span>
+                        </div>
+					</div>
+
+					<button class="button button-primary shadow-2" id="collect_affiliates_referral_available">Collect</button>
+				</div>
+			</div>
+
+			<div class="table-container">
+				<div class="table-header">
+					<div class="table-row">
+						<div class="table-column text-left">User Id</div>
+						<div class="table-column text-left">Wagered</div>
+						<div class="table-column text-left">Deposited</div>
+						<div class="table-column text-left">Commission wagered</div>
+						<div class="table-column text-left">Commission deposited</div>
+						<div class="table-column text-left">Total</div>
+					</div>
+				</div>
+
+				<div class="table-body" id="affiliates_referrals">
+					<% if(response.affiliates.referrals.list.length > 0){ %>
+                        <% response.affiliates.referrals.list.forEach(function(item){ %>
+                            <div class="table-row">
+                                <div class="table-column text-left"><%= item.userid %></div>
+                                <div class="table-column text-left"><%= item.wagered %></div>
+                                <div class="table-column text-left"><%= item.deposited %></div>
+                                <div class="table-column text-left"><%= item.commissions.wagered %></div>
+                                <div class="table-column text-left"><%= item.commissions.deposited %></div>
+                                <div class="table-column text-left"><%= item.commissions.total %></div>
+                            </div>
+                        <% }); %>
+					<% } else { %>
+                        <%- include('./components/emptyTable.ejs', {
+                            title: 'No data found'
+                        }); %>
+					<% } %>
+				</div>
+
+                <div class="table-footer">
+                    <div class="flex items-center justify-center bg-secondary p-2">
+                        <%- include('./components/pageNavigator.ejs', {
+                            id: 'pagination_affiliates_referrals',
+                            page: response.affiliates.referrals.page,
+                            pages: response.affiliates.referrals.pages
+                        }); %>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,8 @@
+<div class="table-row <% if(cashedout) { %>text-success<% } else if(ended) { %>text-danger<% } else { %>text-primary<% } %>" data-id="<%= id %>">
+    <div class="table-column text-left">
+        <%- include('./userAvatar.ejs', { user, size: 'small', classes: [], features: [] }); %>
+    </div>
+    <div class="table-column text-left"><span class="at"><% if(at) { %><%= at %><% } else { %>-<% } %></span></div>
+    <div class="table-column text-left"><span class="total"><%= amount %></span></div>
+    <div class="table-column text-left"><span class="profit"><% if(profit) { %><%= profit %><% } else { %>-<% } %></span></div>
+</div>

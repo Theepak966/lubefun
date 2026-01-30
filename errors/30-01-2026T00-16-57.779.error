@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: SELECT `id` FROM `crash_rolls` ORDER BY `id` DESC LIMIT 1

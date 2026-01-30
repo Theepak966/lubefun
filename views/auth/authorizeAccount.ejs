@@ -1,0 +1,24 @@
+<div class="w-full text-center font-bold text-xl">Verify Your Identity</div>
+
+<div class="text-muted-foreground">Please enter your password to continue. This step is required to confirm your identity and keep your account secure.</div>
+
+<div class="flex flex-col gap-4">
+    <form class="form_auth" autocomplete="off" method="POST" action="/auth/authorize/account">
+        <div class="flex flex-col items-center gap-2">
+            <%- include('../components/inputField.ejs', {
+                type: 'password',
+                placeholder: 'Password',
+                attributes: [
+                    { name: 'name', value: 'password' }
+                ],
+                errors: [ 'required', 'password' ],
+                features: [
+                    '<button type="button" class="button field_element_password" data-type="show"><i class="fa fa-eye" aria-hidden="true"></i></button>',
+                    '<button type="button" class="button field_element_password" data-type="hide"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>'
+                ]
+            }); %>
+
+            <button type="submit" class="button button-primary shadow-2 mt-2">Submit</button>
+        </div>
+    </form>
+</div>

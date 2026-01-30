@@ -1,0 +1,1 @@
+[LOCAL_DEV] Stub DB query: INSERT INTO `join_visitors` SET `link` = http://localhost:3000/crash, `ip` = 127.0.0.1, `location` = Localhost, Development, Local, `agent` = Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36, `time` = 1769732417

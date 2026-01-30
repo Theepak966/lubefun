@@ -1,0 +1,60 @@
+<div class="bet-container flex justify-center">
+	<div class="bg-card bg-opacity-50 rounded-2 border-2 border-secondary flex flex-col gap-2">
+		<%- include('./components/betAmount.ejs', { game: 'minesweeper', amount: '0.01', actions: [ 'clear', 'max' ], features: [] }); %>
+
+        <%- include('./components/inputField.ejs', {
+            type: 'text',
+            placeholder: 'Bombs Amount',
+            id: 'bombsamount_minesweeper',
+            value: '5',
+            errors: [ 'required', 'number' ],
+            features: [
+                '<button class="button changeshort_action" data-id="#bombsamount_minesweeper" data-fixed="0" data-action="-1">-1</button>',
+				'<button class="button changeshort_action" data-id="#bombsamount_minesweeper" data-fixed="0" data-action="1">+1</button>'
+            ]
+        }); %>
+
+		<div class="grid split-column-full gap-2">
+			<button class="button button-accent shadow-2 border-2 border-card minesweeper-bombsamount" data-amount="1">1</button>
+			<button class="button button-accent shadow-2 border-2 border-card minesweeper-bombsamount" data-amount="3">3</button>
+			<button class="button button-accent shadow-2 border-2 border-card minesweeper-bombsamount active" data-amount="5">5</button>
+			<button class="button button-accent shadow-2 border-2 border-card minesweeper-bombsamount" data-amount="10">10</button>
+			<button class="button button-accent shadow-2 border-2 border-card minesweeper-bombsamount" data-amount="24">24</button>
+		</div>
+
+		<div class="bet-cashout bg-secondary rounded-2 border-2 border-card flex flex-row justify-between items-center gap-2 px-4 py-2 disabled">
+			<div class="flex flex-row items-center justify-center gap-1">
+				<div class="coin main"></div>
+				<span>Cashout</span>
+			</div>
+
+			<div class="flex flex-col items-end justify-center gap-1">
+				<span class="amount" id="minesweeper_cashout_amount">0.00</span>
+
+				<div class="profit">
+					<span data-type="negative">-</span>
+					<span data-type="positive">+</span>
+
+					<span class="positive" id="minesweeper_cashout_profit">0.00</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex justify-center items-center">
+			<button class="button button-primary shadow-2 large w-full" id="minesweeper_bet">Place Bet</button>
+			<button class="button button-success shadow-2 large w-full hidden" id="minesweeper_cashout">Cashout</button>
+		</div>
+	</div>
+
+	<div class="flex justify-center items-center flex-col gap-4 bg-card bg-opacity-50 rounded-2 border-2 border-secondary">
+        <div class="minesweeper-wrapper flex justify-center items-center">
+            <div class="minesweeper-container flex justify-center items-center">
+                <div class="minesweeper-grid" id="minesweeper_bombs">
+                    <% for(var i = 0; i < 25; i++) { %>
+                    <div class="item flex justify-center items-center disabled" data-bomb="<%= i %>"><div class="multiplier"></div></div>
+                    <% } %>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>

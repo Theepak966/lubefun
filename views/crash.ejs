@@ -1,0 +1,71 @@
+<div class="bet-container flex justify-center">
+	<div class="bg-card rounded-2 border-2 border-secondary flex flex-col gap-2" style="background: #141a28; border: 1px solid var(--border-color);">
+        <%- include('./components/betAmount.ejs', { game: 'crash', amount: '0.01', actions: [ 'clear', 'max' ], features: [] }); %>
+
+        <%- include('./components/inputField.ejs', {
+            type: 'text',
+            placeholder: 'Auto Cashout (0 = disabled)',
+            id: 'betauto_crash',
+            value: '2.00',
+            errors: [ 'required', 'number' ],
+            features: [
+                '<button class="button changeshort_action" data-id="#betauto_crash" data-fixed="1" data-action="-1.00">-1.00</button>',
+                '<button class="button changeshort_action" data-id="#betauto_crash" data-fixed="1" data-action="1.00">+1.00</button>'
+            ]
+        }); %>
+
+		<div class="bet-cashout bg-secondary rounded-2 border-2 border-card flex flex-row justify-between items-center gap-2 px-4 py-2 disabled">
+			<div class="flex flex-row items-center justify-center gap-1">
+				<div class="coin main"></div>
+				<span>Cashout</span>
+			</div>
+
+			<div class="flex flex-col items-end justify-center gap-1">
+				<span class="amount" id="crash_cashout_amount">0.00</span>
+
+				<div class="profit">
+					<span data-type="negative">-</span>
+					<span data-type="positive">+</span>
+
+					<span class="positive" id="crash_cashout_profit">0.00</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex justify-center items-center">
+			<button class="button button-primary shadow-2 large w-full" id="crash_bet">Place Bet</button>
+			<button class="button button-success shadow-2 large w-full hidden" id="crash_cashout">Cashout</button>
+		</div>
+
+		<div class="table-container h-full">
+			<div class="table-header">
+				<div class="table-row">
+					<div class="table-column text-left">User</div>
+					<div class="table-column text-left">@</div>
+					<div class="table-column text-left">Bet</div>
+					<div class="table-column text-left">Profit</div>
+				</div>
+			</div>
+
+			<div class="table-body bg-card h-full" id="crash_betlist">
+				<% for(var i = 0; i < 3; i++){ %>
+                    <%- include('./components/crashBetSkeleton.ejs'); %>
+                <% } %>
+			</div>
+		</div>
+	</div>
+
+	<div class="flex flex-col gap-4 bg-card rounded-2 border-2 border-secondary" style="background: #141a28; border: 1px solid var(--border-color);">
+		<div class="flex flex-row justify-between items-center gap-2">
+			<div class="crash-history flex flex-row gap-1" id="crash_history">
+                <% for(var i = 0; i < 20; i++){ %>
+                    <%- include('./components/crashHistorySkeleton.ejs'); %>
+                <% } %>
+            </div>
+
+			<button class="button button-accent shadow-2" data-modal="show" data-id="#modal_fair_crash">Provably fair</button>
+		</div>
+
+		<%- include('./components/crashGraphSkeleton.ejs'); %>
+	</div>
+</div>

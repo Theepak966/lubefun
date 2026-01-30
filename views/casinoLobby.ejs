@@ -1,0 +1,116 @@
+<div class="flex flex-1 flex-col gap-2">
+    <div class="casino-banner">
+        <div class="slot flex flex-col items-start gap-2">
+            <div class="title font-bold text-danger">Slots & Live Casino</div>
+            <div class="description">Start Your Winning Journey!</div>
+        </div>
+    </div>
+
+    <div class="casino-tabs top flex responsive flex-row gap-2 border-b-2 border-card">
+        <a href="/casino/lobby"><button class="button active">Lobby</button></a>
+        <a href="/casino/slots"><button class="button">Slots</button></a>
+        <a href="/casino/live"><button class="button">Live Games</button></a>
+        <a href="/casino/favorites"><button class="button">Favorites</button></a>
+    </div>
+
+    <%- include('./components/inputField.ejs', {
+        type: 'text',
+        placeholder: 'Search Game',
+        id: 'casino_all_games_search'
+    }); %>
+
+    <div class="flex flex-col flex-1 gap-2 hidden" id="casino_lobby_games">
+        <div class="casino-games flex-1 h-full" id="casino_all_games">
+            <% for(var i = 0; i < 100; i++){ %>
+                <%- include('./components/casinoGameSkeleton.ejs'); %>
+            <% } %>
+        </div>
+
+        <div class="flex items-center justify-center bg-secondary p-2 border-t-2 border-card">
+            <%- include('./components/pageStepper.ejs', {
+                id: 'pagination_casino_all_games',
+                page: 1,
+                pages: 1
+            }); %>
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-2" id="casino_lobby_lists">
+        <div class="section flex flex-col gap-2">
+            <div class="flex flex-row justify-between items-center gap-2">
+                <div class="title flex flex-row items-center gap-2">
+                    <img src="/img/hot.png">
+
+                    <span>Hot Games</span>
+                </div>
+
+                <div class="flex flex-row items-center gap-1">
+                    <button class="action button button-accent shadow-2" data-type="left"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                    <button class="action button button-accent shadow-2" data-type="right"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+                </div>
+            </div>
+
+            <div class="swiper">
+                <div class="casino-list list flex flex-row transition duration-500">
+                    <% response.casino.games.hot.forEach(function(item){ %>
+                        <%- include('./components/casinoGame.ejs', item); %>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+
+        <div class="section flex flex-col gap-2">
+            <div class="flex flex-row justify-between items-center gap-2">
+                <div class="title flex flex-row items-center gap-2">
+                    <img src="/img/slots.png">
+
+                    <span>Slots</span>
+                </div>
+
+                <div class="flex flex-row items-center gap-2">
+                    <a href="/casino/slots"><button class="button button-accent shadow-2">View All</button></a>
+
+                    <div class="flex flex-row items-center gap-1">
+                        <button class="action button button-accent shadow-2" data-type="left"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                        <button class="action button button-accent shadow-2" data-type="right"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper">
+                <div class="casino-list list flex flex-row transition duration-500">
+                    <% response.casino.games.slots.forEach(function(item){ %>
+                        <%- include('./components/casinoGame.ejs', item); %>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+
+        <div class="section flex flex-col gap-2">
+            <div class="flex flex-row justify-between items-center gap-2">
+                <div class="title flex flex-row items-center gap-2">
+                    <img src="/img/live.png">
+
+                    <span>Live Games</span>
+                </div>
+
+                <div class="flex flex-row items-center gap-2">
+                    <a href="/casino/live"><button class="button button-accent shadow-2">View All</button></a>
+
+                    <div class="flex flex-row items-center gap-1">
+                        <button class="action button button-accent shadow-2" data-type="left"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+                        <button class="action button button-accent shadow-2" data-type="right"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper">
+                <div class="casino-list list flex flex-row transition duration-500">
+                    <% response.casino.games.live.forEach(function(item){ %>
+                        <%- include('./components/casinoGame.ejs', item); %>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="chat-message flex flex-col gap-2 relative p-1">
+    <div class="flex flex-row items-center gap-1 relative w-full pl-1">
+        <%- include('./userAvatarSkeleton.ejs', { type: 'card', size: 'medium' }); %>
+
+        <div class="chat-message-header flex flex-col justify-center gap-1">
+            <div class="flex flex-row gap-4 justify-between items-center">
+                <div class="skeleton skeleton-card text-large-box"></div>
+
+                <div class="skeleton skeleton-card text-small-box"></div>
+            </div>
+
+            <div class="skeleton skeleton-card text-medium-box"></div>
+        </div>
+    </div>
+
+    <div class="skeleton skeleton-card chat-message-box"></div>
+</div>

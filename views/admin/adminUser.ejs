@@ -1,0 +1,385 @@
+<div class="flex flex-col gap-2">
+    <div class="flex justify-start">
+        <a href="/admin/users"><button class="button button-accent shadow-2 flex flex-row gap-2 items-center justify-center">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            <span>Back to list</span>
+        </button></a>
+    </div>
+
+    <div class="flex flex-col gap-4">
+        <div class="bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+            <div class="flex flex-row responsive items-center justify-between gap-2 p-2">
+                <div class="flex flex-row items-center gap-2">
+                    <div class="avatar-field <%= [ 'tier-steel', 'tier-bronze', 'tier-silver', 'tier-gold', 'tier-diamond' ][Math.floor(response.admin.user.profile.user.level / 25)] %>">
+                        <div class="inline-block relative">
+                            <img class="avatar icon-large rounded-full" src="<%= response.admin.user.profile.user.avatar %>">
+                            <div class="level sup-large-left flex justify-center items-center border-2 border-secondary rounded-full"><%= response.admin.user.profile.user.level %></div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-start">
+                        <div class="flex justify-start gap-2 uppercase font-bold truncate">
+                            <div class="chat-link-<%= response.admin.user.profile.rank.name %>"><%= response.admin.user.profile.rank.name %></div>
+                            <div><%= response.admin.user.profile.user.name %></div>
+                        </div>
+
+                        <div class="truncate text-xs"><%= response.admin.user.profile.user.userid %></div>
+                    </div>
+                </div>
+
+                <a href="/user/<%= response.admin.user.profile.user.userid %>" target="_blank"><button class="button button-primary shadow-2">Profile</button></a>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+            <div class="flex flex-row gap-2">
+                <button class="button button-accent shadow-2 dashboard-load switch_panel active" data-id="admin_user" data-panel="informations">Informations</button>
+                <button class="button button-accent shadow-2 dashboard-load switch_panel" data-id="admin_user" data-panel="settings">Settings</button>
+            </div>
+
+            <div class="switch_content" data-id="admin_user" data-panel="informations">
+                <div class="flex flex-col gap-2 text-left bg-card bg-opacity-50 rounded-2 border-2 border-card p-2">
+                    <div class="text-base">Registed - <%= response.admin.user.profile.created %></div>
+
+                    <% if(response.admin.user.ips.length > 0){ %>
+                        <div class="text-base">IP Logins - <span class="text-success"><%= response.admin.user.ips.join(', ') %></span></div>
+                    <% } %>
+
+                    <% if(response.admin.user.referred){ %>
+                            <div class="text-base">Referred By - <span class="text-success"><%= response.admin.user.referred %></span></div>
+                    <% } %>
+
+                    <div class="text-base">Balance - <span class="text-success"><%= response.admin.user.profile.balance %></span></div>
+                    <div class="text-base">Rollover Amount - <span class="text-success"><%= response.admin.user.profile.rollover %></span></div>
+                    <div class="text-left text-base">Two Factory Authentication - <% if(response.admin.user.twofactor_authentication.primary){ %><span class="text-success">Enabled</span><% } else { %><span class="text-danger">Disabled</span><% } %></div>
+
+                    <% if(response.admin.user.twofactor_authentication.primary){ %>
+                        <div class="text-base">Primary Method - <span class="text-success"><%= { authenticator_app: 'Authenticator App', email_verification: 'Email Verification' }[response.admin.user.twofactor_authentication.primary] %></span></div>
+                        <div class="text-base">Authenticator App - <% if(response.admin.user.twofactor_authentication.authenticator_app){ %><span class="text-success">Enabled</span><% } else { %><span class="text-danger">Disabled</span><% } %></div>
+                        <div class="text-base">Email Verification - <% if(response.admin.user.twofactor_authentication.email_verification){ %><span class="text-success">Enabled</span><% } else { %><span class="text-danger">Disabled</span><% } %></div>
+                    <% } %>
+
+                    <div class="text-base">Anonymous - <% if(response.admin.user.profile.anonymous) { %><span class="text-danger">Active</span><% } else { %><span class="text-success">Inactive</span><% } %></div>
+                    <div class="text-base">Private Mode - <% if(response.admin.user.profile.private) { %><span class="text-danger">Private</span><% } else { %><span class="text-success">Public</span><% } %></div>
+                    <div class="text-base">Bind Account Steam - <% if(response.admin.user.binds.steam.bind) { %><a class="text-success" href="https://steamcommunity.com/profiles/<%= response.admin.user.binds.steam.bindid %>" target="_blank">Yes (<%= response.admin.user.binds.steam.bindid %>)</a><% } else { %><span class="text-danger">No</span><% } %></div>
+                    <div class="text-base">Bind Account Google - <% if(response.admin.user.binds.google.bind) { %><span class="text-success">Yes (<%= response.admin.user.binds.google.bindid %>)</span><% } else { %><span class="text-danger">No</span><% } %></div>
+                    <div class="text-base">Bind Account Discord - <% if(response.admin.user.binds.discord.bind) { %><span class="text-success">Yes (<%= response.admin.user.binds.discord.bindid %>)</span><% } else { %><span class="text-danger">No</span><% } %></div>
+                    <div class="text-base">Bind Account Facebook - <% if(response.admin.user.binds.facebook.bind) { %><span class="text-success">Yes (<%= response.admin.user.binds.facebook.bindid %>)</span><% } else { %><span class="text-danger">No</span><% } %></div>
+
+                    <% if(response.admin.user.profile.exclusion) { %>
+                        <div class="text-left text-base text-danger">Self Exclusion Active - Expires <%= response.admin.user.profile.exclusion %></div>
+                    <% } else { %>
+                        <div class="text-left text-base text-success">Self Exclusion Inactive</div>
+                    <% } %>
+
+                </div>
+            </div>
+
+            <div class="switch_content hidden" data-id="admin_user" data-panel="settings">
+                <div class="flex flex-col gap-2">
+                    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                        <div class="text-left font-bold text-base">Account Binds</div>
+
+                        <div class="text-muted-foreground">Remove a linked account from the user's profile.</div>
+
+                        <div class="flex flex-row responsive gap-2">
+                            <% if(response.admin.user.binds.steam.bind) { %>
+                                <button class="button button-primary shadow-2 w-full admin_user_remove_bind" data-bind="steam">Remove Steam Bind</button>
+                            <% } else { %>
+                                <button class="button button-primary shadow-2 disabled w-full">Not binded with Steam</button>
+                            <% } %>
+
+                            <% if(response.admin.user.binds.google.bind) { %>
+                                <button class="button button-primary shadow-2 w-full admin_user_remove_bind" data-bind="google">Remove Google Bind</button>
+                            <% } else { %>
+                                <button class="button button-primary shadow-2 disabled w-full">Not binded with Google</button>
+                            <% } %>
+
+                            <% if(response.admin.user.binds.discord.bind) { %>
+                                <button class="button button-primary shadow-2 w-full admin_user_remove_bind" data-bind="discord">Remove Discord Bind</button>
+                            <% } else { %>
+                                <button class="button button-primary shadow-2 disabled w-full">Not binded with Discord</button>
+                            <% } %>
+
+                            <% if(response.admin.user.binds.facebook.bind) { %>
+                                <button class="button button-primary shadow-2 w-full admin_user_remove_bind" data-bind="facebook">Remove Facebook Bind</button>
+                            <% } else { %>
+                                <button class="button button-primary shadow-2 disabled w-full">Not binded with Facebook</button>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                        <div class="text-left font-bold text-base">Exclusions</div>
+
+                        <div class="flex flex-col gap-1">
+                            <div class="text-muted-foreground">Remove any active exclusions applied to this user account.</div>
+                            <div class="text-muted-foreground">Exclusion status: <% if(response.admin.user.profile.exclusion) { %><span class="text-danger">Active - Expires <%= response.admin.user.profile.exclusion %></span><% } else { %><span class="text-success">Inactive</span><% } %></div>
+                        </div>
+
+                        <% if(response.admin.user.profile.exclusion) { %>
+                            <button class="button button-primary shadow-2" id="admin_user_remove_exclusion">Remove Exclusion</button>
+                        <% } else { %>
+                            <button class="button button-primary shadow-2 disabled">Remove Exclusion</button>
+                        <% } %>
+                    </div>
+
+                    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                        <div class="text-left font-bold text-base">Logout All Devices</div>
+
+                        <div class="flex flex-col gap-1">
+                            <div class="text-muted-foreground">Sign the user out of their account across all devices or sessions.</div>
+                            <div class="text-muted-foreground"><% if(response.admin.user.devices > 0) { %><span class="text-success">The user is logged in with <%= response.admin.user.devices %> devices<% } else { %><span class="text-danger">The user is not logged in</span><% } %></div>
+                        </div>
+
+                        <% if(response.admin.user.devices > 0) { %>
+                            <button class="button button-primary shadow-2" id="admin_user_remove_sessions">Logout from all devices</button>
+                        <% } else { %>
+                            <button class="button button-primary shadow-2 disabled">No active sessions</button>
+                        <% } %>
+                    </div>
+
+                    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                        <div class="text-left font-bold text-base">Ban IP Addresses</div>
+
+                        <div class="flex flex-col gap-1">
+                            <div class="text-muted-foreground">Block the user's IP Addresses from accessing the website.</div>
+                            <div class="text-muted-foreground"><% if(response.admin.user.bannedips.length > 0) { %><span class="text-success">Banned IPs - <%= response.admin.user.bannedips.join(', ') %></span><% } else { %><span class="text-success">No IPs Banned</span><% } %></div>
+                        </div>
+
+                        <%- include('../components/inputField.ejs', {
+                            type: 'text',
+                            placeholder: 'IP Address',
+                            id: 'admin_user_ip_value',
+                            errors: [ 'required' ],
+                            features: [
+                                '<button class="button button-primary shadow-2" id="admin_user_ip_ban">Ban</button>',
+                                '<button class="button button-primary shadow-2" id="admin_user_ip_unban">Unban</button>'
+                            ]
+                        }); %>
+                    </div>
+
+                    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                        <div class="text-left font-bold text-base">Set Rank</div>
+
+                        <div class="flex flex-col gap-1">
+                            <div class="text-muted-foreground">Change the user's rank for display, their access level, or permissions.</div>
+                            <div class="text-muted-foreground">Active Rank: <span class="capitalize text-success"><%= response.admin.user.profile.rank.name %></span></div>
+                        </div>
+
+                        <div class="flex flex-row responsive items-center gap-2">
+                            <%- include('../components/dropdownField.ejs', {
+                                type: 'bottom',
+                                placeholder: 'Rank',
+                                id: 'admin_user_rank_value',
+                                selected: response.admin.user.ranks.map(a => a.rank).indexOf(response.admin.user.profile.rank.value),
+                                items: response.admin.user.ranks.map(a => ({
+                                    name: a.name, value: a.rank
+                                }))
+                            }); %>
+
+                            <button class="button button-primary shadow-2" id="admin_user_rank_set">Confirm</button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                        <div class="text-left font-bold text-base">Edit Balance</div>
+
+                        <div class="text-muted-foreground">Manually adjust the user’s balance by adding or subtracting funds.</div>
+
+                        <%- include('../components/inputField.ejs', {
+                            type: 'text',
+                            placeholder: 'Amount',
+                            id: 'admin_user_balance_amount',
+                            value: '1000.00',
+                            errors: [ 'required', 'number' ],
+                            features: [
+                                '<button class="button button-primary shadow-2" id="admin_user_balance_edit">Confirm</button>'
+                            ]
+                        }); %>
+                    </div>
+
+                    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                        <div class="text-left font-bold text-base">Site Ban Restriction</div>
+
+                        <div class="flex flex-col gap-1">
+                            <div class="text-muted-foreground">Ban or unban the user from accessing the website entirely.</div>
+                            <div class="text-muted-foreground"><% if(response.admin.user.restrictions.site.active) { %> <span class="text-danger">This user is already restricted. The restriction expires <%= response.admin.user.restrictions.site.expire %></span><% } else { %><span class="text-success">This user is not restricted</span><% } %></div>
+                        </div>
+
+                        <div class="flex flex-row responsive items-center justify-center gap-2 w-full">
+                            <%- include('../components/inputField.ejs', {
+                                type: 'text',
+                                placeholder: 'Amount',
+                                id: 'admin_user_restriction_site_reason',
+                                errors: [ 'required' ]
+                            }); %>
+
+                            <%- include('../components/dropdownField.ejs', {
+                                type: 'bottom',
+                                placeholder: 'Format Date',
+                                id: 'admin_user_restriction_site_date',
+                                items: [
+                                    { name: 'Minutes', value: 'minutes' },
+                                    { name: 'Hours', value: 'hours' },
+                                    { name: 'Days', value: 'days' },
+                                    { name: 'Months', value: 'months' },
+                                    { name: 'Years', value: 'years' }
+                                ]
+                            }); %>
+
+                            <%- include('../components/inputField.ejs', {
+                                type: 'text',
+                                placeholder: 'Date',
+                                id: 'admin_user_restriction_site_amount',
+                                value: 5,
+                                errors: [ 'required', 'number', 'positive_integer' ],
+                                features: response.admin.user.restrictions.site.active ? [
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_site_unset">Unban</button>'
+                                ] : [
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_site_set">Confirm</button>',
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_site_permanently">Permanently</button>'
+                                ]
+                            }); %>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                        <div class="text-left font-bold text-base">Play Ban Restriction</div>
+
+                        <div class="flex flex-col gap-1">
+                            <div class="text-muted-foreground">Ban or unban the user from participating and betting in any games.</div>
+                            <div class="text-muted-foreground"><% if(response.admin.user.restrictions.play.active) { %> <span class="text-danger">This user is already restricted. The restriction expires <%= response.admin.user.restrictions.play.expire %></span><% } else { %><span class="text-success">This user is not restricted</span><% } %></div>
+                        </div>
+
+                        <div class="flex flex-row responsive items-center justify-center gap-2 w-full">
+                            <%- include('../components/inputField.ejs', {
+                                type: 'text',
+                                placeholder: 'Amount',
+                                id: 'admin_user_restriction_play_reason',
+                                errors: [ 'required' ]
+                            }); %>
+
+                            <%- include('../components/dropdownField.ejs', {
+                                type: 'bottom',
+                                placeholder: 'Format Date',
+                                id: 'admin_user_restriction_play_date',
+                                items: [
+                                    { name: 'Minutes', value: 'minutes' },
+                                    { name: 'Hours', value: 'hours' },
+                                    { name: 'Days', value: 'days' },
+                                    { name: 'Months', value: 'months' },
+                                    { name: 'Years', value: 'years' }
+                                ]
+                            }); %>
+
+                            <%- include('../components/inputField.ejs', {
+                                type: 'text',
+                                placeholder: 'Date',
+                                id: 'admin_user_restriction_play_amount',
+                                value: 5,
+                                errors: [ 'required', 'number', 'positive_integer' ],
+                                features: response.admin.user.restrictions.play.active ? [
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_play_unset">Unban</button>'
+                                ] : [
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_play_set">Confirm</button>',
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_play_permanently">Permanently</button>'
+                                ]
+                            }); %>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                        <div class="text-left font-bold text-base">Payment Ban Restriction</div>
+
+                        <div class="flex flex-col gap-1">
+                            <div class="text-muted-foreground">Ban or unban the user from using the payment system on the website.</div>
+                            <div class="text-muted-foreground"><% if(response.admin.user.restrictions.trade.active) { %> <span class="text-danger">This user is already restricted. The restriction expires <%= response.admin.user.restrictions.trade.expire %></span><% } else { %><span class="text-success">This user is not restricted</span><% } %></div>
+                        </div>
+
+                        <div class="flex flex-row responsive items-center justify-center gap-2 w-full">
+                            <%- include('../components/inputField.ejs', {
+                                type: 'text',
+                                placeholder: 'Amount',
+                                id: 'admin_user_restriction_trade_reason',
+                                errors: [ 'required' ]
+                            }); %>
+
+                            <%- include('../components/dropdownField.ejs', {
+                                type: 'bottom',
+                                placeholder: 'Format Date',
+                                id: 'admin_user_restriction_trade_date',
+                                items: [
+                                    { name: 'Minutes', value: 'minutes' },
+                                    { name: 'Hours', value: 'hours' },
+                                    { name: 'Days', value: 'days' },
+                                    { name: 'Months', value: 'months' },
+                                    { name: 'Years', value: 'years' }
+                                ]
+                            }); %>
+
+                            <%- include('../components/inputField.ejs', {
+                                type: 'text',
+                                placeholder: 'Date',
+                                id: 'admin_user_restriction_trade_amount',
+                                value: 5,
+                                errors: [ 'required', 'number', 'positive_integer' ],
+                                features: response.admin.user.restrictions.trade.active ? [
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_trade_unset">Unban</button>'
+                                ] : [
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_trade_set">Confirm</button>',
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_trade_permanently">Permanently</button>'
+                                ]
+                            }); %>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-start gap-2 bg-card bg-opacity-50 rounded-2 border-2 border-card p-2 w-full">
+                        <div class="text-left font-bold text-base">Chat Mute Restriction</div>
+
+                        <div class="flex flex-col gap-1">
+                            <div class="text-muted-foreground">Mute or unmute the user’s ability to send messages in chat.</div>
+                            <div class="text-muted-foreground"><% if(response.admin.user.restrictions.mute.active) { %> <span class="text-danger">This user is already restricted. The restriction expires <%= response.admin.user.restrictions.mute.expire %></span><% } else { %><span class="text-success">This user is not restricted</span><% } %></div>
+                        </div>
+
+                        <div class="flex flex-row responsive items-center justify-center gap-2 w-full">
+                            <%- include('../components/inputField.ejs', {
+                                type: 'text',
+                                placeholder: 'Amount',
+                                id: 'admin_user_restriction_mute_reason',
+                                errors: [ 'required' ]
+                            }); %>
+
+                            <%- include('../components/dropdownField.ejs', {
+                                type: 'bottom',
+                                placeholder: 'Format Date',
+                                id: 'admin_user_restriction_mute_date',
+                                items: [
+                                    { name: 'Minutes', value: 'minutes' },
+                                    { name: 'Hours', value: 'hours' },
+                                    { name: 'Days', value: 'days' },
+                                    { name: 'Months', value: 'months' },
+                                    { name: 'Years', value: 'years' }
+                                ]
+                            }); %>
+
+                            <%- include('../components/inputField.ejs', {
+                                type: 'text',
+                                placeholder: 'Date',
+                                id: 'admin_user_restriction_mute_amount',
+                                value: 5,
+                                errors: [ 'required', 'number', 'positive_integer' ],
+                                features: response.admin.user.restrictions.mute.active ? [
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_mute_unset">Unban</button>'
+                                ] : [
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_mute_set">Confirm</button>',
+                                    '<button class="button button-primary shadow-2" id="admin_user_restriction_mute_permanently">Permanently</button>'
+                                ]
+                            }); %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

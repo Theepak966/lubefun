@@ -1,0 +1,49 @@
+<div class="chat-rain waiting rounded-2" id="chat_rain">
+    <div class="waiting flex flex-row gap-2 items-center justify-between">
+        <div class="border"></div>
+
+        <div class="flex flex-col gap-2 justify-between">
+            <div class="title">Airdrop</div>
+            <div class="description" id="chat_rain_timer"><span id="chat_rain_last">0 minutes ago</span></div>
+            <div class="description hidden" id="chat_rain_first">This is the first rain</div>
+        </div>
+
+        <div class="flex flex-row items-center gap-2 bg-secondary rounded-2 p-2">
+            <div class="info flex flex-row items-center justify-center gap-1">
+                <div class="coin main"></div>
+                <span class="amount">0.00</span>
+            </div>
+
+            <button type="button" class="button button-success shadow-2 flex items-center justify-center" data-modal="show" data-id="#modal_tip_rain">
+                <img src="/img/medal.png">
+            </button>
+        </div>
+    </div>
+
+    <div class="started flex flex-col gap-2 items-center">
+        <div class="border"></div>
+
+        <div class="info flex flex-row items-center justify-center gap-1">
+            <div class="coin main"></div>
+            <span class="amount">0.00</span>
+        </div>
+
+        <div class="flex flex-col items-center gap-1">
+            <div class="title">It's about to Rain!</div>
+            <div class="description">Complete the captcha to join the rain!</div>
+        </div>
+
+        <div class="flex flex-row justify-center gap-1">
+            <button type="button" class="button button-primary shadow-2" id="chat_rain_join">Join</button>
+            <button type="button" class="button button-primary shadow-2 disabled" id="chat_rain_joined">Joined</button>
+
+            <button type="button" class="button button-danger shadow-2 flex items-center justify-center" data-modal="show" data-id="#modal_tip_rain">
+                <img src="/img/medal.png">
+            </button>
+        </div>
+
+        <div class="progress">
+            <div class="bar" id="chat_rain_progress"></div>
+        </div>
+    </div>
+</div>
