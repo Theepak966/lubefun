@@ -5356,8 +5356,8 @@ function blackjack_applyResult(payload){
 
 	// Set new timeout to auto-restart
 	window.blackjack_restartTimeout = setTimeout(function() {
-		// Reset the game state by clearing the status and enabling the bet button
-		$('#blackjack_status_text').text('Place a bet and click Deal.');
+		// Reset the game state by clearing the status
+		$('#blackjack_status_text').text('Starting new game...');
 		
 		// Clear hands
 		$('#blackjack_player_hand').empty();
@@ -5365,10 +5365,24 @@ function blackjack_applyResult(payload){
 		$('#blackjack_player_total').text('0');
 		$('#blackjack_dealer_total').text('0');
 		
-		// Enable bet button
-		$('#blackjack_bet').removeClass('disabled');
+		// Disable buttons during restart
+		$('#blackjack_bet').addClass('disabled');
 		$('#blackjack_hit').addClass('disabled');
 		$('#blackjack_stand').addClass('disabled');
+		
+		// Automatically start a new deal with the same bet amount
+		var amount = $('#betamount_blackjack').val();
+		if(amount && parseFloat(amount) > 0) {
+			send_request_socket({
+				'type': 'blackjack',
+				'command': 'bet',
+				'amount': amount
+			});
+		} else {
+			// If no amount, just enable the bet button
+			$('#blackjack_status_text').text('Place a bet and click Deal.');
+			$('#blackjack_bet').removeClass('disabled');
+		}
 	}, 2000); // 2 second delay
 }
 
