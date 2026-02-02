@@ -137,7 +137,6 @@
 
 /* Remove any nested "pill" styles coming from the base `.balance` class */
 .navbar-balance-pill .balance {
-  min-height: 32px; /* keep inner row aligned with avatar height */
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
@@ -147,6 +146,9 @@
   border-radius: 0 !important;
   gap: 6px !important; /* match user pill gap */
   font-size: 14px !important; /* match user pill font size */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 /* Hide balance icon/coin - show only amount with $ */
@@ -155,12 +157,15 @@
   display: none !important;
 }
 
-/* Make balance amount text smaller to match user pill */
+/* Make balance amount text match user pill exactly */
 .navbar-balance-pill .amount {
   font-size: 14px !important;
   font-weight: 500 !important; /* match user pill font weight */
   line-height: 1 !important;
   color: rgba(255, 255, 255, 0.9) !important;
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Hide currency text - amount already includes $ */
