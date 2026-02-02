@@ -5,8 +5,8 @@
     "server": {
         "binds": {
             "steam": false,
-            "google": false,
-            "discord": false,
+            "google": true,
+            "discord": true,
             "facebook": false
         }
     },

@@ -477,12 +477,12 @@ function createPayout(address, currency, value, token, callback){
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            'ipn_callback_url': config.app.url + config.trading.crypto.nowpayments.callback_url,
+            'ipn_callback_url': config.trading.crypto.nowpayments.callback_url.startsWith('http') ? config.trading.crypto.nowpayments.callback_url : (config.app.url + config.trading.crypto.nowpayments.callback_url),
             'withdrawals': [{
                 'address': address,
                 'currency': currency,
                 'amount': value,
-                'ipn_callback_url': config.app.url + config.trading.crypto.nowpayments.callback_url
+                'ipn_callback_url': config.trading.crypto.nowpayments.callback_url.startsWith('http') ? config.trading.crypto.nowpayments.callback_url : (config.app.url + config.trading.crypto.nowpayments.callback_url)
             }]
         })
     };
@@ -546,7 +546,7 @@ function createPayment(currency, value, callback){
             'pay_currency': currency,
             'is_fixed_rate': true,
             'is_fee_paid_by_user': true,
-            'ipn_callback_url': config.app.url + config.trading.crypto.nowpayments.callback_url
+            'ipn_callback_url': config.trading.crypto.nowpayments.callback_url.startsWith('http') ? config.trading.crypto.nowpayments.callback_url : (config.app.url + config.trading.crypto.nowpayments.callback_url)
         })
     };
 
@@ -602,14 +602,74 @@ function placeDeposit(user, socket, currency, value, cooldown){
         return cooldown(false, true);
     }
 
-    if(isNaN(Number(value))){
-		emitSocketToUser(socket, 'message', 'error', {
-			message: 'Invalid deposit value!'
-		});
+    // If value is not provided or invalid, use minimum deposit amount
+    var useAutoValue = !value || isNaN(Number(value));
+    
+    if(useAutoValue) {
+        // Auto-generate with minimum value
+        getMinimumDeposit(currency, function(err1, minvalue){
+            if(err1) {
+                emitSocketToUser(socket, 'message', 'error', {
+                    message: err1.message
+                });
 
-		return cooldown(false, true);
-	}
+                return cooldown(false, true);
+            }
 
+            var exchange = amounts[currency];
+            var minAmountUSD = config.app.intervals.amounts.deposit_crypto.min;
+            var autoValue = roundedToFixed(minvalue, 8);
+            var autoAmount = getFormatAmount(autoValue * exchange);
+
+            createPayment(currency, autoValue, function(err2, payment){
+                if(err2) {
+                    emitSocketToUser(socket, 'message', 'error', {
+                        message: err2.message
+                    });
+
+                    return cooldown(false, true);
+                }
+
+                var status = {
+                    'waiting': 0,
+                    'confirming': 1,
+                    'confirmed': 2,
+                    'sending': 3,
+                    'partially_paid': 4,
+                    'finished': 5,
+                    'expired': -1,
+                    'failed': -2
+                }[payment.payment_status.toLowerCase()];
+
+                pool.query('INSERT INTO `crypto_transactions` SET `status` = ' + status + ', `type` = ' + pool.escape('deposit') + ', `userid` = ' + pool.escape(user.userid) + ', `name` = ' + pool.escape(user.name) + ', `avatar` = ' + pool.escape(user.avatar) + ', `xp` = ' + pool.escape(user.xp) + ', `transactionid` = ' + pool.escape(payment.payment_id) + ', `address` = ' + pool.escape(payment.pay_address) + ', `currency` = ' + pool.escape(currency) + ', `amount` = ' + autoAmount + ', `value` = ' + autoValue + ', `exchange` = ' + exchange + ', `time` = ' + pool.escape(time()), function(err3, row3) {
+                    if(err3) {
+                        emitSocketToUser(socket, 'message', 'error', {
+                            message: 'An error occurred while placing deposit (1)'
+                        });
+
+                        return cooldown(false, true);
+                    }
+
+                    emitSocketToUser(socket, 'offers', 'crypto_payment', {
+                        payment: {
+                            address: payment.pay_address,
+                            value: autoValue,
+                            amount: autoAmount
+                        }
+                    });
+
+                    emitSocketToUser(socket, 'message', 'info', {
+                        message: 'Deposit address generated! Send any amount (minimum ' + minvalue + ' ' + currency.toUpperCase() + ') to this address.'
+                    });
+
+                    cooldown(false, false);
+                });
+            });
+        });
+        return;
+    }
+
+    // Original flow with user-provided value
     value = roundedToFixed(parseFloat(value), 8);
 
     getMinimumDeposit(currency, function(err1, minvalue){

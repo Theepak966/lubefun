@@ -43,7 +43,7 @@ function encode_char(c) {
 };
 ;
 var __line = 1
-  , __lines = "<div class=\"item <% if(!enable){ %>disabled<% } %>\" data-id=\"<%= id %>\">\n    <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n        <% if(enable){ %>\n            <div class=\"rtp text-sm font-bold\"><%= rtp %>% RTP</div>\n\n            <div class=\"favorite pointer <% if(favorite){ %>active<% } %>\"><i class=\"fa fa-heart\" aria-hidden=\"true\"></i></div>\n\n            <div class=\"start flex flex-col gap-2 items-center\">\n                <a href=\"/casino/slots/<%= id %>\"><div class=\"play flex flex-col items-center justify-center transition duration-500\"><i class=\"fa fa-play\" aria-hidden=\"true\"></i></div></a>\n\n                <% if(demo){ %>\n                    <a href=\"/casino/slots/<%= id %>/demo\"><div class=\"text-xs font-bold\">Play Demo</div></a>\n                <% } %>\n            </div>\n        <% } else { %>\n            <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n                <div class=\"description text-sm text-center font-bold\">This game is temporary disabled!</div>\n            </div>\n        <% } %>\n\n        <div class=\"name flex flex-col gap-1\">\n            <div class=\"text-base text-center font-bold truncate w-full\"><%= name %></div>\n            <div class=\"text-xs text-center text-muted-foreground font-bold uppercase truncate w-full\"><%= provider %></div>\n        </div>\n    </div>\n\n    <div class=\"image transition duration-500\"><img src=\"<%= image %>\"></div>\n</div>"
+  , __lines = "<div class=\"item <% if(!enable){ %>disabled<% } %>\" data-id=\"<%= id %>\">\n    <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n        <% if(enable){ %>\n            <div class=\"favorite pointer <% if(favorite){ %>active<% } %>\"><i class=\"fa fa-heart\" aria-hidden=\"true\"></i></div>\n\n            <div class=\"start flex flex-col gap-2 items-center\">\n                <a href=\"/casino/slots/<%= id %>\"><div class=\"play flex flex-col items-center justify-center transition duration-500\"><i class=\"fa fa-play\" aria-hidden=\"true\"></i></div></a>\n\n                <% if(demo){ %>\n                    <a href=\"/casino/slots/<%= id %>/demo\"><div class=\"text-xs font-bold\">Play Demo</div></a>\n                <% } %>\n            </div>\n        <% } else { %>\n            <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n                <div class=\"description text-sm text-center font-bold\">This game is temporary disabled!</div>\n            </div>\n        <% } %>\n\n        <div class=\"name flex flex-col gap-1\">\n            <div class=\"text-base text-center font-bold truncate w-full\"><%= name %></div>\n            <div class=\"text-xs text-center text-muted-foreground font-bold uppercase truncate w-full\"><%= provider %></div>\n        </div>\n    </div>\n\n    <div class=\"image transition duration-500\"><img src=\"<%= image %>\"></div>\n</div>"
   , __filename = undefined;
 try {
   var __output = "";
@@ -58,43 +58,40 @@ try {
     ; __append("\">\n    <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n        ")
     ; __line = 3
     ;  if(enable){ 
-    ; __append("\n            <div class=\"rtp text-sm font-bold\">")
+    ; __append("\n            <div class=\"favorite pointer ")
     ; __line = 4
-    ; __append(escapeFn( rtp ))
-    ; __append("% RTP</div>\n\n            <div class=\"favorite pointer ")
-    ; __line = 6
     ;  if(favorite){ 
     ; __append("active")
     ;  } 
     ; __append("\"><i class=\"fa fa-heart\" aria-hidden=\"true\"></i></div>\n\n            <div class=\"start flex flex-col gap-2 items-center\">\n                <a href=\"/casino/slots/")
-    ; __line = 9
+    ; __line = 7
     ; __append(escapeFn( id ))
     ; __append("\"><div class=\"play flex flex-col items-center justify-center transition duration-500\"><i class=\"fa fa-play\" aria-hidden=\"true\"></i></div></a>\n\n                ")
-    ; __line = 11
+    ; __line = 9
     ;  if(demo){ 
     ; __append("\n                    <a href=\"/casino/slots/")
-    ; __line = 12
+    ; __line = 10
     ; __append(escapeFn( id ))
     ; __append("/demo\"><div class=\"text-xs font-bold\">Play Demo</div></a>\n                ")
-    ; __line = 13
+    ; __line = 11
     ;  } 
     ; __append("\n            </div>\n        ")
-    ; __line = 15
+    ; __line = 13
     ;  } else { 
     ; __append("\n            <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n                <div class=\"description text-sm text-center font-bold\">This game is temporary disabled!</div>\n            </div>\n        ")
-    ; __line = 19
+    ; __line = 17
     ;  } 
     ; __append("\n\n        <div class=\"name flex flex-col gap-1\">\n            <div class=\"text-base text-center font-bold truncate w-full\">")
-    ; __line = 22
+    ; __line = 20
     ; __append(escapeFn( name ))
     ; __append("</div>\n            <div class=\"text-xs text-center text-muted-foreground font-bold uppercase truncate w-full\">")
-    ; __line = 23
+    ; __line = 21
     ; __append(escapeFn( provider ))
     ; __append("</div>\n        </div>\n    </div>\n\n    <div class=\"image transition duration-500\"><img src=\"")
-    ; __line = 27
+    ; __line = 25
     ; __append(escapeFn( image ))
     ; __append("\"></div>\n</div>")
-    ; __line = 28
+    ; __line = 26
   }
   return __output;
 } catch (e) {

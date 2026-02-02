@@ -561,15 +561,47 @@
                     <div class="grid split-column-2 gap-1 w-full">
                         <button class="button button-accent shadow-2" data-modal="hide">Cancel</button>
 
-                        <a href="/auth/logout?returnUrl=/<%= app.paths.join('/') %>">
-                            <button class="button button-primary shadow-2 w-full">Logout</button>
-                        </a>
+                        <button class="button button-primary shadow-2 w-full" id="logout-confirm-btn">Logout</button>
                     </div>
 			    </div>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+(function() {
+    var logoutBtn = document.getElementById('logout-confirm-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            // Close modal first
+            var modal = document.getElementById('modal_auth_logout');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.add('hidden');
+            }
+            
+            // Get return URL
+            var returnUrl = window.location.pathname + window.location.search || '/';
+            
+            // Perform logout via fetch to ensure it completes
+            fetch('/auth/logout?returnUrl=' + encodeURIComponent(returnUrl), {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            }).then(function() {
+                // Force redirect after fetch completes
+                window.location.href = returnUrl;
+            }).catch(function() {
+                // Even if fetch fails, redirect
+                window.location.href = returnUrl;
+            });
+        });
+    }
+})();
+</script>
 
 <% if(page != 'admin') { %>
 <div class="modal small" id="modal_twofa_email_verification">

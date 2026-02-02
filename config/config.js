@@ -49,13 +49,13 @@ const config = {
         google: {
             client: process.env.GOOGLE_CLIENT_ID,
             secret: process.env.GOOGLE_CLIENT_SECRET,
-            callback_url: process.env.GOOGLE_CALLBACK_URL
+            callback_url: (process.env.GOOGLE_CALLBACK_URL && process.env.GOOGLE_CALLBACK_URL.startsWith('http')) ? process.env.GOOGLE_CALLBACK_URL : (process.env.APP_PUBLIC_URL || process.env.APP_URL || 'http://localhost:3000') + (process.env.GOOGLE_CALLBACK_URL || '/auth/google/callback')
         },
 
         discord: {
             client: process.env.DISCORD_CLIENT_ID,
             secret: process.env.DISCORD_CLIENT_SECRET,
-            callback_url: process.env.DISCORD_CALLBACK_URL
+            callback_url: (process.env.DISCORD_CALLBACK_URL && process.env.DISCORD_CALLBACK_URL.startsWith('http')) ? process.env.DISCORD_CALLBACK_URL : (process.env.APP_PUBLIC_URL || process.env.APP_URL || 'http://localhost:3000') + (process.env.DISCORD_CALLBACK_URL || '/auth/discord/callback')
         },
 
         steam: {

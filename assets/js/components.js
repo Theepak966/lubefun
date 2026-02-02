@@ -567,7 +567,20 @@ function initializeInputFields(){
 }
 
 function changeInputFieldLabel($field){
-	var text = $field.find('.field_element_input').val().trim();
+	/**
+	 * Safely read the current input value for an input_field container.
+	 *
+	 * Why:
+	 * - Some callers pass an empty jQuery set (e.g. selector didn't match on a page).
+	 * - jQuery `.val()` returns `undefined` when the input does not exist, which would
+	 *   crash on `.trim()` and break unrelated UI flows (deposit/withdraw QR rendering).
+	 */
+	if(!$field || $field.length <= 0) return;
+
+	var $input = $field.find('.field_element_input');
+	if($input.length <= 0) return;
+
+	var text = ($input.val() ?? '').toString().trim();
 
 	if(text.length > 0) $field.find('.field_label').addClass('active');
 	else $field.find('.field_label').removeClass('active');
@@ -580,7 +593,13 @@ function clearInputFieldError($field){
 }
 
 function verifyErrorInputField($field){
-	var text = $field.find('.field_element_input').val().trim();
+	// See `changeInputFieldLabel` for why we guard here as well.
+	if(!$field || $field.length <= 0) return;
+
+	var $input = $field.find('.field_element_input');
+	if($input.length <= 0) return;
+
+	var text = ($input.val() ?? '').toString().trim();
 
 	var border = $field.data('border');
 

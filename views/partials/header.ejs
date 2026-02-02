@@ -58,6 +58,38 @@
                         <% } %>
                     </div>
                 </div>
+
+                <!-- User Menu with Dropdown -->
+                <div class="navbar-user-wrapper relative">
+                    <div class="navbar-user-pill pointer" id="user-menu-toggle">
+                        <div class="flex flex-row items-center justify-center gap-2">
+                            <img src="<%= user.avatar %>" alt="<%= user.name %>" class="navbar-user-avatar" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                            <span class="navbar-user-name" style="font-size: 14px; font-weight: 500;"><%= user.name %></span>
+                            <i class="fa fa-angle-down" aria-hidden="true" style="font-size: 12px;"></i>
+                        </div>
+                        
+                        <!-- User Dropdown Menu -->
+                        <div class="navbar-user-dropdown list flex flex-col transition duration-200 hidden" id="user-menu-dropdown">
+                            <a href="/account/settings" class="navbar-dropdown-item">
+                                <i class="fa fa-cog" aria-hidden="true"></i>
+                                <span>Settings</span>
+                            </a>
+                            <a href="/account/security" class="navbar-dropdown-item">
+                                <i class="fa fa-shield" aria-hidden="true"></i>
+                                <span>Security</span>
+                            </a>
+                            <a href="/account/games" class="navbar-dropdown-item">
+                                <i class="fa fa-history" aria-hidden="true"></i>
+                                <span>Games History</span>
+                            </a>
+                            <div class="navbar-dropdown-divider"></div>
+                            <div class="navbar-dropdown-item text-danger pointer" data-modal="show" data-id="#modal_auth_logout">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                <span>Logout</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <% } else { %>
                 <!-- Sign In Button -->
                 <a href="/login?returnUrl=/<%= app.paths.join('/') %>" class="navbar-signin-btn">
@@ -72,39 +104,55 @@
 
 <div class="header mobile flex flex-row justify-between gap-2">
     <a href="/" class="logo flex justify-start items-center">
-        <img src="/img/logo_mini.png">
+        <img class="site-logo" src="/img/logo.png" alt="Logo">
     </a>
 
     <div class="navigation flex flex-row items-center justify-end gap-2 h-full">
         <% if(user) { %>
-            <div class="flex flex-row items-center gap-4 relative h-full">
-                <div class="balances pointer flex flex-row gap-2 items-center justify-center h-full">
-                    <% if(page == 'casino' && app.paths.length > 2){ %>
-                        <div class="balance flex flex-row items-center justify-center gap-2" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 9999px; padding: 6px 12px;">
-                            <div class="coin main"></div>
-                            <span class="amount" style="font-size: 14px; font-weight: 700;">In play</span>
-                        </div>
-                    <% } else { %>
-                        <div class="balance flex flex-row items-center justify-center gap-2" data-type="total">
-                            <div class="coin main"></div>
-                            <span class="amount">0.00</span>
-                        </div>
+            <div class="flex flex-row items-center gap-3 relative h-full">
+                <% if(page == 'casino' && app.paths.length > 2){ %>
+                    <div class="balance flex flex-row items-center justify-center gap-2 pointer" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 9999px; padding: 6px 12px;">
+                        <div class="coin main"></div>
+                        <span class="amount" style="font-size: 14px; font-weight: 700;">In play</span>
+                    </div>
+                <% } else { %>
+                    <div class="balance flex flex-row items-center justify-center gap-2 pointer" data-type="total" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 9999px; padding: 6px 12px;">
+                        <div class="coin main"></div>
+                        <span class="amount">0.00</span>
+                        <span class="balance-currency" style="color: rgba(203, 213, 225, 0.8);">SOL</span>
+                        <i class="fa fa-angle-down" aria-hidden="true" style="color: rgba(6, 182, 212, 0.7); font-size: 12px;"></i>
+                    </div>
+                <% } %>
 
-                        <div class="flex flex-row items-center justify-center text-lg h-full ml-1" style="color: rgba(6, 182, 212, 0.7); transition: all 0.3s ease;">
-                            <i class="fa fa-angle-down" aria-hidden="true"></i>
+                <!-- Mobile User Menu -->
+                <div class="navbar-user-wrapper relative">
+                    <div class="navbar-user-pill pointer" id="user-menu-toggle-mobile">
+                        <div class="flex flex-row items-center justify-center gap-2">
+                            <img src="<%= user.avatar %>" alt="<%= user.name %>" class="navbar-user-avatar" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+                            <i class="fa fa-angle-down" aria-hidden="true" style="font-size: 10px;"></i>
                         </div>
-
-                        <div class="list flex flex-col transition duration-200 hidden">
-                            <div class="balance flex flex-row items-center justify-between gap-2 w-full" data-type="main" data-balance="0.00">
-                                <div class="text-sm font-bold text-muted-foreground">Main</div>
-
-                                <div class="flex flex-row items-center justify-center gap-2">
-                                    <div class="coin main"></div>
-                                    <span class="amount" style="font-weight: 700;">0.00</span>
-                                </div>
+                        
+                        <!-- User Dropdown Menu -->
+                        <div class="navbar-user-dropdown list flex flex-col transition duration-200 hidden" id="user-menu-dropdown-mobile">
+                            <a href="/account/settings" class="navbar-dropdown-item">
+                                <i class="fa fa-cog" aria-hidden="true"></i>
+                                <span>Settings</span>
+                            </a>
+                            <a href="/account/security" class="navbar-dropdown-item">
+                                <i class="fa fa-shield" aria-hidden="true"></i>
+                                <span>Security</span>
+                            </a>
+                            <a href="/account/games" class="navbar-dropdown-item">
+                                <i class="fa fa-history" aria-hidden="true"></i>
+                                <span>Games History</span>
+                            </a>
+                            <div class="navbar-dropdown-divider"></div>
+                            <div class="navbar-dropdown-item text-danger pointer" data-modal="show" data-id="#modal_auth_logout">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                <span>Logout</span>
                             </div>
                         </div>
-                    <% } %>
+                    </div>
                 </div>
             </div>
 
@@ -118,3 +166,44 @@
         <button class="button pullout_view" data-pullout="chat"><i class="fa fa-times" aria-hidden="true"></i></button>
     </div>
 </div>
+
+<script>
+// User menu dropdown toggle (desktop and mobile)
+(function() {
+    function setupUserMenu(toggleId, dropdownId) {
+        var userMenuToggle = document.getElementById(toggleId);
+        var userMenuDropdown = document.getElementById(dropdownId);
+        
+        if (userMenuToggle && userMenuDropdown) {
+            userMenuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                userMenuDropdown.classList.toggle('hidden');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!userMenuToggle.contains(e.target) && !userMenuDropdown.contains(e.target)) {
+                    userMenuDropdown.classList.add('hidden');
+                }
+            });
+            
+            // Close dropdown when clicking on a menu item
+            var menuItems = userMenuDropdown.querySelectorAll('.navbar-dropdown-item');
+            menuItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    // Don't close if it's the logout button (it opens a modal)
+                    if (!item.hasAttribute('data-modal')) {
+                        userMenuDropdown.classList.add('hidden');
+                    }
+                });
+            });
+        }
+    }
+    
+    // Setup desktop menu
+    setupUserMenu('user-menu-toggle', 'user-menu-dropdown');
+    
+    // Setup mobile menu
+    setupUserMenu('user-menu-toggle-mobile', 'user-menu-dropdown-mobile');
+})();
+</script>

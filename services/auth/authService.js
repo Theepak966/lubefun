@@ -725,12 +725,34 @@ function resetPassword(data, callback) {
 }
 
 function logout(data, callback) {
-    var device = crypto.createHash('sha256').update(data.agent).digest('hex');
+    // If no session provided, just mark all sessions for this user as removed
+    if(!data.session) {
+        pool.query('UPDATE `users_sessions` SET `removed` = 1 WHERE `userid` = ' + pool.escape(data.userid) + ' AND `removed` = 0', function(err1) {
+            // Don't fail if no sessions found - user might already be logged out
+            callback(null);
+        });
+        return;
+    }
 
+    var device = crypto.createHash('sha256').update(data.agent || '').digest('hex');
+
+    // Try to remove the specific session first
     pool.query('UPDATE `users_sessions` SET `removed` = 1 WHERE `userid` = ' + pool.escape(data.userid) + ' AND `session` = ' + pool.escape(data.session) + ' AND `device` = ' + pool.escape(device) + ' AND `removed` = 0 AND `expire` > ' + pool.escape(time()), function(err1, row1) {
-        if(err1) return callback(new Error('An error occurred while logging out (1)'));
+        if(err1) {
+            // If error, try to remove all sessions for this user as fallback
+            pool.query('UPDATE `users_sessions` SET `removed` = 1 WHERE `userid` = ' + pool.escape(data.userid) + ' AND `removed` = 0', function(err2) {
+                callback(null); // Always succeed
+            });
+            return;
+        }
 
-        if(row1.affectedRows <= 0) return callback(new Error('An error occurred while logging out (2)'));
+        // If no rows affected, try removing all sessions for this user
+        if(row1.affectedRows <= 0) {
+            pool.query('UPDATE `users_sessions` SET `removed` = 1 WHERE `userid` = ' + pool.escape(data.userid) + ' AND `removed` = 0', function(err2) {
+                callback(null); // Always succeed
+            });
+            return;
+        }
 
         callback(null);
     });

@@ -1,8 +1,6 @@
 <div class="item <% if(!enable){ %>disabled<% } %>" data-id="<%= id %>">
     <div class="info bg-secondary bg-opacity-50 transition duration-200">
         <% if(enable){ %>
-            <div class="rtp text-sm font-bold"><%= rtp %>% RTP</div>
-
             <div class="favorite pointer <% if(favorite){ %>active<% } %>"><i class="fa fa-heart" aria-hidden="true"></i></div>
 
             <div class="start flex flex-col gap-2 items-center">

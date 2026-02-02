@@ -30,6 +30,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
         <link href="/css/globals.css" rel="stylesheet">
+        <link href="/css/overrides.css" rel="stylesheet">
         <link href="/css/bouncer.css" rel="stylesheet">
 
         <!--  JAVASCRIPT  -->
@@ -37,7 +38,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tinysort/2.3.6/tinysort.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-        <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+        <!-- Why: rawgit is deprecated/unreliable; use a stable CDN for QR generation -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
@@ -128,7 +130,7 @@
             <div class="header mobile flex flex-row justify-between gap-2">
                 <div class="flex flex-row items-center justify-center gap-2 h-full">
                     <a href="/" class="logo flex justify-start items-center">
-                        <img src="/img/logo_mini.png">
+                        <img class="site-logo" src="/img/logo.png" alt="Logo">
                     </a>
 
                     <div class="flex flex-row gap-1">

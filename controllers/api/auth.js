@@ -422,24 +422,73 @@ exports.resetPassword = async (req, res, next) => {
 };
 
 exports.logout = async (req, res) => {
-    if(!res.locals.user) return res.status(409).json({ 'success': false, 'error': 'User not logged in' });
-
-    var session = req.cookies.session;
-    var returnUrl = req.session.returnUrl || '/';
-
-    var agent = req.headers['user-agent'];
-
-    authService.logout({ userid: res.locals.user.userid, session, agent }, function(err1){
-        if(err1) return res.status(409).json({ 'success': false, 'error': err1.message });
-
+    var returnUrl = '/';
+    try {
+        returnUrl = req.query.returnUrl || (req.session && req.session.returnUrl) || '/';
+    } catch(e) {
+        returnUrl = '/';
+    }
+    
+    // Get session and user info before clearing (must get before destroying session)
+    var sessionCookie = req.cookies && req.cookies.session ? req.cookies.session : '';
+    var userid = res.locals && res.locals.user && res.locals.user.userid ? res.locals.user.userid : null;
+    var agent = req.headers && req.headers['user-agent'] ? req.headers['user-agent'] : '';
+    
+    // Clear session cookie - must match exactly how it was set (see login/register functions)
+    // Cookie is set with: httpOnly: true, secure: config.app.secure, sameSite: 'lax'
+    try {
         res.clearCookie('session', {
             httpOnly: true,
             secure: config.app.secure,
-            sameSite: 'None'
+            sameSite: 'lax',
+            path: '/'
         });
+    } catch(e) {}
+    
+    // Also try clearing with secure: false in case config changed
+    try {
+        res.clearCookie('session', {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax',
+            path: '/'
+        });
+    } catch(e) {}
 
-        res.redirect(returnUrl);
-    });
+    // Clear express-session cookie if it exists
+    try {
+        res.clearCookie('connect.sid', { path: '/' });
+    } catch(e) {}
+
+    // Destroy express session first (before async DB call)
+    try {
+        if(req.session) {
+            req.session.destroy(function(err) {
+                // Ignore errors
+            });
+        }
+    } catch(e) {
+        // Ignore
+    }
+
+    // Invalidate session in database (async, don't wait for completion)
+    if(userid && sessionCookie) {
+        try {
+            authService.logout({ userid: userid, session: sessionCookie, agent: agent }, function(err1){
+                // Ignore errors - cookies already cleared
+            });
+        } catch(e) {
+            // Ignore
+        }
+    }
+
+    // Always redirect immediately (don't wait for DB)
+    try {
+        return res.redirect(returnUrl);
+    } catch(e) {
+        // If redirect fails, send 302 with Location header
+        return res.status(302).setHeader('Location', returnUrl).end();
+    }
 };
 
 exports.changePassword = async (req, res, next) => {

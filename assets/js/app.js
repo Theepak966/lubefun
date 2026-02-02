@@ -5896,6 +5896,33 @@ $(document).ready(function() {
 		$('#crypto_deposit_panel').removeClass('active');
 	});
 
+	$(document).on('click', '#crypto_withdraw_max', function() {
+		var currency = $(this).attr('data-currency');
+		var maxAmount = parseFloat($(this).attr('data-max')) || 0;
+		var minAmount = parseFloat($(this).attr('data-min')) || 0;
+		
+		// Get current balance
+		var currentBalance = BALANCES.main || 0;
+		
+		// Calculate max withdrawable amount (balance or max limit, whichever is lower)
+		var withdrawMax = Math.min(currentBalance, maxAmount);
+		
+		// Ensure it's at least the minimum
+		if(withdrawMax < minAmount) {
+			withdrawMax = minAmount;
+		}
+		
+		// Set the amount in the input field
+		var $amountInput = $('#currency_withdraw_amount');
+		$amountInput.val(getFormatAmountString(withdrawMax));
+		
+		// Trigger input event to update the conversion fields
+		$amountInput.trigger('input');
+		
+		// Update the label
+		changeInputFieldLabel($amountInput.closest('.input_field'));
+	});
+
 	$(document).on('click', '#crypto_withdraw', function() {
 		var currency = $(this).attr('data-currency');
 		var address = $('#currency_withdraw_address').val();

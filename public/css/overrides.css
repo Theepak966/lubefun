@@ -1,0 +1,214 @@
+/**
+ * UI overrides for deployment.
+ *
+ * Why:
+ * - `public/css/globals.css` is a large, generated/minified bundle.
+ * - We keep small, targeted tweaks here so they remain easy to audit and adjust.
+ */
+
+/**
+ * Keep the header logo consistent across desktop/mobile.
+ *
+ * Why:
+ * - The templates render both a desktop and mobile header.
+ * - We use the same logo asset for both, but constrain it on small screens.
+ */
+.header.mobile .logo img.site-logo {
+  max-height: 34px;
+  max-width: 180px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/**
+ * User menu dropdown styling.
+ *
+ * Why:
+ * - Provides a visible user menu with account options and logout.
+ * - Matches the existing balance dropdown design pattern.
+ */
+.navbar-user-wrapper {
+  position: relative;
+}
+
+.navbar-user-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navbar-user-pill:hover {
+  border-color: rgba(6, 182, 212, 0.5);
+  background: linear-gradient(135deg, rgba(20, 28, 47, 0.95) 0%, rgba(35, 46, 64, 0.95) 100%);
+}
+
+.navbar-user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.98) 100%);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.navbar-user-dropdown.hidden {
+  display: none;
+}
+
+.navbar-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.navbar-dropdown-item:hover {
+  background: rgba(6, 182, 212, 0.1);
+  color: rgba(255, 255, 255, 1);
+}
+
+.navbar-dropdown-item.text-danger {
+  color: rgba(239, 68, 68, 0.9);
+}
+
+.navbar-dropdown-item.text-danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: rgba(239, 68, 68, 1);
+}
+
+.navbar-dropdown-item i {
+  width: 16px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.navbar-dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 4px 0;
+}
+
+/**
+ * Balance pill styling (match user pill).
+ *
+ * Why:
+ * - The balance pill markup contains an inner `.balance` element that already
+ *   has its own rounded background/border in the base stylesheet.
+ * - That created a "double rounded rectangle" look.
+ * - We want it to look exactly like the user pill (e.g. `test34`).
+ */
+.navbar-balance-wrapper {
+  position: relative;
+}
+
+.navbar-balance-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  min-height: 44px; /* match `.navbar-user-pill` height (32px avatar + 12px padding) */
+  border-radius: 9999px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navbar-balance-pill:hover {
+  border-color: rgba(6, 182, 212, 0.5);
+  background: linear-gradient(135deg, rgba(20, 28, 47, 0.95) 0%, rgba(35, 46, 64, 0.95) 100%);
+}
+
+/* Remove any nested "pill" styles coming from the base `.balance` class */
+.navbar-balance-pill .balance {
+  min-height: 32px; /* keep inner row aligned with avatar height */
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  gap: 6px !important; /* match user pill gap */
+  font-size: 14px !important; /* match user pill font size */
+}
+
+/* Make balance icon/coin smaller to match avatar size */
+.navbar-balance-pill .balance-icon,
+.navbar-balance-pill .coin {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 16px !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Make balance amount text smaller to match user pill */
+.navbar-balance-pill .amount {
+  font-size: 14px !important;
+  font-weight: 500 !important; /* match user pill font weight */
+  line-height: 1 !important;
+}
+
+/* Make currency text smaller */
+.navbar-balance-pill .balance-currency {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  opacity: 0.8 !important;
+  line-height: 1 !important;
+}
+
+/* Make dropdown arrow smaller */
+.navbar-balance-pill .balance-arrow,
+.navbar-balance-pill .fa-angle-down {
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.navbar-balance-pill .balance::before,
+.navbar-balance-pill .balance::after {
+  content: none !important;
+}
+
+/* Mobile user menu adjustments */
+.header.mobile .navbar-user-pill {
+  padding: 4px 8px;
+}
+
+.header.mobile .navbar-user-dropdown {
+  right: 0;
+  min-width: 180px;
+}
+
+/**
+ * Auth page logo styling.
+ *
+ * Why:
+ * - Makes the logo smaller on login/register pages for better visual balance.
+ */
+.auth-container .logo {
+  max-width: 200px;
+  max-height: 80px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+

@@ -30,6 +30,7 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
         <link href="/css/globals.css" rel="stylesheet">
+        <link href="/css/overrides.css" rel="stylesheet">
         <link href="/css/bouncer.css" rel="stylesheet">
 
         <!--  JAVASCRIPT  -->
@@ -37,7 +38,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tinysort/2.3.6/tinysort.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-        <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+        <!-- Why: rawgit is deprecated/unreliable; use a stable CDN for QR generation -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
@@ -49,7 +51,7 @@
 
 	<body>
         <div class="auth-container flex flex-col gap-4 justify-center items-center size-full p-2">
-            <a href="/"><img class="logo" src="/img/logo.png"></a>
+            <a href="/"><img class="logo" src="/img/logo.png" style="max-width: 200px; max-height: 80px; width: auto; height: auto;"></a>
 
             <div class="w-3 responsive bg-card bg-opacity-50 rounded-2 border-2 border-card p-4">
                 <div class="flex flex-col gap-4">

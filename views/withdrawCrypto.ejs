@@ -43,19 +43,21 @@
 					<div class="flex flex-col gap-2">
 						<label class="text-sm font-semibold">Withdraw Amount</label>
 						<div class="flex flex-row gap-2 responsive">
-							<%- include('./components/inputField.ejs', {
-								type: 'text',
-								placeholder: 'Withdraw Amount',
-								currency: 'main',
-								id: 'currency_withdraw_amount',
-								value: '100.00',
-								attributes: [
-									{ name: 'data-conversion', value: 'from' },
-									{ name: 'data-currency', value: app.paths[2] },
-									{ name: 'data-amount', value: 'withdraw_crypto' }
-								],
-								errors: [ 'required', 'number', 'greater', 'lesser' ]
-							}); %>
+							<div class="flex-1">
+								<%- include('./components/inputField.ejs', {
+									type: 'text',
+									placeholder: 'Withdraw Amount',
+									currency: 'main',
+									id: 'currency_withdraw_amount',
+									value: '100.00',
+									attributes: [
+										{ name: 'data-conversion', value: 'from' },
+										{ name: 'data-currency', value: app.paths[2] },
+										{ name: 'data-amount', value: 'withdraw_crypto' }
+									],
+									errors: [ 'required', 'number', 'greater', 'lesser' ]
+								}); %>
+							</div>
 
 							<%- include('./components/inputField.ejs', {
 								type: 'text',
@@ -67,6 +69,10 @@
 								],
 								errors: [ 'number' ]
 							}); %>
+
+							<button type="button" class="button button-accent shadow-2 px-4" id="crypto_withdraw_max" data-currency="<%= app.paths[2] %>" data-max="<%= response.withdraw.amounts.max %>" data-min="<%= response.withdraw.amounts.min %>" style="white-space: nowrap;">
+								Max
+							</button>
 						</div>
 						<div class="text-xs text-muted-foreground">Minimum: $<%= response.withdraw.amounts.min %>, Maximum: $<%= response.withdraw.amounts.max %></div>
 					</div>

@@ -43,7 +43,7 @@ function encode_char(c) {
 };
 ;
 var __line = 1
-  , __lines = "<div class=\"item transition duration-500 <% if(!enable){ %>disabled<% } %>\">\n    <% if(enable){ %>\n        <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n            <div class=\"rtp text-sm font-bold\"><%= rtp %>% RTP</div>\n\n            <div class=\"start flex flex-col gap-2 items-center\">\n                <a href=\"/<%= game %>\"><div class=\"play flex flex-col items-center justify-center transition duration-500\"><i class=\"fa fa-play\" aria-hidden=\"true\"></i></div></a>\n            </div>\n\n            <div class=\"name text-base text-center font-bold truncate\"><%= name %></div>\n        </div>\n    <% } else { %>\n        <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n            <div class=\"description text-sm text-center font-bold\">This game is temporary disabled!</div>\n        </div>\n    <% } %>\n\n    <div class=\"name text-base font-bold transition duration-500\"><%= name %></div>\n    <div class=\"description text-xs font-bold transition duration-500\"><%= description %></div>\n\n    <div class=\"image transition duration-500\"><img src=\"<%= image %>\"></div>\n</div>"
+  , __lines = "<div class=\"item transition duration-500 <% if(!enable){ %>disabled<% } %>\">\n    <% if(enable){ %>\n        <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n            <div class=\"start flex flex-col gap-2 items-center\">\n                <a href=\"/<%= game %>\"><div class=\"play flex flex-col items-center justify-center transition duration-500\"><i class=\"fa fa-play\" aria-hidden=\"true\"></i></div></a>\n            </div>\n\n            <div class=\"name text-base text-center font-bold truncate\"><%= name %></div>\n        </div>\n    <% } else { %>\n        <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n            <div class=\"description text-sm text-center font-bold\">This game is temporary disabled!</div>\n        </div>\n    <% } %>\n\n    <div class=\"name text-base font-bold transition duration-500\"><%= name %></div>\n    <div class=\"description text-xs font-bold transition duration-500\"><%= description %></div>\n\n    <div class=\"image transition duration-500\"><img src=\"<%= image %>\"></div>\n</div>"
   , __filename = undefined;
 try {
   var __output = "";
@@ -56,32 +56,29 @@ try {
     ; __append("\">\n    ")
     ; __line = 2
     ;  if(enable){ 
-    ; __append("\n        <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n            <div class=\"rtp text-sm font-bold\">")
-    ; __line = 4
-    ; __append(escapeFn( rtp ))
-    ; __append("% RTP</div>\n\n            <div class=\"start flex flex-col gap-2 items-center\">\n                <a href=\"/")
-    ; __line = 7
+    ; __append("\n        <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n            <div class=\"start flex flex-col gap-2 items-center\">\n                <a href=\"/")
+    ; __line = 5
     ; __append(escapeFn( game ))
     ; __append("\"><div class=\"play flex flex-col items-center justify-center transition duration-500\"><i class=\"fa fa-play\" aria-hidden=\"true\"></i></div></a>\n            </div>\n\n            <div class=\"name text-base text-center font-bold truncate\">")
-    ; __line = 10
+    ; __line = 8
     ; __append(escapeFn( name ))
     ; __append("</div>\n        </div>\n    ")
-    ; __line = 12
+    ; __line = 10
     ;  } else { 
     ; __append("\n        <div class=\"info bg-secondary bg-opacity-50 transition duration-200\">\n            <div class=\"description text-sm text-center font-bold\">This game is temporary disabled!</div>\n        </div>\n    ")
-    ; __line = 16
+    ; __line = 14
     ;  } 
     ; __append("\n\n    <div class=\"name text-base font-bold transition duration-500\">")
-    ; __line = 18
+    ; __line = 16
     ; __append(escapeFn( name ))
     ; __append("</div>\n    <div class=\"description text-xs font-bold transition duration-500\">")
-    ; __line = 19
+    ; __line = 17
     ; __append(escapeFn( description ))
     ; __append("</div>\n\n    <div class=\"image transition duration-500\"><img src=\"")
-    ; __line = 21
+    ; __line = 19
     ; __append(escapeFn( image ))
     ; __append("\"></div>\n</div>")
-    ; __line = 22
+    ; __line = 20
   }
   return __output;
 } catch (e) {
