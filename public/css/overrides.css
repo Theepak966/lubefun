@@ -190,6 +190,16 @@
   min-width: 180px;
 }
 
+/* Hide coin icon on mobile balance too */
+.header.mobile .balance .coin {
+  display: none !important;
+}
+
+/* Hide currency on mobile balance */
+.header.mobile .balance .balance-currency {
+  display: none !important;
+}
+
 /**
  * Auth page logo styling.
  *
