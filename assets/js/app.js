@@ -5309,13 +5309,10 @@ function blackjack_applyState(game){
 	// Guard: if server sends partial state.
 	if(!game) return;
 
-	// Interval amounts + house edge display
+	// Interval amounts display
 	if(games_intervalAmounts && games_intervalAmounts.blackjack){
 		$('#blackjack_min').text(getFormatAmountString(games_intervalAmounts.blackjack.min));
 		$('#blackjack_max').text(getFormatAmountString(games_intervalAmounts.blackjack.max));
-	}
-	if(games_houseEdges && games_houseEdges.blackjack !== undefined){
-		$('#blackjack_house_edge').text(games_houseEdges.blackjack);
 	}
 
 	var state = game.state || game; // allow both shapes: {game:{state}} or {game}
@@ -5350,6 +5347,29 @@ function blackjack_applyResult(payload){
 	if(result === 'blackjack') statusText = 'Blackjack! You win.';
 
 	$('#blackjack_status_text').text(statusText);
+
+	// Auto-restart game after 2 seconds
+	// Clear any existing restart timeout
+	if(window.blackjack_restartTimeout) {
+		clearTimeout(window.blackjack_restartTimeout);
+	}
+
+	// Set new timeout to auto-restart
+	window.blackjack_restartTimeout = setTimeout(function() {
+		// Reset the game state by clearing the status and enabling the bet button
+		$('#blackjack_status_text').text('Place a bet and click Deal.');
+		
+		// Clear hands
+		$('#blackjack_player_hand').empty();
+		$('#blackjack_dealer_hand').empty();
+		$('#blackjack_player_total').text('0');
+		$('#blackjack_dealer_total').text('0');
+		
+		// Enable bet button
+		$('#blackjack_bet').removeClass('disabled');
+		$('#blackjack_hit').addClass('disabled');
+		$('#blackjack_stand').addClass('disabled');
+	}, 2000); // 2 second delay
 }
 
 $(document).ready(function() {
