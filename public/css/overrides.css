@@ -212,3 +212,46 @@
   object-fit: contain;
 }
 
+/**
+ * Blackjack game elements - make bigger for better visibility.
+ *
+ * Why:
+ * - Cards, text, and totals should be more prominent for better gameplay experience.
+ */
+.blackjack-table {
+  padding: 2rem !important;
+}
+
+.blackjack-hand {
+  min-height: 120px !important;
+  gap: 1rem !important;
+}
+
+.blackjack-card {
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  min-width: 80px !important;
+  min-height: 110px !important;
+  padding: 1rem !important;
+  border-radius: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.blackjack-table .font-bold {
+  font-size: 1.5rem !important;
+}
+
+.blackjack-table #blackjack_dealer_total,
+.blackjack-table #blackjack_player_total {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+}
+
+.blackjack-table #blackjack_status_text {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  padding: 1rem !important;
+}
+
