@@ -90,7 +90,9 @@ $(document).ready(function() {
 		countToBalance: function(x) {
 			var $this = $(this);
 
-			var start = parseFloat($this.text());
+			// Strip "$" if present when parsing current value
+			var currentText = $this.text().replace('$', '');
+			var start = parseFloat(currentText);
 			start = Math.floor(start * 100);
 
 			var delta = Math.floor(x * 100 - start);
@@ -107,14 +109,14 @@ $(document).ready(function() {
 				step: function(val) {
 					var vts = Math.floor(val);
 
-					$this.text(getFormatAmountString(vts / 100));
+					$this.text('$' + getFormatAmountString(vts / 100));
 				},
 				complete: function(){
 					setTimeout(function(){
 						$this.removeClass('text-success').removeClass('text-danger');
 					}, 400);
 
-					$this.text(getFormatAmountString(x));
+					$this.text('$' + getFormatAmountString(x));
 				}
 			});
 		},

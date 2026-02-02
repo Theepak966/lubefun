@@ -175,7 +175,8 @@ function profile_settingsAssign(setting, value, first){
 			break;
 
 		case 'balance':
-			$('.balances .balance[data-type="total"] .amount').countToFloat(roundedToFixed($('.balances .list .balance[data-type="' + value + '"]').attr('data-balance'), 2));
+			var balanceValue = roundedToFixed($('.balances .list .balance[data-type="' + value + '"]').attr('data-balance'), 2);
+			$('.balances .balance[data-type="total"] .amount').text('$' + balanceValue);
 
 			break;
 

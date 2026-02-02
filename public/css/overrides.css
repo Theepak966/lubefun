@@ -149,16 +149,10 @@
   font-size: 14px !important; /* match user pill font size */
 }
 
-/* Make balance icon/coin smaller to match avatar size */
+/* Hide balance icon/coin - show only amount with $ */
 .navbar-balance-pill .balance-icon,
 .navbar-balance-pill .coin {
-  width: 20px !important;
-  height: 20px !important;
-  font-size: 16px !important;
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
+  display: none !important;
 }
 
 /* Make balance amount text smaller to match user pill */
@@ -166,14 +160,12 @@
   font-size: 14px !important;
   font-weight: 500 !important; /* match user pill font weight */
   line-height: 1 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
 }
 
-/* Make currency text smaller */
+/* Hide currency text - amount already includes $ */
 .navbar-balance-pill .balance-currency {
-  font-size: 12px !important;
-  font-weight: 400 !important;
-  opacity: 0.8 !important;
-  line-height: 1 !important;
+  display: none !important;
 }
 
 /* Make dropdown arrow smaller */
