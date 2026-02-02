@@ -6,7 +6,8 @@
 		"build": "node scripts/components.js && gulp pack",
 		"watch": "node scripts/components.js --watch & gulp watch",
 		"start": "npm run build && node app.js",
-		"dev": "npm run build && (npm run watch & nodemon --trace-warnings app.js)"
+		"dev": "npm run build && (npm run watch & nodemon --trace-warnings app.js)",
+		"test": "node --test"
 	},
 	"keywords": [],
 	"author": "MrCHICK",

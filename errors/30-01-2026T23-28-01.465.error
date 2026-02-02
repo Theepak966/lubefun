@@ -1,0 +1,19 @@
+TypeError: /home/ubuntu/lubefun/views/withdrawCrypto.ejs:79
+    77| 							}); %>
+    78| 						</div>
+ >> 79| 						<div class="text-xs text-muted-foreground">Minimum: $<%= response.withdraw.amounts.min %>, Maximum: $<%= response.withdraw.amounts.max %></div>
+    80| 					</div>
+    81| 
+    82| 					<!-- Network Fee -->
+
+Cannot read properties of undefined (reading 'min')
+    at eval ("/home/ubuntu/lubefun/views/withdrawCrypto.ejs":64:52)
+    at withdrawCrypto (/home/ubuntu/lubefun/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/home/ubuntu/lubefun/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/home/ubuntu/lubefun/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/home/ubuntu/lubefun/node_modules/express/lib/view.js:135:8)
+    at tryRender (/home/ubuntu/lubefun/node_modules/express/lib/application.js:657:10)
+    at Function.render (/home/ubuntu/lubefun/node_modules/express/lib/application.js:609:3)
+    at ServerResponse.render (/home/ubuntu/lubefun/node_modules/express/lib/response.js:1049:7)
+    at res.render (/home/ubuntu/lubefun/node_modules/express-ejs-layouts/lib/express-layouts.js:77:18)
+    at exports.withdrawCrypto (/home/ubuntu/lubefun/controllers/withdrawControllers.js:40:9)

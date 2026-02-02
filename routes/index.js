@@ -4,6 +4,7 @@ var router = express.Router();
 router.use('/', require('@/routes/homeRoutes.js'));
 router.use('/crash', require('@/routes/crashRoutes.js'));
 router.use('/coinflip', require('@/routes/coinflipRoutes.js'));
+router.use('/blackjack', require('@/routes/blackjackRoutes.js'));
 router.use('/tower', require('@/routes/towerRoutes.js'));
 router.use('/mines', require('@/routes/minesRoutes.js'));
 router.use('/minesweeper', require('@/routes/minesweeperRoutes.js'));

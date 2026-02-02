@@ -32,6 +32,15 @@
                     "name": "Coinflip",
                     "description": "Fate on a toss"
                 },
+                "blackjack": {
+                    "enable": true,
+                    "house_edge": {
+                        "value": 1.5,
+                        "fixed": false
+                    },
+                    "name": "Blackjack",
+                    "description": "Beat the dealer to 21"
+                },
                 "minesweeper": {
                     "enable": true,
                     "house_edge": {

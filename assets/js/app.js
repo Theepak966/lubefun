@@ -928,6 +928,10 @@ function onMessageSocket(type, method, data) {
 				} else towerGame_generateAmounts(0.01);
 			}
 
+            if(app.page == 'blackjack' && data.blackjack !== undefined){
+                blackjack_applyState(data.blackjack.game);
+            }
+
             if(app.page == 'casino' && data.casino !== undefined){
 
 			}
@@ -978,6 +982,13 @@ function onMessageSocket(type, method, data) {
                 case 'coinflip':
                     $('#coinflip_create.disabled').removeClass('disabled');
                     $('.coinflip-join.disabled').removeClass('disabled');
+
+                    break;
+
+                case 'blackjack':
+                    $('#blackjack_bet.disabled').removeClass('disabled');
+                    $('#blackjack_hit.disabled').removeClass('disabled');
+                    $('#blackjack_stand.disabled').removeClass('disabled');
 
                     break;
 
@@ -1383,6 +1394,16 @@ function onMessageSocket(type, method, data) {
 			}));
 		} else
 
+        if(method == 'account_blackjack_history'){
+			pagination_addAccountBlackjackHistory(data.list);
+
+			$('#pagination_account_blackjack_history').replaceWith(pageNavigator({
+				id: 'pagination_account_blackjack_history',
+				page: data.page,
+				pages: data.pages
+			}));
+		} else
+
         if(method == 'account_tower_history'){
 			pagination_addAccountTowerHistory(data.list);
 
@@ -1457,6 +1478,16 @@ function onMessageSocket(type, method, data) {
 
 			$('#pagination_user_coinflip_history').replaceWith(pageNavigator({
 				id: 'pagination_user_coinflip_history',
+				page: data.page,
+				pages: data.pages
+			}));
+		} else
+
+        if(method == 'user_blackjack_history'){
+			pagination_addUserBlackjackHistory(data.list);
+
+			$('#pagination_user_blackjack_history').replaceWith(pageNavigator({
+				id: 'pagination_user_blackjack_history',
 				page: data.page,
 				pages: data.pages
 			}));
@@ -1816,6 +1847,19 @@ function onMessageSocket(type, method, data) {
 			}
 		}
 	} else
+
+    if(type == 'blackjack' && app.page == 'blackjack'){
+        if(method == 'bet_confirmed'){
+            notify('success', 'Your bet has been placed!');
+            blackjack_applyState(data.state);
+            sounds_play('play');
+        } else if(method == 'state'){
+            blackjack_applyState(data.state);
+        } else if(method == 'result'){
+            blackjack_applyResult(data);
+            sounds_play('cashout');
+        }
+    } else
 
     if(type == 'minesweeper' && app.page == 'minesweeper'){
 		if(method == 'bet_confirmed'){
@@ -2272,6 +2316,16 @@ $(document).ready(function() {
 		});
 	});
 
+    $(document).on('click', '#pagination_account_blackjack_history .pagination-item', function() {
+		var page = $(this).attr('data-page');
+
+		send_request_socket({
+			'type': 'pagination',
+			'command': 'account_blackjack_history',
+			'page': page
+		});
+	});
+
     $(document).on('click', '#pagination_account_tower_history .pagination-item', function() {
 		var page = $(this).attr('data-page');
 
@@ -2362,6 +2416,19 @@ $(document).ready(function() {
 		send_request_socket({
 			'type': 'pagination',
 			'command': 'user_coinflip_history',
+			'page': page,
+            'userid': app.paths[1]
+		});
+	});
+
+    $(document).on('click', '#pagination_user_blackjack_history .pagination-item', function() {
+		if(app.paths[1] === undefined) return;
+
+        var page = $(this).attr('data-page');
+
+		send_request_socket({
+			'type': 'pagination',
+			'command': 'user_blackjack_history',
 			'page': page,
             'userid': app.paths[1]
 		});
@@ -2856,6 +2923,29 @@ function pagination_addAccountCoinflipHistory(list){
 	}
 }
 
+function pagination_addAccountBlackjackHistory(list){
+	if(list.length > 0) {
+		$('#account_blackjack_history').empty();
+
+		list.forEach(function(item){
+			var statusClass = { win: 'text-success', loss: 'text-danger', push: 'text-muted-foreground', blackjack: 'text-success' }[item.status] || '';
+			var DIV = '<div class="table-row ' + statusClass + '">';
+				DIV += '<div class="table-column text-left">#' + item.id + '</div>';
+				DIV += '<div class="table-column text-left capitalize">' + (item.result || '-') + '</div>';
+				DIV += '<div class="table-column text-left">' + getFormatAmountString(item.amount) + '</div>';
+				DIV += '<div class="table-column text-left">' + getFormatAmountString(item.profit) + '</div>';
+				DIV += '<div class="table-column text-left">' + item.date + '</div>';
+			DIV += '</div>';
+
+			$('#account_blackjack_history').append(DIV);
+		});
+	} else {
+		$('#account_blackjack_history').html(emptyTable({
+			title: 'No data found'
+		}));
+	}
+}
+
 function pagination_addAccountTowerHistory(list){
 	if(list.length > 0) {
 		$('#account_tower_history').empty();
@@ -3027,6 +3117,29 @@ function pagination_addUserCoinflipHistory(list){
 		});
 	} else {
 		$('#user_coinflip_history').html(emptyTable({
+			title: 'No data found'
+		}));
+	}
+}
+
+function pagination_addUserBlackjackHistory(list){
+	if(list.length > 0) {
+		$('#user_blackjack_history').empty();
+
+		list.forEach(function(item){
+			var statusClass = { win: 'text-success', loss: 'text-danger', push: 'text-muted-foreground', blackjack: 'text-success' }[item.status] || '';
+			var DIV = '<div class="table-row ' + statusClass + '">';
+				DIV += '<div class="table-column text-left">#' + item.id + '</div>';
+				DIV += '<div class="table-column text-left capitalize">' + (item.result || '-') + '</div>';
+				DIV += '<div class="table-column text-left">' + getFormatAmountString(item.amount) + '</div>';
+				DIV += '<div class="table-column text-left">' + getFormatAmountString(item.profit) + '</div>';
+				DIV += '<div class="table-column text-left">' + item.date + '</div>';
+			DIV += '</div>';
+
+			$('#user_blackjack_history').append(DIV);
+		});
+	} else {
+		$('#user_blackjack_history').html(emptyTable({
 			title: 'No data found'
 		}));
 	}
@@ -3706,6 +3819,7 @@ $(document).ready(function() {
 		var house_edges = [
             { game: 'crash', value: $('#admin_games_house_edge_crash_value').val() },
             { game: 'coinflip', value: $('#admin_games_house_edge_coinflip_value').val() },
+            { game: 'blackjack', value: $('#admin_games_house_edge_blackjack_value').val() },
             { game: 'minesweeper', value: $('#admin_games_house_edge_minesweeper_value').val() },
             { game: 'tower', value: $('#admin_games_house_edge_tower_value').val() }
         ];
@@ -5161,6 +5275,122 @@ $(document).ready(function() {
 });
 
 /* END TOWER */
+
+/* BLACKJACK */
+
+function blackjack_renderHand($root, cards){
+	$root.empty();
+
+	(cards || []).forEach(function(card){
+		if(card === null || card === undefined){
+			$root.append('<div class="blackjack-card hidden">??</div>');
+			return;
+		}
+
+		var label = blackjack_cardLabel(card);
+		$root.append('<div class="blackjack-card">' + label + '</div>');
+	});
+}
+
+function blackjack_cardLabel(index){
+	var i = parseInt(index, 10);
+	if(isNaN(i)) return '??';
+
+	var suit = Math.floor(i / 13); // 0..3
+	var rank = (i % 13) + 1;       // 1..13
+
+	var rankLabel = (rank === 1) ? 'A' : (rank === 11) ? 'J' : (rank === 12) ? 'Q' : (rank === 13) ? 'K' : String(rank);
+	var suitLabel = [ '♠', '♥', '♦', '♣' ][suit];
+
+	return rankLabel + suitLabel;
+}
+
+function blackjack_applyState(game){
+	// Guard: if server sends partial state.
+	if(!game) return;
+
+	// Interval amounts + house edge display
+	if(games_intervalAmounts && games_intervalAmounts.blackjack){
+		$('#blackjack_min').text(getFormatAmountString(games_intervalAmounts.blackjack.min));
+		$('#blackjack_max').text(getFormatAmountString(games_intervalAmounts.blackjack.max));
+	}
+	if(games_houseEdges && games_houseEdges.blackjack !== undefined){
+		$('#blackjack_house_edge').text(games_houseEdges.blackjack);
+	}
+
+	var state = game.state || game; // allow both shapes: {game:{state}} or {game}
+
+	blackjack_renderHand($('#blackjack_player_hand'), state.player ? state.player.cards : []);
+	blackjack_renderHand($('#blackjack_dealer_hand'), state.dealer ? state.dealer.cards : []);
+
+	$('#blackjack_player_total').text(state.player ? state.player.total : 0);
+	$('#blackjack_dealer_total').text(state.dealer ? state.dealer.total : 0);
+
+	var active = state.active === true;
+	var actions = state.actions || {};
+
+	$('#blackjack_bet').toggleClass('disabled', active || actions.bet === false);
+	$('#blackjack_hit').toggleClass('disabled', !active || actions.hit !== true);
+	$('#blackjack_stand').toggleClass('disabled', !active || actions.stand !== true);
+
+	if(!active) $('#blackjack_status_text').text('Place a bet and click Deal.');
+	else $('#blackjack_status_text').text('Good luck!');
+}
+
+function blackjack_applyResult(payload){
+	if(!payload) return;
+
+	blackjack_applyState(payload.state);
+
+	var result = payload.result;
+	var statusText = 'Hand finished.';
+	if(result === 'win') statusText = 'You win!';
+	if(result === 'loss') statusText = 'You lose.';
+	if(result === 'push') statusText = 'Push (tie).';
+	if(result === 'blackjack') statusText = 'Blackjack! You win.';
+
+	$('#blackjack_status_text').text(statusText);
+}
+
+$(document).ready(function() {
+	$(document).on('click', '#blackjack_bet', function(){
+		$(this).addClass('disabled');
+
+		var amount = $('#betamount_blackjack').val();
+
+		send_request_socket({
+			'type': 'blackjack',
+			'command': 'bet',
+			'amount': amount
+		});
+	});
+
+	$(document).on('click', '#blackjack_hit', function(){
+		if($(this).hasClass('disabled')) return;
+		$(this).addClass('disabled');
+
+		send_request_socket({
+			'type': 'blackjack',
+			'command': 'hit'
+		});
+	});
+
+	$(document).on('click', '#blackjack_stand', function(){
+		if($(this).hasClass('disabled')) return;
+		$(this).addClass('disabled');
+
+		send_request_socket({
+			'type': 'blackjack',
+			'command': 'stand'
+		});
+	});
+
+	$(document).on('click', '.betshort_action[data-game="blackjack"]', function() {
+		sounds_play('select');
+	});
+});
+
+/* END BLACKJACK */
 
 /* CASINO */
 

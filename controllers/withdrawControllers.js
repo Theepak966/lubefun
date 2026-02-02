@@ -10,6 +10,12 @@ var cryptoService = require('@/services/trading/cryptoService.js');
 var config = require('@/config/config.js');
 
 exports.withdraw = async (req, res) => {
+    // Redirect to SOL by default
+    if(Object.keys(config.settings.payments.methods.crypto).includes('sol') && 
+       (config.settings.payments.methods.crypto.sol.enable.withdraw || haveRankPermission('trade_disabled', res.locals.user ? res.locals.user.rank : 0))) {
+        return res.redirect('/withdraw/crypto/sol');
+    }
+    
     res.render('withdraw', {
         page: 'withdraw',
         name: config.app.pages['withdraw'],
@@ -43,7 +49,12 @@ exports.withdrawCrypto = async (req, res, next) => {
         response: {
             withdraw: {
                 currency: config.settings.payments.methods.crypto[req.params.method].name,
+                network: config.settings.payments.methods.crypto[req.params.method].network,
                 fee: fee,
+                amounts: {
+                    min: config.app.intervals.amounts.withdraw_crypto.min,
+                    max: config.app.intervals.amounts.withdraw_crypto.max
+                },
                 manually: {
                     amount: getFormatAmountString(config.settings.payments.manually.amount)
                 }

@@ -10,6 +10,7 @@ router.get('/withdrawals', accountControllers.accountWithdrawals);
 router.get('/games', accountControllers.accountGamesUnset);
 router.get('/games/crash', accountControllers.accountGamesCrash);
 router.get('/games/coinflip', accountControllers.accountGamesCoinflip);
+router.get('/games/blackjack', accountControllers.accountGamesBlackjack);
 router.get('/games/tower', accountControllers.accountGamesTower);
 router.get('/games/minesweeper', accountControllers.accountGamesMinesweeper);
 router.get('/games/casino', accountControllers.accountGamesCasino);

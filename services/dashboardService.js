@@ -45,6 +45,7 @@ function processStats(socket, stats){
 
         'crash_total_bets', 'crash_total_winnings', 'crash_total_profit', 'crash_count_games',
         'coinflip_total_bets', 'coinflip_total_winnings', 'coinflip_total_profit', 'coinflip_count_games',
+        'blackjack_total_bets', 'blackjack_total_winnings', 'blackjack_total_profit', 'blackjack_count_games',
         'minesweeper_total_bets', 'minesweeper_total_winnings', 'minesweeper_total_profit', 'minesweeper_count_games',
         'tower_total_bets', 'tower_total_winnings', 'tower_total_profit', 'tower_count_games',
 
@@ -119,6 +120,7 @@ function loadStats(stats, callback){
 		var query = 'SELECT COALESCE(SUM(total), 0) AS `total` FROM (' + [
             'SELECT COUNT(*) AS `total` FROM `crash_bets`',
             'SELECT COUNT(*) AS `total` FROM `coinflip_games` WHERE `ended` = 1 AND `canceled` = 0',
+            'SELECT COUNT(*) AS `total` FROM `blackjack_bets` WHERE `ended` = 1',
             'SELECT COUNT(*) AS `total` FROM `minesweeper_bets` WHERE `ended` = 1',
             'SELECT COUNT(*) AS `total` FROM `tower_bets` WHERE `ended` = 1',
             'SELECT COUNT(*) AS `total` FROM `casino_bets`'
@@ -134,6 +136,11 @@ function loadStats(stats, callback){
 	else if(stats == 'coinflip_total_winnings') var query = 'SELECT COALESCE(SUM(amount), 0) AS `total` FROM `users_transactions` WHERE `amount` >= 0 AND `service` LIKE "coinflip_%"';
 	else if(stats == 'coinflip_total_profit') var query = 'SELECT COALESCE(SUM(amount), 0) AS `total` FROM `users_transactions` WHERE `service` LIKE "coinflip_%"';
 	else if(stats == 'coinflip_count_games') var query = 'SELECT COUNT(*) AS `total` FROM `coinflip_games` WHERE `ended` = 1 AND `canceled` = 0';
+
+    else if(stats == 'blackjack_total_bets') var query = 'SELECT COALESCE(SUM(amount), 0) AS `total` FROM `users_transactions` WHERE `amount` < 0 AND `service` LIKE "blackjack_%"';
+	else if(stats == 'blackjack_total_winnings') var query = 'SELECT COALESCE(SUM(amount), 0) AS `total` FROM `users_transactions` WHERE `amount` >= 0 AND `service` LIKE "blackjack_%"';
+	else if(stats == 'blackjack_total_profit') var query = 'SELECT COALESCE(SUM(amount), 0) AS `total` FROM `users_transactions` WHERE `service` LIKE "blackjack_%"';
+	else if(stats == 'blackjack_count_games') var query = 'SELECT COUNT(*) AS `total` FROM `blackjack_bets` WHERE `ended` = 1';
 
     else if(stats == 'minesweeper_total_bets') var query = 'SELECT COALESCE(SUM(amount), 0) AS `total` FROM `users_transactions` WHERE `amount` < 0 AND `service` LIKE "minesweeper_%"';
 	else if(stats == 'minesweeper_total_winnings') var query = 'SELECT COALESCE(SUM(amount), 0) AS `total` FROM `users_transactions` WHERE `amount` >= 0 AND `service` LIKE "minesweeper_%"';
@@ -194,6 +201,11 @@ function finishStats(stats, callback){
 		else if(stats == 'coinflip_total_winnings') result = roundedToFixed(data[0].total, 2).toFixed(2);
 		else if(stats == 'coinflip_total_profit') result = (-roundedToFixed(data[0].total, 2)).toFixed(2);
 		else if(stats == 'coinflip_count_games') result = data[0].total;
+
+        else if(stats == 'blackjack_total_bets') result = roundedToFixed(-data[0].total, 2).toFixed(2);
+		else if(stats == 'blackjack_total_winnings') result = roundedToFixed(data[0].total, 2).toFixed(2);
+		else if(stats == 'blackjack_total_profit') result = (-roundedToFixed(data[0].total, 2)).toFixed(2);
+		else if(stats == 'blackjack_count_games') result = data[0].total;
 
         else if(stats == 'minesweeper_total_bets') result = roundedToFixed(-data[0].total, 2).toFixed(2);
 		else if(stats == 'minesweeper_total_winnings') result = roundedToFixed(data[0].total, 2).toFixed(2);
@@ -273,6 +285,7 @@ function processGraph(socket, graph){
 
         'crash_games', 'crash_profit',
         'coinflip_games', 'coinflip_profit',
+        'blackjack_games', 'blackjack_profit',
         'minesweeper_games', 'minesweeper_profit',
         'tower_games', 'tower_profit',
         'casino_games', 'casino_profit',
@@ -382,6 +395,7 @@ function loadGraph(date, graph, callback){
 		var query = [
             'SELECT `time` FROM `crash_bets` WHERE `time` > ' + pool.escape(time),
             'SELECT coinflip_bets.time FROM `coinflip_games` INNER JOIN `coinflip_bets` ON coinflip_games.id = coinflip_bets.gameid WHERE coinflip_games.ended = 1 AND coinflip_games.canceled = 0 AND coinflip_bets.time > ' + pool.escape(time),
+            'SELECT `time` FROM `blackjack_bets` WHERE `ended` = 1 AND `time` > ' + pool.escape(time),
             'SELECT `time` FROM `minesweeper_bets` WHERE `ended` = 1 AND `time` > ' + pool.escape(time),
             'SELECT `time` FROM `tower_bets` WHERE `ended` = 1 AND `time` > ' + pool.escape(time),
             'SELECT `time` FROM `casino_bets` WHERE `time` > ' + pool.escape(time)
@@ -397,6 +411,9 @@ function loadGraph(date, graph, callback){
 
     else if(graph_name == 'coinflip_games') var query = 'SELECT coinflip_bets.* FROM `coinflip_games` INNER JOIN `coinflip_bets` ON coinflip_games.id = coinflip_bets.gameid WHERE coinflip_games.ended = 1 AND coinflip_games.canceled = 0 AND coinflip_bets.time > ' + pool.escape(time);
 	else if(graph_name == 'coinflip_profit') var query = 'SELECT * FROM `users_transactions` WHERE `service` LIKE "coinflip_%" AND `time` > ' + pool.escape(time);
+
+    else if(graph_name == 'blackjack_games') var query = 'SELECT * FROM `blackjack_bets` WHERE `ended` = 1 AND `time` > ' + pool.escape(time);
+	else if(graph_name == 'blackjack_profit') var query = 'SELECT * FROM `users_transactions` WHERE `service` LIKE "blackjack_%" AND `time` > ' + pool.escape(time);
 
     else if(graph_name == 'minesweeper_games') var query = 'SELECT * FROM `minesweeper_bets` WHERE `ended` = 1 AND `time` > ' + pool.escape(time);
 	else if(graph_name == 'minesweeper_profit') var query = 'SELECT * FROM `users_transactions` WHERE `service` LIKE "minesweeper_%" AND `time` > ' + pool.escape(time);
@@ -452,6 +469,9 @@ function finishGraph(date, graph, callback){
             else if(graph_name == 'coinflip_games') var time_row = item.time;
 			else if(graph_name == 'coinflip_profit') var time_row = item.time;
 
+            else if(graph_name == 'blackjack_games') var time_row = item.time;
+			else if(graph_name == 'blackjack_profit') var time_row = item.time;
+
             else if(graph_name == 'minesweeper_games') var time_row = item.time;
 			else if(graph_name == 'minesweeper_profit') var time_row = item.time;
 
@@ -496,6 +516,9 @@ function finishGraph(date, graph, callback){
             else if(graph_name == 'coinflip_games') var add = 1;
 			else if(graph_name == 'coinflip_profit') var add = -getFormatAmount(item.amount);
 
+            else if(graph_name == 'blackjack_games') var add = 1;
+			else if(graph_name == 'blackjack_profit') var add = -getFormatAmount(item.amount);
+
             else if(graph_name == 'minesweeper_games') var add = 1;
 			else if(graph_name == 'minesweeper_profit') var add = -getFormatAmount(item.amount);
 
@@ -533,6 +556,9 @@ function finishGraph(date, graph, callback){
 
             else if(graph_name == 'coinflip_games') result[i] = Math.floor(result[i]);
 			else if(graph_name == 'coinflip_profit') result[i] = getFormatAmount(result[i]);
+
+            else if(graph_name == 'blackjack_games') result[i] = Math.floor(result[i]);
+			else if(graph_name == 'blackjack_profit') result[i] = getFormatAmount(result[i]);
 
             else if(graph_name == 'minesweeper_games') result[i] = Math.floor(result[i]);
 			else if(graph_name == 'minesweeper_profit') result[i] = getFormatAmount(result[i]);

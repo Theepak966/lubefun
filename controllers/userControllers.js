@@ -407,6 +407,101 @@ exports.userGamesCoinflip = async (req, res, next) => {
     });
 };
 
+exports.userGamesBlackjack = async (req, res, next) => {
+    if(!haveRankPermission('view_user', res.locals.user ? res.locals.user.rank : 0)) return next();
+
+    var userid = req.params.userid;
+
+    pool.query('SELECT `userid`, `name`, `avatar`, `xp`, `time_create` FROM `users` WHERE `userid` = ' + pool.escape(userid), function(err1, row1) {
+        if(err1) return res.status(409).render('409', { layout: 'layouts/error', error: 'An error occurred while rendering user blackjack games history page (1)' });
+
+        if(row1.length <= 0) return next();
+
+        var level = calculateLevel(row1[0].xp);
+
+        //DEPOSITED
+        pool.query('SELECT SUM(`amount`) AS `deposited` FROM `users_trades` WHERE `userid` = ' + pool.escape(row1[0].userid) + ' AND `type` = "deposit"', function(err2, row2) {
+            if(err2) return res.status(409).render('409', { layout: 'layouts/error', error: 'An error occurred while rendering user blackjack games history page (2)' });
+
+            //WITHDRAWN
+            pool.query('SELECT SUM(`amount`) AS `withdrawn` FROM `users_trades` WHERE `userid` = ' + pool.escape(row1[0].userid) + ' AND `type` = "withdraw"', function(err3, row3) {
+                if(err3) return res.status(409).render('409', { layout: 'layouts/error', error: 'An error occurred while rendering user blackjack games history page (3)' });
+
+                //WAGERED
+                pool.query('SELECT -SUM(`amount`) AS `wagered` FROM `users_transactions` WHERE (' + [ ...Object.keys(config.settings.games.games.original), ...Object.keys(config.settings.games.games.classic) ].map(a => '`service` LIKE "' + a + '_%"').join(' OR ') + ') AND `userid` = ' + pool.escape(row1[0].userid) + ' AND `amount` < 0', function(err4, row4) {
+                    if(err4) return res.status(409).render('409', { layout: 'layouts/error', error: 'An error occurred while rendering user blackjack games history page (4)' });
+
+                    //WINNINGS
+                    pool.query('SELECT SUM(`amount`) AS `winnings` FROM `users_transactions` WHERE (' + [ ...Object.keys(config.settings.games.games.original), ...Object.keys(config.settings.games.games.classic) ].map(a => '`service` LIKE "' + a + '_%"').join(' OR ') + ') AND `userid` = ' + pool.escape(row1[0].userid) + ' AND `amount` > 0', function(err5, row5) {
+                        if(err5) return res.status(409).render('409', { layout: 'layouts/error', error: 'An error occurred while rendering user blackjack games history page (5)' });
+
+                        //BLACKJACK HISTORY
+                        pool.query('SELECT COUNT(*) AS `count` FROM `blackjack_bets` WHERE `userid` = ' + pool.escape(row1[0].userid) + ' AND `ended` = 1', function(err6, row6) {
+                            if(err6) return res.status(409).render('409', { layout: 'layouts/error', error: 'An error occurred while rendering user blackjack games history page (6)' });
+
+                            pool.query('SELECT `id`, `amount`, `winning`, `result`, `time` FROM `blackjack_bets` WHERE `userid` = ' + pool.escape(row1[0].userid) + ' AND `ended` = 1 ORDER BY `id` DESC LIMIT 10', function(err7, row7) {
+                                if(err7) return res.status(409).render('409', { layout: 'layouts/error', error: 'An error occurred while rendering user blackjack games history page (7)' });
+
+                                var pages = Math.ceil(row6[0].count / 10);
+
+                                res.render('userGamesBlackjack', {
+                                    page: 'user',
+                                    name: config.app.pages['user'],
+                                    response: {
+                                        user: {
+                                            user: {
+                                                userid: row1[0].userid,
+                                                name: row1[0].name,
+                                                avatar: row1[0].avatar,
+                                                rank: config.app.ranks[row1[0].rank],
+                                                level: {
+                                                    ...level,
+                                                    ...{
+                                                        tier: [ 'steel', 'bronze', 'silver', 'gold', 'diamond' ][Math.floor(level.level / 25)],
+                                                        progress: roundedToFixed((level.have - level.start) / (level.next - level.start) * 100, 2).toFixed(2)
+                                                    }
+                                                },
+                                                created: makeDate(new Date(row1[0].time_create * 1000))
+                                            },
+                                            stats: {
+                                                deposited: getFormatAmountString(row2[0].deposited),
+                                                withdrawn: getFormatAmountString(row3[0].withdrawn),
+                                                wagered: getFormatAmountString(row4[0].wagered),
+                                                profit: getFormatAmountString(getFormatAmount(row5[0].winnings) - getFormatAmount(row4[0].wagered))
+                                            },
+                                            games: {
+                                                game: 'blackjack',
+                                                list: row7.map(function(item){
+                                                    var amount = getFormatAmount(item.amount);
+                                                    var winnings = getFormatAmount(item.winning);
+                                                    var profit = getFormatAmount(winnings - amount);
+
+                                                    var status = (profit > 0) ? (item.result === 'blackjack' ? 'blackjack' : 'win') : (profit < 0 ? 'loss' : 'push');
+
+                                                    return {
+                                                        id: item.id,
+                                                        result: item.result || '-',
+                                                        amount: getFormatAmountString(amount),
+                                                        profit: getFormatAmountString(profit),
+                                                        status: status,
+                                                        date: makeDate(new Date(item.time * 1000))
+                                                    };
+                                                }),
+                                                pages: pages > 0 ? pages : 1,
+                                                page: 1
+                                            }
+                                        }
+                                    }
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+};
+
 exports.userGamesTower = async (req, res, next) => {
     if(!haveRankPermission('view_user', res.locals.user ? res.locals.user.rank : 0)) return next();
 

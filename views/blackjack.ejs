@@ -1,0 +1,45 @@
+<div class="bet-container flex justify-center">
+	<div class="bg-card bg-opacity-50 rounded-2 border-2 border-secondary flex flex-col gap-2">
+		<%- include('./components/betAmount.ejs', { game: 'blackjack', amount: '0.01', actions: [ 'clear', 'max' ], features: [] }); %>
+
+		<div class="flex justify-center items-center gap-2">
+			<button class="button button-primary shadow-2 large w-full" id="blackjack_bet">Deal</button>
+		</div>
+
+		<div class="flex justify-center items-center gap-2">
+			<button class="button button-accent shadow-2 large w-full disabled" id="blackjack_hit">Hit</button>
+			<button class="button button-success shadow-2 large w-full disabled" id="blackjack_stand">Stand</button>
+		</div>
+
+		<div class="text-xs text-muted-foreground text-center">
+			<span>Min: $<span id="blackjack_min">0.00</span></span>
+			<span class="mx-1">•</span>
+			<span>Max: $<span id="blackjack_max">0.00</span></span>
+			<span class="mx-1">•</span>
+			<span>House edge: <span id="blackjack_house_edge">0</span>%</span>
+		</div>
+	</div>
+
+	<div class="flex justify-center items-center flex-col gap-4 bg-card bg-opacity-50 rounded-2 border-2 border-secondary blackjack-table">
+		<div class="flex flex-col gap-2 w-full">
+			<div class="flex justify-between items-center w-full">
+				<div class="font-bold">Dealer</div>
+				<div class="text-sm text-muted-foreground">Total: <span id="blackjack_dealer_total">0</span></div>
+			</div>
+			<div class="blackjack-hand" id="blackjack_dealer_hand"></div>
+		</div>
+
+		<div class="border-t border-card w-full"></div>
+
+		<div class="flex flex-col gap-2 w-full">
+			<div class="flex justify-between items-center w-full">
+				<div class="font-bold">You</div>
+				<div class="text-sm text-muted-foreground">Total: <span id="blackjack_player_total">0</span></div>
+			</div>
+			<div class="blackjack-hand" id="blackjack_player_hand"></div>
+		</div>
+
+		<div class="text-sm font-semibold text-center" id="blackjack_status_text">Place a bet and click Deal.</div>
+	</div>
+</div>
+

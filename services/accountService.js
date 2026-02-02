@@ -1810,6 +1810,65 @@ function getAccountMinesweeperHistory(user, socket, page, cooldown){
 }
 
 /* ----- CLIENT USAGE ----- */
+function getAccountBlackjackHistory(user, socket, page, cooldown){
+	cooldown(true, true);
+
+	if(isNaN(Number(page))){
+		emitSocketToUser(socket, 'message', 'error', { message: 'Invalid page!' });
+		return cooldown(false, true);
+	}
+
+	page = parseInt(page);
+
+	pool.query('SELECT COUNT(*) AS `count` FROM `blackjack_bets` WHERE `userid` = ' + pool.escape(user.userid) + ' AND `ended` = 1', function(err1, row1){
+		if(err1){
+			emitSocketToUser(socket, 'message', 'error', { message: 'An error occurred while getting account blackjack history (1)' });
+			return cooldown(false, true);
+		}
+
+		var pages = Math.ceil(row1[0].count / 10);
+
+		if(pages <= 0){
+			emitSocketToUser(socket, 'pagination', 'account_blackjack_history', { list: [], pages: 1, page: 1 });
+			return cooldown(false, false);
+		}
+
+		if(page <= 0 || page > pages) {
+			emitSocketToUser(socket, 'message', 'error', { message: 'Invalid page!' });
+			return cooldown(false, true);
+		}
+
+		pool.query('SELECT `id`, `amount`, `winning`, `result`, `time` FROM `blackjack_bets` WHERE `userid` = ' + pool.escape(user.userid) + ' AND `ended` = 1 ORDER BY `id` DESC LIMIT 10 OFFSET ' + pool.escape(page * 10 - 10), function(err2, row2){
+			if(err2){
+				emitSocketToUser(socket, 'message', 'error', { message: 'An error occurred while getting account blackjack history (2)' });
+				return cooldown(false, true);
+			}
+
+			var list = row2.map(function(item){
+				var amount = getFormatAmount(item.amount);
+				var winnings = getFormatAmount(item.winning);
+				var profit = getFormatAmount(winnings - amount);
+
+				var status = (profit > 0) ? (item.result === 'blackjack' ? 'blackjack' : 'win') : (profit < 0 ? 'loss' : 'push');
+
+				return {
+					id: item.id,
+					result: item.result || '-',
+					amount: amount,
+					profit: profit,
+					status: status,
+					date: makeDate(new Date(item.time * 1000))
+				};
+			});
+
+			emitSocketToUser(socket, 'pagination', 'account_blackjack_history', { list: list, pages: pages, page: page });
+
+			cooldown(false, false);
+		});
+	});
+}
+
+/* ----- CLIENT USAGE ----- */
 function getAccountCasinoHistory(user, socket, page, cooldown){
 	cooldown(true, true);
 
@@ -1900,6 +1959,7 @@ module.exports = {
     getAccountWithdrawals,
     getAccountCrashHistory,
     getAccountCoinflipHistory,
+    getAccountBlackjackHistory,
     getAccountTowerHistory,
     getAccountMinesweeperHistory,
     getAccountCasinoHistory

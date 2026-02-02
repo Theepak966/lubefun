@@ -6,6 +6,12 @@ var { getFormatAmountString } = require('@/utils/formatAmount.js');
 var config = require('@/config/config.js');
 
 exports.deposit = async (req, res, next) => {
+    // Redirect to SOL by default
+    if(Object.keys(config.settings.payments.methods.crypto).includes('sol') && 
+       (config.settings.payments.methods.crypto.sol.enable.deposit || haveRankPermission('trade_disabled', res.locals.user ? res.locals.user.rank : 0))) {
+        return res.redirect('/deposit/crypto/sol');
+    }
+    
     var response = {
         deposit: {
             enable: [
@@ -48,7 +54,11 @@ exports.depositCrypto = async (req, res, next) => {
         response: {
             deposit: {
                 name: config.settings.payments.methods.crypto[req.params.method].name,
-                network: config.settings.payments.methods.crypto[req.params.method].network
+                network: config.settings.payments.methods.crypto[req.params.method].network,
+                amounts: {
+                    min: config.app.intervals.amounts.deposit_crypto.min,
+                    max: config.app.intervals.amounts.deposit_crypto.max
+                }
             }
         }
     });

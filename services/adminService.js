@@ -156,6 +156,7 @@ function setSettings(user, socket, settings, status, secret, cooldown){
 
         'games_games_original_crash_enable',
         'games_games_original_coinflip_enable',
+        'games_games_original_blackjack_enable',
         'games_games_original_tower_enable',
         'games_games_original_minesweeper_enable',
 
@@ -1396,6 +1397,14 @@ function setGamesHouseEdges(user, socket, house_edges, secret, cooldown){
 
 		return cooldown(false, true);
 	}
+
+    // Why:
+    // - Keep this endpoint resilient to future UI changes.
+    // - Prevent malformed client requests from throwing.
+    if(!Array.isArray(house_edges)) {
+        emitSocketToUser(socket, 'message', 'error', { message: 'Invalid house edges payload!' });
+        return cooldown(false, true);
+    }
 
     for(var i = 0; i < house_edges.length; i++){
         if(!Object.keys(config.settings.games.games.original).includes(house_edges[i].game)){

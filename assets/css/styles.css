@@ -2097,9 +2097,9 @@ img {
 
 .header .logo img {
 	height: auto;
-	max-width: 190px;
+	max-width: 270px;
 	width: auto;
-	max-height: 88px;
+	max-height: 124px;
 	object-fit: contain;
 	filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
 	transition: all 0.3s ease;
@@ -2360,9 +2360,9 @@ img {
 
 .header.mobile .logo img {
 	height: auto;
-	max-width: 160px;
+	max-width: 220px;
 	width: auto;
-	max-height: 72px;
+	max-height: 101px;
 	filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
 	transition: all 0.3s ease;
 	image-rendering: -webkit-optimize-contrast;
@@ -4143,24 +4143,23 @@ textarea.field_element_input {
 	border-radius: 24px;
 	overflow: hidden;
 	position: relative;
-	height: 1600px;
-	min-height: 1600px;
+	height: auto;
+	min-height: auto;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(139, 92, 246, 0.1);
 	display: block;
 	margin-bottom: 16px;
-	background: linear-gradient(135deg, rgba(22, 33, 62, 0.95) 0%, rgba(15, 52, 96, 0.95) 100%);
-	border: 1px solid rgba(255, 255, 255, 0.1);
+	background: transparent;
+	border: none;
 }
 
 .home-hero-image{
 	width: 100%;
-	height: 100%;
-	object-fit: cover;
+	height: auto;
+	object-fit: contain;
 	object-position: center;
 	display: block;
-	position: absolute;
-	top: 0;
-	left: 0;
+	position: relative;
+	transform: scale(1);
 }
 
 .home-hero-cta-button{
@@ -4196,15 +4195,16 @@ textarea.field_element_input {
 
 @media (max-width: 768px){
 	.home-hero-banner{
-		height: 1000px;
-		min-height: 1000px;
+		height: auto;
+		min-height: auto;
 		margin-bottom: 12px;
 		border-radius: 20px;
 	}
 
 	.home-hero-image{
-		object-fit: cover;
+		object-fit: contain;
 		object-position: center;
+		transform: scale(1);
 	}
 
 	.home-hero-cta-button{
@@ -4325,3 +4325,41 @@ textarea.field_element_input {
 }
 
 /* END SECTION */
+
+/* BLACKJACK */
+
+.blackjack-table{
+	width: 100%;
+	max-width: 900px;
+	padding: 16px;
+}
+
+.blackjack-hand{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	min-height: 52px;
+}
+
+.blackjack-card{
+	min-width: 46px;
+	height: 52px;
+	padding: 8px 10px;
+	border-radius: 12px;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+	box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 800;
+	letter-spacing: 0.5px;
+}
+
+.blackjack-card.hidden{
+	background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(139, 92, 246, 0.12) 100%);
+	border: 1px dashed rgba(255, 255, 255, 0.18);
+	color: rgba(255,255,255,0.7);
+}
+
+/* END BLACKJACK */

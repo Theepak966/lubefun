@@ -79,6 +79,7 @@ const config = {
         pages: {
             'crash': 'Crash',
             'coinflip': 'Coinflip',
+            'blackjack': 'Blackjack',
             'minesweeper': 'Minesweeper',
             'tower': 'Tower',
             'casino': 'Casino',
@@ -160,6 +161,7 @@ const config = {
             amounts: {
                 crash: { min: 0.01, max: 1000.00 },
                 coinflip: { min: 0.01, max: 1000.00 },
+                blackjack: { min: 0.01, max: 1000.00 },
                 minesweeper: { min: 0.01, max: 1000.00 },
                 tower: { min: 0.01, max: 1000.00 },
 
@@ -335,6 +337,10 @@ const config = {
 				timer_wait_start: 3,
 				timer_delete: 1 * 60
 			},
+
+            blackjack: {
+                multiplayer: false
+            },
 
             minesweeper: {
 				multiplayer: false

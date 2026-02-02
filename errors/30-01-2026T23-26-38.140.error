@@ -1,0 +1,19 @@
+TypeError: /home/ubuntu/lubefun/views/depositCrypto.ejs:62
+    60| 						<div class="bg-danger-10 border-2 border-danger rounded-lg p-3">
+    61| 							<div class="text-sm font-semibold text-danger">
+ >> 62| 								Send only <%= app.paths[2].toUpperCase() %> on the <%= response.deposit.network %> network. $<%= response.deposit.amounts.min %> minimum deposit, <%= response.deposit.confirmations || 1 %> confirmation required.
+    63| 							</div>
+    64| 						</div>
+    65| 					</div>
+
+Cannot read properties of undefined (reading 'min')
+    at eval ("/home/ubuntu/lubefun/views/depositCrypto.ejs":45:51)
+    at depositCrypto (/home/ubuntu/lubefun/node_modules/ejs/lib/ejs.js:703:17)
+    at tryHandleCache (/home/ubuntu/lubefun/node_modules/ejs/lib/ejs.js:274:36)
+    at exports.renderFile [as engine] (/home/ubuntu/lubefun/node_modules/ejs/lib/ejs.js:491:10)
+    at View.render (/home/ubuntu/lubefun/node_modules/express/lib/view.js:135:8)
+    at tryRender (/home/ubuntu/lubefun/node_modules/express/lib/application.js:657:10)
+    at Function.render (/home/ubuntu/lubefun/node_modules/express/lib/application.js:609:3)
+    at ServerResponse.render (/home/ubuntu/lubefun/node_modules/express/lib/response.js:1049:7)
+    at res.render (/home/ubuntu/lubefun/node_modules/express-ejs-layouts/lib/express-layouts.js:77:18)
+    at exports.depositCrypto (/home/ubuntu/lubefun/controllers/depositControllers.js:45:9)

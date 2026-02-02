@@ -51,6 +51,7 @@ var dashboardService = require('@/services/dashboardService.js');
 
 var crashService = require('@/services/games/crashService.js');
 var coinflipService = require('@/services/games/coinflipService.js');
+var blackjackService = require('@/services/games/blackjackService.js');
 var minesweeperService = require('@/services/games/minesweeperService.js');
 var towerService = require('@/services/games/towerService.js');
 var casinoService = require('@/services/games/casinoService.js');
@@ -136,6 +137,7 @@ coinflipService.loadGames();
 if(String(process.env.BOT_ENABLED).toLowerCase() === 'true'){
     coinflipService.startBotSystem();
 }
+blackjackService.loadGames();
 minesweeperService.loadGames();
 towerService.loadGames();
 casinoService.initializeCasino();
@@ -299,6 +301,11 @@ io.on('connection', function(socket) {
 
                 //GAMES HOUSE EDGE
                 var games_houseEdges = {};
+                Object.keys(config.settings.games.games.original).forEach(function(item){
+                    if(config.settings.games.games.original[item] && config.settings.games.games.original[item].house_edge){
+                        games_houseEdges[item] = config.settings.games.games.original[item].house_edge.value;
+                    }
+                });
 
                 var maintenance = row2.length > 0 && !haveRankPermission('access_maintenance', user.rank);
 
@@ -398,6 +405,14 @@ io.on('connection', function(socket) {
                                     return { data };
                                 }())
                             }))
+                        };
+                    }
+
+                    if(paths[0] == 'blackjack' && game_enabled) {
+                        socket_return['blackjack'] = {
+                            game: blackjackService.getPublicState ? blackjackService.getPublicState(user.userid, false) : {
+                                active: blackjackService.games[user.userid] !== undefined
+                            }
                         };
                     }
 
@@ -1012,6 +1027,7 @@ function userRequest_request(user, socket, request, device, logged){
         if(request.command == 'account_withdrawals') return accountService.getAccountWithdrawals(user, socket, request.page, request_cooldown);
         if(request.command == 'account_crash_history') return accountService.getAccountCrashHistory(user, socket, request.page, request_cooldown);
         if(request.command == 'account_coinflip_history') return accountService.getAccountCoinflipHistory(user, socket, request.page, request_cooldown);
+        if(request.command == 'account_blackjack_history') return accountService.getAccountBlackjackHistory(user, socket, request.page, request_cooldown);
         if(request.command == 'account_tower_history') return accountService.getAccountTowerHistory(user, socket, request.page, request_cooldown);
         if(request.command == 'account_minesweeper_history') return accountService.getAccountMinesweeperHistory(user, socket, request.page, request_cooldown);
         if(request.command == 'account_casino_history') return accountService.getAccountCasinoHistory(user, socket, request.page, request_cooldown);
@@ -1021,6 +1037,7 @@ function userRequest_request(user, socket, request, device, logged){
         if(request.command == 'user_withdrawals') return userService.getUserWithdrawals(user, socket, request.page, request.userid, request_cooldown);
         if(request.command == 'user_crash_history') return userService.getUserCrashHistory(user, socket, request.page, request.userid, request_cooldown);
         if(request.command == 'user_coinflip_history') return userService.getUserCoinflipHistory(user, socket, request.page, request.userid, request_cooldown);
+        if(request.command == 'user_blackjack_history') return userService.getUserBlackjackHistory(user, socket, request.page, request.userid, request_cooldown);
         if(request.command == 'user_tower_history') return userService.getUserTowerHistory(user, socket, request.page, request.userid, request_cooldown);
         if(request.command == 'user_minesweeper_history') return userService.getUserMinesweeperHistory(user, socket, request.page, request.userid, request_cooldown);
         if(request.command == 'user_casino_history') return userService.getUserCasinoHistory(user, socket, request.page, request.userid, request_cooldown);
@@ -1079,6 +1096,12 @@ function userRequest_request(user, socket, request, device, logged){
 			if(request.command == 'create') return coinflipService.createGame(user, socket, request.amount, request.position, request_cooldown);
 			if(request.command == 'join') return coinflipService.joinGame(user, socket, request.id, request_cooldown);
 		}
+
+        if(request.type == 'blackjack') {
+            if(request.command == 'bet') return blackjackService.placeBet(user, socket, request.amount, request_cooldown);
+            if(request.command == 'hit') return blackjackService.hit(user, socket, request_cooldown);
+            if(request.command == 'stand') return blackjackService.stand(user, socket, request_cooldown);
+        }
 
         if(request.type == 'minesweeper') {
 			if(request.command == 'bet') return minesweeperService.placeBet(user, socket, request.amount, request.bombs, request_cooldown);

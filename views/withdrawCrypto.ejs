@@ -1,85 +1,105 @@
 <div class="flex flex-col items-center gap-4">
-	<div class="flex justify-start w-full">
-		<a href="/withdraw"><button class="button button-accent shadow-2 flex flex-row gap-2 items-center justify-center">
-            <i class="fa fa-arrow-left" aria-hidden="true"></i>
-            <span>Back to Options</span>
-        </button></a>
-	</div>
 
-	<div class="crypto-panel flex flex-col gap-2 w-8 responsive">
-		<div class="flex flex-col gap-1">
-			<div class="text-xl font-bold mb-2">Withdraw with <%= response.withdraw.currency %></div>
-
-			<div class="text-xs text-muted-foreground">All <%= response.withdraw.currency %> withdrawals are sent instantly.</div>
-		</div>
-
-		<div class="flex flex-col gap-2 bg-card bg-opacity-50 text-left rounded-2 border-2 border-secondary p-4">
-			<div class="flex flex-col gap-2">
-                <div class="text-base font-bold"><%= response.withdraw.currency %> wallet address</div>
-
-                <div class="flex flex-col gap-1">
-                    <div class="text-xs text-muted-foreground">Please enter the <%= response.withdraw.currency %> wallet address you want the withdrawal to be sent to.</div>
-                    <div class="text-xs text-muted-foreground">All withdraws more than <%= response.withdraw.manually.amount %> coins, require manually confirmations and checks.</div>
-                </div>
-
-                <%- include('./components/inputField.ejs', {
-                    type: 'text',
-                    placeholder: 'Your personal ' + app.paths[2].toUpperCase() + ' withdraw address',
-                    id: 'currency_withdraw_address',
-                    errors: [ 'required' ]
-                }); %>
-            </div>
-
-			<div class="flex flex-row gap-2 responsive">
-				<%- include('./components/inputField.ejs', {
-                    type: 'text',
-                    placeholder: 'Withdraw Amount',
-                    currency: 'main',
-                    id: 'currency_withdraw_amount',
-                    value: '100.00',
-                    attributes: [
-                        { name: 'data-conversion', value: 'from' },
-                        { name: 'data-currency', value: app.paths[2] },
-                        { name: 'data-amount', value: 'withdraw_crypto' }
-                    ],
-                    errors: [ 'required', 'number', 'greater', 'lesser' ]
-                }); %>
-
-                <%- include('./components/inputField.ejs', {
-                    type: 'text',
-                    placeholder: 'Receive',
-                    currency: app.paths[2],
-                    attributes: [
-                        { name: 'data-conversion', value: 'to' },
-                        { name: 'data-currency', value: app.paths[2] }
-                    ],
-                    errors: [ 'number' ]
-                }); %>
-
-                <%- include('./components/inputField.ejs', {
-                    type: 'text',
-                    placeholder: 'Receive (estimated)',
-                    currency: app.paths[2],
-                    attributes: [
-                        { name: 'data-conversion', value: 'estimated' },
-                        { name: 'data-currency', value: app.paths[2] }
-                    ],
-                    errors: [ 'number' ]
-                }); %>
+	<div class="crypto-panel flex flex-col gap-4 w-full max-w-4xl">
+		<!-- Step 1: Select Currency -->
+		<div class="flex flex-col gap-2">
+			<label class="text-sm font-semibold text-muted-foreground">1. Select Currency</label>
+			<div class="bg-card border-2 border-secondary rounded-lg p-4">
+				<div class="flex flex-row items-center gap-3">
+					<img src="/img/payments/crypto/<%= app.paths[2] %>.png" alt="<%= response.withdraw.currency %>" style="width: 16px; height: 16px; max-width: 16px; max-height: 16px;">
+					<div class="flex flex-col">
+						<div class="font-bold text-lg"><%= response.withdraw.currency %></div>
+						<div class="text-xs text-muted-foreground"><%= app.paths[2].toUpperCase() %></div>
+					</div>
+				</div>
 			</div>
-
-            <div class="flex flex-col gap-1">
-                <div class="text-xs text-warning">This action is irreversible. Please make sure the provided information is correct. Any additional network fees will be deducted from the cashout amount.</div>
-                <div class="text-xs text-warning">You cannot withdraw or transfer your funds to another account. You must withdraw your funds to a personal wallet.</div>
-            </div>
-
-			<button type="button" class="button button-primary shadow-2 large w-full" id="crypto_withdraw" data-currency="<%= app.paths[2] %>">Withdraw</button>
-
-            <div class="flex flex-row justify-center gap-1"><span class="text-muted-foreground">Est. Network Fee:</span><% if(response.withdraw.fee){ %><span class="font-bold">$<%= response.withdraw.fee %></span><% } else { %><span class="font-bold">N/A</span><% } %></div>
 		</div>
 
-        <div class="flex flex-col items-center gap-1 w-full">
-            <div class="text-xs text-muted-foreground">Your payment will be processed through <%= app.abbreviation %>.</div>
-        </div>
+		<!-- Step 2: Select Network -->
+		<div class="flex flex-col gap-2">
+			<label class="text-sm font-semibold text-muted-foreground">2. Select Network</label>
+			<div class="bg-card border-2 border-secondary rounded-lg p-4">
+				<div class="font-bold text-lg"><%= response.withdraw.network || app.paths[2] %></div>
+			</div>
+		</div>
+
+		<!-- Step 3: Withdraw Details -->
+		<div class="flex flex-col gap-2">
+			<label class="text-sm font-semibold text-muted-foreground">3. Withdraw Details</label>
+			<div class="bg-card border-2 border-secondary rounded-lg p-4">
+				<div class="flex flex-col gap-4">
+					<!-- Wallet Address -->
+					<div class="flex flex-col gap-2">
+						<label class="text-sm font-semibold">Wallet Address</label>
+						<%- include('./components/inputField.ejs', {
+							type: 'text',
+							placeholder: 'Your personal ' + app.paths[2].toUpperCase() + ' withdraw address',
+							id: 'currency_withdraw_address',
+							errors: [ 'required' ]
+						}); %>
+					</div>
+
+					<!-- Amount -->
+					<div class="flex flex-col gap-2">
+						<label class="text-sm font-semibold">Withdraw Amount</label>
+						<div class="flex flex-row gap-2 responsive">
+							<%- include('./components/inputField.ejs', {
+								type: 'text',
+								placeholder: 'Withdraw Amount',
+								currency: 'main',
+								id: 'currency_withdraw_amount',
+								value: '100.00',
+								attributes: [
+									{ name: 'data-conversion', value: 'from' },
+									{ name: 'data-currency', value: app.paths[2] },
+									{ name: 'data-amount', value: 'withdraw_crypto' }
+								],
+								errors: [ 'required', 'number', 'greater', 'lesser' ]
+							}); %>
+
+							<%- include('./components/inputField.ejs', {
+								type: 'text',
+								placeholder: 'Receive',
+								currency: app.paths[2],
+								attributes: [
+									{ name: 'data-conversion', value: 'to' },
+									{ name: 'data-currency', value: app.paths[2] }
+								],
+								errors: [ 'number' ]
+							}); %>
+						</div>
+						<div class="text-xs text-muted-foreground">Minimum: $<%= response.withdraw.amounts.min %>, Maximum: $<%= response.withdraw.amounts.max %></div>
+					</div>
+
+					<!-- Network Fee -->
+					<div class="flex flex-row justify-between items-center p-3 bg-secondary rounded-lg">
+						<span class="text-sm text-muted-foreground">Est. Network Fee:</span>
+						<% if(response.withdraw.fee){ %>
+							<span class="font-bold text-lg">$<%= response.withdraw.fee %></span>
+						<% } else { %>
+							<span class="font-bold text-lg">N/A</span>
+						<% } %>
+					</div>
+
+					<!-- Important Instructions -->
+					<div class="bg-danger-10 border-2 border-danger rounded-lg p-3">
+						<div class="text-sm font-semibold text-danger">
+							This action is irreversible. Please make sure the provided information is correct. Any additional network fees will be deducted from the cashout amount.
+						</div>
+					</div>
+
+					<!-- Withdraw Button -->
+					<button type="button" class="button button-primary shadow-2 large w-full" id="crypto_withdraw" data-currency="<%= app.paths[2] %>">Withdraw</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Back Button -->
+		<div class="flex justify-start">
+			<a href="/withdraw"><button class="button button-accent shadow-2 flex flex-row gap-2 items-center justify-center">
+				<i class="fa fa-arrow-left" aria-hidden="true"></i>
+				<span>Back to Options</span>
+			</button></a>
+		</div>
 	</div>
 </div>
