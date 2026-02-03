@@ -5326,12 +5326,23 @@ function blackjack_applyState(game){
 	var active = state.active === true;
 	var actions = state.actions || {};
 
+	// Enable Deal button when game is not active (after win/loss or initial state)
 	$('#blackjack_bet').toggleClass('disabled', active || actions.bet === false);
 	$('#blackjack_hit').toggleClass('disabled', !active || actions.hit !== true);
 	$('#blackjack_stand').toggleClass('disabled', !active || actions.stand !== true);
 
-	if(!active) $('#blackjack_status_text').text('Place a bet and click Deal.');
-	else $('#blackjack_status_text').text('Good luck!');
+	// Update Deal button text
+	$('#blackjack_bet').text('Deal');
+
+	// Only update status if it's not already set by applyResult (to preserve "Click Deal to start a new game.")
+	if(!active) {
+		var currentStatus = $('#blackjack_status_text').text();
+		if(currentStatus !== 'Click Deal to start a new game.' && currentStatus !== 'You win!' && currentStatus !== 'You lose.' && currentStatus !== 'Push (tie).' && currentStatus !== 'Blackjack! You win.') {
+			$('#blackjack_status_text').text('Place a bet and click Deal.');
+		}
+	} else {
+		$('#blackjack_status_text').text('Good luck!');
+	}
 }
 
 function blackjack_applyResult(payload){
