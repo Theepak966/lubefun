@@ -175,8 +175,7 @@ function profile_settingsAssign(setting, value, first){
 			break;
 
 		case 'balance':
-			var balanceValue = roundedToFixed($('.balances .list .balance[data-type="' + value + '"]').attr('data-balance'), 2);
-			$('.balances .balance[data-type="total"] .amount').text('$' + balanceValue);
+			$('.balances .balance[data-type="total"] .amount').countToFloat(roundedToFixed($('.balances .list .balance[data-type="' + value + '"]').attr('data-balance'), 2));
 
 			break;
 
@@ -5349,42 +5348,25 @@ function blackjack_applyResult(payload){
 
 	$('#blackjack_status_text').text(statusText);
 
-	// Auto-restart game after 2 seconds
-	// Clear any existing restart timeout
-	if(window.blackjack_restartTimeout) {
-		clearTimeout(window.blackjack_restartTimeout);
-	}
-
-	// Set new timeout to auto-restart
-	window.blackjack_restartTimeout = setTimeout(function() {
-		// Reset the game state by clearing the status
-		$('#blackjack_status_text').text('Starting new game...');
-		
-		// Clear hands
-		$('#blackjack_player_hand').empty();
-		$('#blackjack_dealer_hand').empty();
-		$('#blackjack_player_total').text('0');
-		$('#blackjack_dealer_total').text('0');
-		
-		// Disable buttons during restart
-		$('#blackjack_bet').addClass('disabled');
-		$('#blackjack_hit').addClass('disabled');
-		$('#blackjack_stand').addClass('disabled');
-		
-		// Automatically start a new deal with the same bet amount
-		var amount = $('#betamount_blackjack').val();
-		if(amount && parseFloat(amount) > 0) {
-			send_request_socket({
-				'type': 'blackjack',
-				'command': 'bet',
-				'amount': amount
-			});
-		} else {
-			// If no amount, just enable the bet button
-			$('#blackjack_status_text').text('Place a bet and click Deal.');
-			$('#blackjack_bet').removeClass('disabled');
-		}
-	}, 2000); // 2 second delay
+	// After win/loss, enable the Deal button so user can start a new game
+	// Clear hands visually
+	$('#blackjack_player_hand').empty();
+	$('#blackjack_dealer_hand').empty();
+	$('#blackjack_player_total').text('0');
+	$('#blackjack_dealer_total').text('0');
+	
+	// Enable Deal button for next game
+	$('#blackjack_bet').removeClass('disabled');
+	$('#blackjack_bet').text('Deal');
+	
+	// Disable Hit and Stand buttons
+	$('#blackjack_hit').addClass('disabled');
+	$('#blackjack_stand').addClass('disabled');
+	
+	// Update status to prompt user to click Deal
+	setTimeout(function() {
+		$('#blackjack_status_text').text('Click Deal to start a new game.');
+	}, 1000);
 }
 
 $(document).ready(function() {
