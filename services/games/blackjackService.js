@@ -102,6 +102,40 @@ function getPublicState(userId, revealDealer){
 	};
 }
 
+
+
+/**
+ * Public state used when a hand has finished.
+ *
+ * Why:
+ * - The client uses `state.active` and `state.actions.bet` to decide if the Deal button is clickable.
+ * - `getPublicState(...)` returns `active: true` and `bet: false` for in-progress hands.
+ * - When we emit a result, we want to keep the final cards visible AND allow the next hand to start immediately.
+ */
+function getFinishedPublicStateFromGame(game){
+	var playerValue = blackjackLogic.calculateHandValue(game.player);
+	var dealerValue = blackjackLogic.calculateHandValue(game.dealer);
+
+	return {
+		active: false,
+		amount: game.amount,
+		player: {
+			cards: game.player.slice(),
+			total: playerValue.total
+		},
+		dealer: {
+			cards: game.dealer.slice(),
+			total: dealerValue.total,
+			revealed: true
+		},
+		actions: {
+			bet: true,
+			hit: false,
+			stand: false
+		}
+	};
+}
+
 function dealNext(game){
 	if(game.position >= game.deck.length) throw new Error('Deck exhausted');
 	var card = game.deck[game.position];
@@ -141,7 +175,7 @@ function settleAndFinish(user, socket, game, result, winning, cooldown){
 
 					emitSocketToUser(socket, 'blackjack', 'result', {
 						result: result,
-						state: getPublicState(userId, true)
+						state: getFinishedPublicStateFromGame(game)
 					});
 
 					delete games[userId];
